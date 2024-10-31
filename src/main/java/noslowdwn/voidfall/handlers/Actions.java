@@ -3,8 +3,8 @@ package noslowdwn.voidfall.handlers;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import noslowdwn.voidfall.VoidFall;
-import noslowdwn.voidfall.utils.ColorsParser;
 import noslowdwn.voidfall.utils.ConfigValues;
+import noslowdwn.voidfall.utils.colorizer.IColorizer;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -14,45 +14,48 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-import static noslowdwn.voidfall.VoidFall.getInstance;
 import static org.bukkit.Bukkit.getScheduler;
 import static org.bukkit.Bukkit.getServer;
 
 public class Actions {
 
-    private static final ConfigValues values = new ConfigValues();
+    private final VoidFall plugin;
+    private final ConfigValues configValues;
+    private final IColorizer colorizer;
 
-    private Actions() {
-        throw new ExceptionInInitializerError("This class may not be initialized!");
+    public Actions(final VoidFall plugin) {
+        this.plugin = plugin;
+        this.configValues = plugin.getConfigValues();
+        this.colorizer = plugin.getColorizer();
     }
 
-    public static void executeRandom(Player p, List<String> list, String world, String cause) {
+    public void executeRandom(Player p, List<String> list, String world, String cause) {
         Random random = new Random();
         String cmd = list.get(random.nextInt(list.size()));
         execute(p, cmd, world, cause);
     }
 
-    public static void execute(Player p, String str, String world, String cause) {
+    public void execute(Player p, String str, String world, String cause) {
         str = str
                 .replace("%player%", p.getName())
                 .replace("%world%", world)
-                .replace("%world_display_name%", values.getWorldDisplayName(world));
+                .replace("%world_display_name%", this.configValues.getWorldDisplayName(world));
 
         if (str.startsWith("[CONSOLE] ")) {
             str = str.replace("[CONSOLE] ", "");
             if (str.isEmpty()) {
-                VoidFall.debug("Missing command for [CONSOLE] action. Check your config file.", p, "warn");
-                VoidFall.debug("Path to: worlds." + world + ".execute-commands", p, "warn");
+                this.plugin.debug("Missing command for [CONSOLE] action. Check your config file.", p, "warn");
+                this.plugin.debug("Path to: worlds." + world + ".execute-commands", p, "warn");
             } else {
                 final String fStr = str;
-                getScheduler().runTask(getInstance(), () ->
+                getScheduler().runTask(this.plugin, () ->
                 {
-                    getInstance().getServer().dispatchCommand(getInstance().getServer().getConsoleSender(), fStr);
+                    this.plugin.getServer().dispatchCommand(this.plugin.getServer().getConsoleSender(), fStr);
                 });
             }
         } else if (str.startsWith("[MESSAGE] ")) {
             str = str.replace("[MESSAGE] ", "").replace("[MESSAGE]", "");
-            p.sendMessage(ColorsParser.of(p, str));
+            p.sendMessage(colorizer.colorize(str));
         } else if (str.startsWith("[BROADCAST] ")) {
             str = str.replace("[BROADCAST] ", "").replace("[BROADCAST]", "");
             String finalStr = str;
@@ -60,16 +63,16 @@ public class Actions {
                     .filter(Objects::nonNull)
                     .forEach(
                             player -> {
-                                player.sendMessage(ColorsParser.of(p, finalStr));
+                                player.sendMessage(colorizer.colorize(finalStr));
                             });
         } else if (str.startsWith("[PLAYER] ")) {
             str = str.replace("[PLAYER] ", "");
             if (str.isEmpty()) {
-                VoidFall.debug("Missing command for [PLAYER] action. Check your config file.", p, "warn");
-                VoidFall.debug("Path to: worlds." + world + ".execute-commands", p, "warn");
+                this.plugin.debug("Missing command for [PLAYER] action. Check your config file.", p, "warn");
+                this.plugin.debug("Path to: worlds." + world + ".execute-commands", p, "warn");
             } else {
                 final String fStr = str;
-                getScheduler().runTask(getInstance(), () ->
+                getScheduler().runTask(this.plugin, () ->
                 {
                     p.chat("/" + fStr);
                 });
@@ -83,26 +86,26 @@ public class Actions {
             int fadeIn = 10, stay = 40, fadeOut = 15;
             switch (params.length) {
                 case 0:
-                    VoidFall.debug("Missing arguments for [TITLE] action. Check your config file.", p, "warn");
-                    VoidFall.debug("Path to: worlds." + world + ".execute-commands", p, "warn");
+                    this.plugin.debug("Missing arguments for [TITLE] action. Check your config file.", p, "warn");
+                    this.plugin.debug("Path to: worlds." + world + ".execute-commands", p, "warn");
                     break;
                 case 5:
                     try {
                         fadeOut = Integer.parseInt(params[4]);
                     } catch (NumberFormatException e) {
-                        VoidFall.debug("The value: " + params[4] + " specified in \"FadeOut\" for the [TITLE] action is invalid. Please check your config file.", p, "warn");
+                        this.plugin.debug("The value: " + params[4] + " specified in \"FadeOut\" for the [TITLE] action is invalid. Please check your config file.", p, "warn");
                     }
                 case 4:
                     try {
                         stay = Integer.parseInt(params[3]);
                     } catch (NumberFormatException e) {
-                        VoidFall.debug("The value: " + params[3] + " specified in \"Stay\" for the [TITLE] action is invalid. Please check your config file.", p, "warn");
+                        this.plugin.debug("The value: " + params[3] + " specified in \"Stay\" for the [TITLE] action is invalid. Please check your config file.", p, "warn");
                     }
                 case 3:
                     try {
                         stay = Integer.parseInt(params[2]);
                     } catch (NumberFormatException e) {
-                        VoidFall.debug("The value: " + params[2] + " specified in \"FadeIn\" for the [TITLE] action is invalid. Please check your config file.", p, "warn");
+                        this.plugin.debug("The value: " + params[2] + " specified in \"FadeIn\" for the [TITLE] action is invalid. Please check your config file.", p, "warn");
                     }
                 case 2:
                     sub = params[1];
@@ -111,21 +114,21 @@ public class Actions {
                 default:
                     final String text = main, subText = sub;
                     final int stayTime = stay, fadeOutTime = fadeOut;
-                    getScheduler().runTask(getInstance(), () ->
+                    getScheduler().runTask(this.plugin, () ->
                     {
-                        p.sendTitle(ColorsParser.of(p, text), ColorsParser.of(p, subText), fadeIn, stayTime, fadeOutTime);
+                        p.sendTitle(colorizer.colorize(text), colorizer.colorize(subText), fadeIn, stayTime, fadeOutTime);
                     });
             }
         } else if (str.startsWith("[ACTIONBAR] ")) {
             str = str.replace("[ACTIONBAR] ", "");
             if (str.isEmpty()) {
-                VoidFall.debug("Missing arguments for [ACTIONBAR] action. Check your config file.", p, "warn");
-                VoidFall.debug("Path to: worlds." + world + ".execute-commands", p, "warn");
+                this.plugin.debug("Missing arguments for [ACTIONBAR] action. Check your config file.", p, "warn");
+                this.plugin.debug("Path to: worlds." + world + ".execute-commands", p, "warn");
             } else {
                 final String fStr = str;
-                getScheduler().runTask(getInstance(), () ->
+                getScheduler().runTask(this.plugin, () ->
                 {
-                    p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ColorsParser.of(p, fStr)));
+                    p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(colorizer.colorize(fStr)));
                 });
             }
             // Sound test = Sound.BLOCK_NOTE_XYLOPHONE;
@@ -142,11 +145,11 @@ public class Actions {
             switch (params.length) {
                 case 0:
                     if (all) {
-                        VoidFall.debug("Missing arguments for [PLAY_SOUND_ALL] action! Check your config file.", p, "warn");
-                        VoidFall.debug("Path to: worlds." + world + ".execute-commands", p, "warn");
+                        this.plugin.debug("Missing arguments for [PLAY_SOUND_ALL] action! Check your config file.", p, "warn");
+                        this.plugin.debug("Path to: worlds." + world + ".execute-commands", p, "warn");
                     } else {
-                        VoidFall.debug("Missing arguments for [PLAY_SOUND] action! Check your config file.", p, "warn");
-                        VoidFall.debug("Path to: worlds." + world + ".execute-commands", p, "warn");
+                        this.plugin.debug("Missing arguments for [PLAY_SOUND] action! Check your config file.", p, "warn");
+                        this.plugin.debug("Path to: worlds." + world + ".execute-commands", p, "warn");
                     }
                     break;
                 case 3:
@@ -154,9 +157,9 @@ public class Actions {
                         pitch = Float.parseFloat(params[2]);
                     } catch (final NumberFormatException exception) {
                         if (all) {
-                            VoidFall.debug("The value: " + params[2] + " specified in \"Pitch\" for the [PLAY_SOUND_ALL] action is invalid. Please check your config file.", p, "warn");
+                            this.plugin.debug("The value: " + params[2] + " specified in \"Pitch\" for the [PLAY_SOUND_ALL] action is invalid. Please check your config file.", p, "warn");
                         } else {
-                            VoidFall.debug("The value: " + params[2] + " specified in \"Pitch\" for the [PLAY_SOUND] action is invalid. Please check your config file.", p, "warn");
+                            this.plugin.debug("The value: " + params[2] + " specified in \"Pitch\" for the [PLAY_SOUND] action is invalid. Please check your config file.", p, "warn");
                         }
                     }
                 case 2:
@@ -164,9 +167,9 @@ public class Actions {
                         volume = Float.parseFloat(params[1]);
                     } catch (final NumberFormatException exception) {
                         if (all) {
-                            VoidFall.debug("The value: " + params[1] + " specified in \"Volume\" for the [PLAY_SOUND_ALL] action is invalid. Please check your config file.", p, "warn");
+                            this.plugin.debug("The value: " + params[1] + " specified in \"Volume\" for the [PLAY_SOUND_ALL] action is invalid. Please check your config file.", p, "warn");
                         } else {
-                            VoidFall.debug("The value: " + params[1] + " specified in \"Volume\" for the [PLAY_SOUND] action is invalid. Please check your config file.", p, "warn");
+                            this.plugin.debug("The value: " + params[1] + " specified in \"Volume\" for the [PLAY_SOUND] action is invalid. Please check your config file.", p, "warn");
                         }
                     }
                 case 1:
@@ -174,15 +177,15 @@ public class Actions {
                         sound = Sound.valueOf(params[0].toUpperCase());
                     } catch (final IllegalArgumentException exception) {
                         if (all) {
-                            VoidFall.debug("The value: " + params[0] + " specified in \"Sound\" for the [PLAY_SOUND_ALL] action is invalid. Please check your config file.", p, "warn");
+                            this.plugin.debug("The value: " + params[0] + " specified in \"Sound\" for the [PLAY_SOUND_ALL] action is invalid. Please check your config file.", p, "warn");
                         } else {
-                            VoidFall.debug("The value: " + params[0] + " specified in \"Sound\" for the [PLAY_SOUND] action is invalid. Please check your config file.", p, "warn");
+                            this.plugin.debug("The value: " + params[0] + " specified in \"Sound\" for the [PLAY_SOUND] action is invalid. Please check your config file.", p, "warn");
                         }
                     }
                 default:
                     final Sound fSound = sound;
                     float fVolume = volume, fPitch = pitch;
-                    getScheduler().runTask(getInstance(), () ->
+                    getScheduler().runTask(this.plugin, () ->
                     {
                         if (all) {
                             Bukkit.getOnlinePlayers().stream()
@@ -204,32 +207,32 @@ public class Actions {
 
             switch (params.length) {
                 case 0:
-                    VoidFall.debug("Missing arguments for [EFFECT] action! Check your config file.", p, "warn");
-                    VoidFall.debug("Path to: worlds." + world + ".execute-commands", p, "warn");
+                    this.plugin.debug("Missing arguments for [EFFECT] action! Check your config file.", p, "warn");
+                    this.plugin.debug("Path to: worlds." + world + ".execute-commands", p, "warn");
                     break;
                 case 3:
                     try {
                         duration = Integer.parseInt(params[2]) * 20;
                     } catch (final NumberFormatException e) {
                         e.printStackTrace();
-                        VoidFall.debug("The value: " + params[2] + " specified in \"Duration\" for the [EFFECT] action is invalid. Please check your config file.", p, "warn");
+                        this.plugin.debug("The value: " + params[2] + " specified in \"Duration\" for the [EFFECT] action is invalid. Please check your config file.", p, "warn");
                     }
                 case 2:
                     try {
                         amplifier = Integer.parseInt(params[2]);
                     } catch (final NumberFormatException e) {
                         e.printStackTrace();
-                        VoidFall.debug("The value: " + params[1] + " specified in \"Amplifier\" for the [EFFECT] action is invalid. Please check your config file.", p, "warn");
+                        this.plugin.debug("The value: " + params[1] + " specified in \"Amplifier\" for the [EFFECT] action is invalid. Please check your config file.", p, "warn");
                     }
                 case 1:
                     effect = PotionEffectType.getByName(params[0].toUpperCase());
                     if (effect == null) {
-                        VoidFall.debug("The value: " + params[0] + " specified in \"PotionEffect\" for the [EFFECT] action is invalid. Please check your config file.", p, "warn");
+                        this.plugin.debug("The value: " + params[0] + " specified in \"PotionEffect\" for the [EFFECT] action is invalid. Please check your config file.", p, "warn");
                     }
                 default:
                     final PotionEffectType fEffect = effect;
                     int fDuration = duration, fAmplifier = amplifier;
-                    getScheduler().runTask(getInstance(), () ->
+                    getScheduler().runTask(this.plugin, () ->
                     {
                         p.addPotionEffect(new PotionEffect(fEffect, fDuration, fAmplifier));
                     });
@@ -243,8 +246,8 @@ public class Actions {
 
             switch (params.length) {
                 case 0:
-                    VoidFall.debug("Missing arguments for [TELEPORT] action! Check your config file.", p, "warn");
-                    VoidFall.debug("Path to: worlds." + world + ".execute-commands", p, "warn");
+                    this.plugin.debug("Missing arguments for [TELEPORT] action! Check your config file.", p, "warn");
+                    this.plugin.debug("Path to: worlds." + world + ".execute-commands", p, "warn");
                     break;
                 case 6:
                     try {
@@ -255,7 +258,7 @@ public class Actions {
                             yaw = Float.parseFloat(params[5]);
                         }
                     } catch (final NumberFormatException e) {
-                        VoidFall.debug("The value: " + params[5] + " specified in \"Yaw\" for the [TELEPORT] action is invalid. Please check your config file.", p, "warn");
+                        this.plugin.debug("The value: " + params[5] + " specified in \"Yaw\" for the [TELEPORT] action is invalid. Please check your config file.", p, "warn");
                     }
                 case 5:
                     try {
@@ -266,7 +269,7 @@ public class Actions {
                             pitch = Float.parseFloat(params[4]);
                         }
                     } catch (final NumberFormatException e) {
-                        VoidFall.debug("The value: " + params[4] + " specified in \"Pitch\" for the [TELEPORT] action is invalid. Please check your config file.", p, "warn");
+                        this.plugin.debug("The value: " + params[4] + " specified in \"Pitch\" for the [TELEPORT] action is invalid. Please check your config file.", p, "warn");
                     }
                 case 4:
                     try {
@@ -277,7 +280,7 @@ public class Actions {
                             z = Double.parseDouble(params[3]);
                         }
                     } catch (final NumberFormatException e) {
-                        VoidFall.debug("The value: " + params[3] + " specified in \"Cord z\" for the [TELEPORT] action is invalid. Please check your config file.", p, "warn");
+                        this.plugin.debug("The value: " + params[3] + " specified in \"Cord z\" for the [TELEPORT] action is invalid. Please check your config file.", p, "warn");
                     }
                 case 3:
                     try {
@@ -288,7 +291,7 @@ public class Actions {
                             y = Double.parseDouble(params[2]);
                         }
                     } catch (final NumberFormatException e) {
-                        VoidFall.debug("The value: " + params[2] + " specified in \"Cord y\" for the [TELEPORT] action is invalid. Please check your config file.", p, "warn");
+                        this.plugin.debug("The value: " + params[2] + " specified in \"Cord y\" for the [TELEPORT] action is invalid. Please check your config file.", p, "warn");
                     }
                 case 2:
                     try {
@@ -299,7 +302,7 @@ public class Actions {
                             x = Double.parseDouble(params[1]);
                         }
                     } catch (final NumberFormatException e) {
-                        VoidFall.debug("The value: " + params[1] + " specified in \"Cord x\" for the [TELEPORT] action is invalid. Please check your config file.", p, "warn");
+                        this.plugin.debug("The value: " + params[1] + " specified in \"Cord x\" for the [TELEPORT] action is invalid. Please check your config file.", p, "warn");
                     }
                 case 1:
                     if (params[0].equals("~")) {
@@ -309,7 +312,7 @@ public class Actions {
                     }
                 default:
                     if (tpWorld == null) {
-                        VoidFall.debug("The value: " + params[0] + " specified in \"World\" for the [TELEPORT] action is invalid. Please check your config file.", p, "warn");
+                        this.plugin.debug("The value: " + params[0] + " specified in \"World\" for the [TELEPORT] action is invalid. Please check your config file.", p, "warn");
                         tpWorld = getServer().getWorlds().get(0);
                     }
 
@@ -319,7 +322,7 @@ public class Actions {
                     location.setZ(z);
                     location.setPitch(pitch);
                     location.setYaw(yaw);
-                    getScheduler().runTask(getInstance(), () ->
+                    getScheduler().runTask(this.plugin, () ->
                     {
                         p.teleport(location);
                     });
@@ -328,8 +331,8 @@ public class Actions {
             str = str.replace("[GAMEMODE] ", "");
             GameMode gm;
             if (str.isEmpty()) {
-                VoidFall.debug("Missing arguments for [GAMEMODE] action! Check your config file.", p, "warn");
-                VoidFall.debug("Path to: worlds." + world + ".execute-commands", p, "warn");
+                this.plugin.debug("Missing arguments for [GAMEMODE] action! Check your config file.", p, "warn");
+                this.plugin.debug("Path to: worlds." + world + ".execute-commands", p, "warn");
             } else {
                 switch (str) {
                     case "1":
@@ -349,20 +352,20 @@ public class Actions {
                         gm = GameMode.SURVIVAL;
                         break;
                     default:
-                        VoidFall.debug("The gamemode given for [GAMEMODE]: " + str + ", doesn't exist or not valid!", p, "warn");
-                        VoidFall.debug("&cPath to: worlds." + world + ".execute-commands", p, "warn");
+                        this.plugin.debug("The gamemode given for [GAMEMODE]: " + str + ", doesn't exist or not valid!", p, "warn");
+                        this.plugin.debug("&cPath to: worlds." + world + ".execute-commands", p, "warn");
                         return;
                 }
 
-                getScheduler().runTask(getInstance(), () ->
+                getScheduler().runTask(this.plugin, () ->
                 {
                     p.setGameMode(gm);
                 });
             }
         } else {
-            VoidFall.debug("&cYou're trying to cause an action that doesn't exist.", p, "warn");
-            VoidFall.debug("&cPath to: worlds." + world + ".execute-commands", p, "warn");
-            VoidFall.debug("&cAction: " + str, p, "warn");
+            this.plugin.debug("&cYou're trying to cause an action that doesn't exist.", p, "warn");
+            this.plugin.debug("&cPath to: worlds." + world + ".execute-commands", p, "warn");
+            this.plugin.debug("&cAction: " + str, p, "warn");
         }
     }
 }

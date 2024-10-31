@@ -1,44 +1,57 @@
 package noslowdwn.voidfall;
 
+import lombok.Getter;
+import noslowdwn.voidfall.handlers.Actions;
 import noslowdwn.voidfall.handlers.PlayerEvents;
 import noslowdwn.voidfall.handlers.Region;
 import noslowdwn.voidfall.handlers.YCords;
 import noslowdwn.voidfall.utils.*;
+import noslowdwn.voidfall.utils.colorizer.IColorizer;
+import noslowdwn.voidfall.utils.colorizer.LegacyColorizer;
+import noslowdwn.voidfall.utils.colorizer.VanillaColorizer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Getter
 public final class VoidFall extends JavaPlugin {
+
+    private ConfigValues configValues;
+    private IColorizer colorizer;
+    private Actions actionsExecutor;
 
     @Override
     public void onEnable() {
-        subVersion = extractMainVersion(Bukkit.getVersion());
+        final Config configLoader = new Config(this);
+        configLoader.load();
+        configLoader.checkVersion();
 
-        Config.load();
-        Config.checkVersion();
+        this.configValues = new ConfigValues(this);
+        this.configValues.setupValues();
 
-        ConfigValues.initializeAll();
+        this.colorizer = this.getColorizerByVersion();
 
-        Plugin wgEvents = Bukkit.getPluginManager().getPlugin("WorldGuardEvents");
+        this.actionsExecutor = new Actions(this);
 
-        this.getCommand("voidfall").setExecutor((sender, command, label, args) -> {
-            if (sender instanceof Player && !sender.hasPermission("voidfall.reload")) {
-                sender.sendMessage(ColorsParser.of(sender, getConfig().getString("messages.no-permission")));
+        final Plugin wgEvents = Bukkit.getPluginManager().getPlugin("WorldGuardEvents");
+
+        super.getCommand("voidfall").setExecutor((sender, command, label, args) -> {
+            if (!sender.hasPermission("voidfall.reload")) {
+                sender.sendMessage(colorizer.colorize(getConfig().getString("messages.no-permission")));
                 return true;
             }
 
-            Config.load();
-            Config.checkVersion();
+            configLoader.load();
+            configLoader.checkVersion();
 
             reloadConfig();
 
-            ConfigValues.initializeAll();
-            sender.sendMessage(ColorsParser.of(sender, getConfig().getString("messages.reload-message")));
+            this.configValues.setupValues();
+            sender.sendMessage(colorizer.colorize(getConfig().getString("messages.reload-message")));
 
             if (wgEvents != null && !wgEvents.isEnabled()) {
                 debug("[VoidFall] Actions on region enter/leave will be disabled!", null, "info");
@@ -49,40 +62,28 @@ public final class VoidFall extends JavaPlugin {
             return true;
         });
 
-        this.getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
-        this.getServer().getPluginManager().registerEvents(new YCords(), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerEvents(this), this);
+        this.getServer().getPluginManager().registerEvents(new YCords(this), this);
 
         if (wgEvents != null && wgEvents.isEnabled()) {
-            this.getServer().getPluginManager().registerEvents(new Region(), this);
+            this.getServer().getPluginManager().registerEvents(new Region(this), this);
         } else {
             debug("[VoidFall] Actions on region enter/leave will be disabled!", null, "info");
             debug("[VoidFall] Please download WorldGuardEvents to enable them.", null, "info");
             debug("[WorldGuardEvents] https://www.spigotmc.org/resources/worldguard-events.65176/", null, "info");
         }
 
-        Bukkit.getScheduler().runTaskLaterAsynchronously(this, UpdateChecker::checkVersion, 60L);
+        Bukkit.getScheduler().runTaskLaterAsynchronously(this, () -> new UpdateChecker(this).checkVersion(), 60L);
     }
 
-    public static VoidFall getInstance() {
-        return instance;
-    }
-
-    public static void setInstance(VoidFall instance) {
-        Objects.requireNonNull(instance);
-        if (VoidFall.instance != null) {
-            throw new UnsupportedOperationException();
-        }
-        VoidFall.instance = instance;
-    }
-
-    public static void debug(String msg, Player p, String type) {
-        if (instance.getConfig().getBoolean("debug-mode", false)) {
+    public void debug(String msg, Player p, String type) {
+        if (super.getConfig().getBoolean("debug-mode", false)) {
             switch (type) {
                 case "info":
-                    Bukkit.getLogger().info(ColorsParser.of(p, msg));
+                    Bukkit.getLogger().info(colorizer.colorize(msg));
                     break;
                 case "warn":
-                    Bukkit.getLogger().warning(ColorsParser.of(p, msg));
+                    Bukkit.getLogger().warning(colorizer.colorize(msg));
                     break;
             }
         }
@@ -98,8 +99,19 @@ public final class VoidFall extends JavaPlugin {
         }
     }
 
-    public static int getSubVersion() {
-        return subVersion;
+    public IColorizer getColorizerByVersion() {
+        final boolean is16OrAbove = this.getSubVersion() >= 16;
+        return is16OrAbove
+                ? new LegacyColorizer()
+                : new VanillaColorizer();
     }
 
+    public int getSubVersion() {
+        try {
+            return Integer.parseInt(super.getServer().getVersion().split("\\.")[1]);
+        } catch (NumberFormatException ex) {
+            super.getLogger().warning("\u001b[32mFailed to extract server version. Plugin may not work correctly!");
+            return 0;
+        }
+    }
 }

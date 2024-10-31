@@ -1,11 +1,12 @@
 package noslowdwn.voidfall.utils;
 
+import noslowdwn.voidfall.VoidFall;
+import org.bukkit.configuration.file.FileConfiguration;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static noslowdwn.voidfall.VoidFall.getInstance;
 
 public class ConfigValues {
 
@@ -32,40 +33,46 @@ public class ConfigValues {
     private static final List<String> floorWorldsCommandsRandom = new ArrayList<>(), roofWorldsCommandsRandom = new ArrayList<>();
     private static final Map<String, Integer> worldRepeatFix = new HashMap<>();
 
+    private final VoidFall plugin;
+    
+    public ConfigValues(final VoidFall plugin) {
+        this.plugin = plugin;
+    }
 
-    public static void initializeAll() {
+    public void setupValues() {
         if (!worldDisplayName.isEmpty()) {
             worldDisplayName.clear();
         }
-        worldDisplayName.putAll(getInstance().getConfig().getConfigurationSection("messages.worlds-display-names").getValues(false));
+        final FileConfiguration config = this.plugin.getConfig();
+        worldDisplayName.putAll(config.getConfigurationSection("messages.worlds-display-names").getValues(false));
 
         // Player Actions
         if (!playerActionsList.isEmpty()) {
             playerActionsList.clear();
         }
-        playerActionsList.addAll(getInstance().getConfig().getConfigurationSection("player").getKeys(false));
-        isPlayerServerJoinTriggerEnabled = getInstance().getConfig().contains("player.on-server-join");
-        isPlayerServerQuitTriggerEnabled = getInstance().getConfig().contains("player.on-server-leave");
-        isPlayerDeathTriggerEnabled = getInstance().getConfig().contains("player.on-death");
+        playerActionsList.addAll(config.getConfigurationSection("player").getKeys(false));
+        isPlayerServerJoinTriggerEnabled = config.contains("player.on-server-join");
+        isPlayerServerQuitTriggerEnabled = config.contains("player.on-server-leave");
+        isPlayerDeathTriggerEnabled = config.contains("player.on-death");
 
-        isInstantlyRespawnEnabled = getInstance().getConfig().getBoolean("player.on-death.instantly-respawn", false);
+        isInstantlyRespawnEnabled = config.getBoolean("player.on-death.instantly-respawn", false);
 
-        isPlayerServerJoinTriggerRandom = getInstance().getConfig().getBoolean("player.on-server-join.random", false);
-        isPlayerServerQuitTriggerRandom = getInstance().getConfig().getBoolean("player.on-server-leave.random", false);
-        isPlayerDeathTriggerRandom = getInstance().getConfig().getBoolean("player.on-death.random", false);
+        isPlayerServerJoinTriggerRandom = config.getBoolean("player.on-server-join.random", false);
+        isPlayerServerQuitTriggerRandom = config.getBoolean("player.on-server-leave.random", false);
+        isPlayerDeathTriggerRandom = config.getBoolean("player.on-death.random", false);
 
         if (!playerServerJoinCommands.isEmpty()) {
             playerServerJoinCommands.clear();
         }
-        playerServerJoinCommands.addAll(getInstance().getConfig().getStringList("player.on-server-join.execute-commands"));
+        playerServerJoinCommands.addAll(config.getStringList("player.on-server-join.execute-commands"));
         if (!playerServerQuitCommands.isEmpty()) {
             playerServerQuitCommands.clear();
         }
-        playerServerQuitCommands.addAll(getInstance().getConfig().getStringList("player.on-server-leave.execute-commands"));
+        playerServerQuitCommands.addAll(config.getStringList("player.on-server-leave.execute-commands"));
         if (!playerDeathCommands.isEmpty()) {
             playerDeathCommands.clear();
         }
-        playerDeathCommands.addAll(getInstance().getConfig().getStringList("player.on-death.execute-commands"));
+        playerDeathCommands.addAll(config.getStringList("player.on-death.execute-commands"));
 
         // Regions
         if (!enterRegionsWorlds.isEmpty()) {
@@ -86,23 +93,23 @@ public class ConfigValues {
         if (!leaveRegionsCommands.isEmpty()) {
             leaveRegionsCommands.clear();
         }
-        isRegionsEmpty = getInstance().getConfig().getConfigurationSection("regions").getKeys(false).isEmpty();
+        isRegionsEmpty = config.getConfigurationSection("regions").getKeys(false).isEmpty();
         if (!isRegionsEmpty) {
-            for (String regionName : getInstance().getConfig().getConfigurationSection("messages.worlds-display-names").getKeys(false)) {
-                if (getInstance().getConfig().contains("regions." + regionName + ".on-enter")) {
-                    enterRegionsWorlds.put(regionName, getInstance().getConfig().getStringList("regions." + regionName + ".worlds"));
+            for (String regionName : config.getConfigurationSection("messages.worlds-display-names").getKeys(false)) {
+                if (config.contains("regions." + regionName + ".on-enter")) {
+                    enterRegionsWorlds.put(regionName, config.getStringList("regions." + regionName + ".worlds"));
                 }
-                if (getInstance().getConfig().contains("regions." + regionName + ".on-leave")) {
-                    leaveRegionsWorlds.put(regionName, getInstance().getConfig().getStringList("regions." + regionName + ".worlds"));
+                if (config.contains("regions." + regionName + ".on-leave")) {
+                    leaveRegionsWorlds.put(regionName, config.getStringList("regions." + regionName + ".worlds"));
                 }
-                if (getInstance().getConfig().getBoolean("regions." + regionName + ".on-enter.random", false)) {
+                if (config.getBoolean("regions." + regionName + ".on-enter.random", false)) {
                     entryRegionsAreUsingRandom.add(regionName);
                 }
-                if (getInstance().getConfig().getBoolean("regions." + regionName + ".on-leave.random", false)) {
+                if (config.getBoolean("regions." + regionName + ".on-leave.random", false)) {
                     leaveRegionsAreUsingRandom.add(regionName);
                 }
-                entryRegionsCommands.put(regionName, getInstance().getConfig().getStringList("regions." + regionName + ".on-enter.execute-commands"));
-                leaveRegionsCommands.put(regionName, getInstance().getConfig().getStringList("regions." + regionName + ".on-leave.execute-commands"));
+                entryRegionsCommands.put(regionName, config.getStringList("regions." + regionName + ".on-enter.execute-commands"));
+                leaveRegionsCommands.put(regionName, config.getStringList("regions." + regionName + ".on-leave.execute-commands"));
             }
         }
 
@@ -137,30 +144,30 @@ public class ConfigValues {
         if (!roofWorldsModeHeight.isEmpty()) {
             roofWorldsModeHeight.clear();
         }
-        worldList.addAll(getInstance().getConfig().getConfigurationSection("worlds").getKeys(false));
+        worldList.addAll(config.getConfigurationSection("worlds").getKeys(false));
         if (!worldList.isEmpty()) {
-            for (String world : getInstance().getConfig().getConfigurationSection("worlds").getKeys(false)) {
-                if (getInstance().getConfig().contains("worlds." + world + ".floor")) {
+            for (String world : config.getConfigurationSection("worlds").getKeys(false)) {
+                if (config.contains("worlds." + world + ".floor")) {
                     worldsWithFloorMode.add(world);
-                    floorWorldsCommands.put(world, getInstance().getConfig().getStringList("worlds." + world + ".floor.execute-commands"));
-                    if (getInstance().getConfig().getBoolean("worlds." + world + ".floor.random", false)) {
+                    floorWorldsCommands.put(world, config.getStringList("worlds." + world + ".floor.execute-commands"));
+                    if (config.getBoolean("worlds." + world + ".floor.random", false)) {
                         floorWorldsCommandsRandom.add(world);
                     }
                 }
-                if (getInstance().getConfig().contains("worlds." + world + ".roof")) {
+                if (config.contains("worlds." + world + ".roof")) {
                     worldsWithRoofMode.add(world);
-                    roofWorldsCommands.put(world, getInstance().getConfig().getStringList("worlds." + world + ".roof.execute-commands"));
-                    if (getInstance().getConfig().getBoolean("worlds." + world + ".roof.random", false)) {
+                    roofWorldsCommands.put(world, config.getStringList("worlds." + world + ".roof.execute-commands"));
+                    if (config.getBoolean("worlds." + world + ".roof.random", false)) {
                         roofWorldsCommandsRandom.add(world);
                     }
                 }
-                worldRepeatFix.put(world, getInstance().getConfig().getInt("worlds." + world + ".floor.repeat-fix", 3));
+                worldRepeatFix.put(world, config.getInt("worlds." + world + ".floor.repeat-fix", 3));
             }
             for (String world : worldsWithFloorMode) {
-                floorWorldsModeHeight.put(world, getInstance().getConfig().getInt("worlds." + world + ".floor.executing-height", 0));
+                floorWorldsModeHeight.put(world, config.getInt("worlds." + world + ".floor.executing-height", 0));
             }
             for (String world : worldsWithRoofMode) {
-                roofWorldsModeHeight.put(world, getInstance().getConfig().getInt("worlds." + world + ".roof.executing-height", 666));
+                roofWorldsModeHeight.put(world, config.getInt("worlds." + world + ".roof.executing-height", 666));
             }
         }
     }

@@ -13,11 +13,17 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
-import static noslowdwn.voidfall.VoidFall.getInstance;
-
 public class PlayerEvents implements Listener {
 
-    private static final ConfigValues values = new ConfigValues();
+    private final VoidFall plugin;
+    private final ConfigValues configValues;
+    private final Actions actionsExecutor;
+
+    public PlayerEvents(final VoidFall plugin) {
+        this.plugin = plugin;
+        this.configValues = plugin.getConfigValues();
+        this.actionsExecutor = plugin.getActionsExecutor();
+    }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent e) {
@@ -27,30 +33,30 @@ public class PlayerEvents implements Listener {
         if (p == null) {
             return;
         }
-        if (!values.isPlayerServerJoinTriggerEnabled()) {
+        if (!this.configValues.isPlayerServerJoinTriggerEnabled()) {
             return;
         }
 
         new BukkitRunnable() {
             @Override
             public void run() {
-                final List<String> commands = values.getPlayerServerJoinCommands();
+                final List<String> commands = configValues.getPlayerServerJoinCommands();
 
                 if (commands.isEmpty()) {
-                    VoidFall.debug("Nothing to execute because commands list are empty!", p, "warn");
-                    VoidFall.debug("Path to: player.on-server-join.execute-commands", p, "warn");
+                    plugin.debug("Nothing to execute because commands list are empty!", p, "warn");
+                    plugin.debug("Path to: player.on-server-join.execute-commands", p, "warn");
                     return;
                 }
 
-                if (values.isPlayerServerJoinTriggerRandom()) {
-                    Actions.executeRandom(p, commands, p.getWorld().toString(), "player");
+                if (configValues.isPlayerServerJoinTriggerRandom()) {
+                    actionsExecutor.executeRandom(p, commands, p.getWorld().toString(), "player");
                 } else {
                     for (String cmd : commands) {
-                        Actions.execute(p, cmd, p.getWorld().toString(), "player");
+                        actionsExecutor.execute(p, cmd, p.getWorld().toString(), "player");
                     }
                 }
             }
-        }.runTaskAsynchronously(getInstance());
+        }.runTaskAsynchronously(plugin);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -61,30 +67,30 @@ public class PlayerEvents implements Listener {
         if (p == null) {
             return;
         }
-        if (!values.isPlayerServerQuitTriggerEnabled()) {
+        if (!configValues.isPlayerServerQuitTriggerEnabled()) {
             return;
         }
 
         new BukkitRunnable() {
             @Override
             public void run() {
-                final List<String> commands = values.getPlayerServerQuitCommands();
+                final List<String> commands = configValues.getPlayerServerQuitCommands();
 
                 if (commands.isEmpty()) {
-                    VoidFall.debug("Nothing to execute because commands list are empty!", p, "warn");
-                    VoidFall.debug("Path to: player.on-server-leave.execute-commands", p, "warn");
+                    plugin.debug("Nothing to execute because commands list are empty!", p, "warn");
+                    plugin.debug("Path to: player.on-server-leave.execute-commands", p, "warn");
                     return;
                 }
 
-                if (values.isPlayerServerQuitTriggerRandom()) {
-                    Actions.executeRandom(p, commands, p.getWorld().toString(), "player");
+                if (configValues.isPlayerServerQuitTriggerRandom()) {
+                    actionsExecutor.executeRandom(p, commands, p.getWorld().toString(), "player");
                 } else {
                     for (String cmd : commands) {
-                        Actions.execute(p, cmd, p.getWorld().toString(), "player");
+                        actionsExecutor.execute(p, cmd, p.getWorld().toString(), "player");
                     }
                 }
             }
-        }.runTaskAsynchronously(getInstance());
+        }.runTaskAsynchronously(plugin);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -92,37 +98,37 @@ public class PlayerEvents implements Listener {
         //if (values.containsPlayerActionsList("on-death")) return;
         final Player p = e.getEntity().getPlayer();
 
-        if (p == null || !values.isPlayerDeathTriggerEnabled()) {
+        if (p == null || !configValues.isPlayerDeathTriggerEnabled()) {
             return;
         }
 
-        if (values.isInstantlyRespawnEnabled()) {
+        if (configValues.isInstantlyRespawnEnabled()) {
             new BukkitRunnable() {
                 public void run() {
                     p.spigot().respawn();
                 }
-            }.runTaskLater(getInstance(), 1L);
+            }.runTaskLater(plugin, 1L);
         }
 
         new BukkitRunnable() {
             @Override
             public void run() {
-                final List<String> commands = values.getPlayerDeathCommands();
+                final List<String> commands = configValues.getPlayerDeathCommands();
 
                 if (commands.isEmpty()) {
-                    VoidFall.debug("Nothing to execute because commands list are empty!", p, "warn");
-                    VoidFall.debug("Path to: player.on-server-leave.execute-commands", p, "warn");
+                    plugin.debug("Nothing to execute because commands list are empty!", p, "warn");
+                    plugin.debug("Path to: player.on-server-leave.execute-commands", p, "warn");
                     return;
                 }
 
-                if (values.isPlayerDeathTriggerRandom()) {
-                    Actions.executeRandom(p, commands, p.getWorld().toString(), "player");
+                if (configValues.isPlayerDeathTriggerRandom()) {
+                    actionsExecutor.executeRandom(p, commands, p.getWorld().toString(), "player");
                 } else {
                     for (String cmd : commands) {
-                        Actions.execute(p, cmd, p.getWorld().toString(), "player");
+                        actionsExecutor.execute(p, cmd, p.getWorld().toString(), "player");
                     }
                 }
             }
-        }.runTaskAsynchronously(getInstance());
+        }.runTaskAsynchronously(plugin);
     }
 }
