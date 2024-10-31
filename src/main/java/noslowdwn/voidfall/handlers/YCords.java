@@ -15,43 +15,41 @@ import java.util.Set;
 
 import static noslowdwn.voidfall.VoidFall.getInstance;
 
-public class YCords implements Listener
-{
+public class YCords implements Listener {
 
     private final Set<Player> executing = new HashSet<>();
     private static final ConfigValues values = new ConfigValues();
 
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent e)
-    {
+    public void onPlayerMove(PlayerMoveEvent e) {
         final Player p = e.getPlayer();
-        if (executing.contains(p)) return;
+        if (executing.contains(p)) {
+            return;
+        }
 
         final String world = p.getWorld().getName();
-        if (!values.containsWorld(world)) return;
+        if (!values.containsWorld(world)) {
+            return;
+        }
 
-        new BukkitRunnable()
-        {
+        new BukkitRunnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 final double pHeight = p.getLocation().getY();
 
-                if (executing.contains(p)) return;
-                if (values.worldHasFloorMode(world) && pHeight <= values.worldFloorHeight(world))
-                {
+                if (executing.contains(p)) {
+                    return;
+                }
+                if (values.worldHasFloorMode(world) && pHeight <= values.worldFloorHeight(world)) {
                     remove(p, world);
                     run(p, world, "floor");
-                }
-                else if (values.worldHasRoofMode(world) && pHeight >= values.worldRoofHeight(world))
-                {
+                } else if (values.worldHasRoofMode(world) && pHeight >= values.worldRoofHeight(world)) {
                     remove(p, world);
                     run(p, world, "roof");
                 }
             }
 
-            private void remove(Player p, String world)
-            {
+            private void remove(Player p, String world) {
                 Bukkit.getScheduler().runTaskLater(
                         getInstance(),
                         () -> executing.remove(p),
@@ -59,12 +57,10 @@ public class YCords implements Listener
                 );
             }
 
-            private void run(Player p, String world, String mode)
-            {
+            private void run(Player p, String world, String mode) {
                 final List<String> commands = values.getWorldCommands(world, mode);
 
-                if (commands.isEmpty())
-                {
+                if (commands.isEmpty()) {
                     VoidFall.debug("Nothing to execute because commands list are empty!", p, "warn");
                     VoidFall.debug("Path to: worlds." + world + "." + mode + ".execute-commands", p, "warn");
                     return;
@@ -72,14 +68,10 @@ public class YCords implements Listener
 
                 executing.add(p);
 
-                if (values.isWorldRunModeRandom(world, mode))
-                {
+                if (values.isWorldRunModeRandom(world, mode)) {
                     Actions.executeRandom(p, commands, world, "worlds");
-                }
-                else
-                {
-                    for (String str : commands)
-                    {
+                } else {
+                    for (String str : commands) {
                         Actions.execute(p, str, world, "worlds");
                     }
                 }

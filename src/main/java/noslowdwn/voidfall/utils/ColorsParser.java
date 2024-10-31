@@ -13,20 +13,17 @@ import java.util.regex.Pattern;
 
 import static net.md_5.bungee.api.ChatColor.COLOR_CHAR;
 
-public class ColorsParser
-{
+public class ColorsParser {
 
     private static final Pattern HEX_PATTERN = Pattern.compile("&#([a-fA-F\\d]{6})");
 
-    private ColorsParser()
-    {
+    private ColorsParser() {
         throw new ExceptionInInitializerError("This class may not be initialized!");
     }
 
     public static String of(CommandSender sender, @NotNull String message) {
 
-        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null && sender instanceof Player)
-        {
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null && sender instanceof Player) {
             message = PlaceholderAPI.setPlaceholders((Player) sender, message);
         }
 

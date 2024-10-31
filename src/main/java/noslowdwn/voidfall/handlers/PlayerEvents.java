@@ -15,41 +15,37 @@ import java.util.List;
 
 import static noslowdwn.voidfall.VoidFall.getInstance;
 
-public class PlayerEvents implements Listener
-{
+public class PlayerEvents implements Listener {
 
     private static final ConfigValues values = new ConfigValues();
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent e) {
-        if (values.containsPlayerActionsList("on-server-join")) return;
+        //if (values.containsPlayerActionsList("on-server-join")) return;
         final Player p = e.getPlayer();
 
-        if (p == null) return;
-        if (!values.isPlayerServerJoinTriggerEnabled()) return;
+        if (p == null) {
+            return;
+        }
+        if (!values.isPlayerServerJoinTriggerEnabled()) {
+            return;
+        }
 
-        new BukkitRunnable()
-        {
+        new BukkitRunnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 final List<String> commands = values.getPlayerServerJoinCommands();
 
-                if (commands.isEmpty())
-                {
+                if (commands.isEmpty()) {
                     VoidFall.debug("Nothing to execute because commands list are empty!", p, "warn");
                     VoidFall.debug("Path to: player.on-server-join.execute-commands", p, "warn");
                     return;
                 }
 
-                if (values.isPlayerServerJoinTriggerRandom())
-                {
+                if (values.isPlayerServerJoinTriggerRandom()) {
                     Actions.executeRandom(p, commands, p.getWorld().toString(), "player");
-                }
-                else
-                {
-                    for (String cmd : commands)
-                    {
+                } else {
+                    for (String cmd : commands) {
                         Actions.execute(p, cmd, p.getWorld().toString(), "player");
                     }
                 }
@@ -59,34 +55,31 @@ public class PlayerEvents implements Listener
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent e) {
-        if (values.containsPlayerActionsList("on-server-leave")) return;
+        //if (values.containsPlayerActionsList("on-server-leave")) return;
         final Player p = e.getPlayer();
 
-        if (p == null) return;
-        if (!values.isPlayerServerQuitTriggerEnabled()) return;
+        if (p == null) {
+            return;
+        }
+        if (!values.isPlayerServerQuitTriggerEnabled()) {
+            return;
+        }
 
-        new BukkitRunnable()
-        {
+        new BukkitRunnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 final List<String> commands = values.getPlayerServerQuitCommands();
 
-                if (commands.isEmpty())
-                {
+                if (commands.isEmpty()) {
                     VoidFall.debug("Nothing to execute because commands list are empty!", p, "warn");
                     VoidFall.debug("Path to: player.on-server-leave.execute-commands", p, "warn");
                     return;
                 }
 
-                if (values.isPlayerServerQuitTriggerRandom())
-                {
+                if (values.isPlayerServerQuitTriggerRandom()) {
                     Actions.executeRandom(p, commands, p.getWorld().toString(), "player");
-                }
-                else
-                {
-                    for (String cmd : commands)
-                    {
+                } else {
+                    for (String cmd : commands) {
                         Actions.execute(p, cmd, p.getWorld().toString(), "player");
                     }
                 }
@@ -96,13 +89,14 @@ public class PlayerEvents implements Listener
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void playerDeathEvent(PlayerDeathEvent e) {
-        if (values.containsPlayerActionsList("on-death")) return;
+        //if (values.containsPlayerActionsList("on-death")) return;
         final Player p = e.getEntity().getPlayer();
 
-        if (p == null) return;
-        if (!values.isPlayerDeathTriggerEnabled()) return;
-        if (values.isInstantlyRespawnEnabled())
-        {
+        if (p == null || !values.isPlayerDeathTriggerEnabled()) {
+            return;
+        }
+
+        if (values.isInstantlyRespawnEnabled()) {
             new BukkitRunnable() {
                 public void run() {
                     p.spigot().respawn();
@@ -110,28 +104,21 @@ public class PlayerEvents implements Listener
             }.runTaskLater(getInstance(), 1L);
         }
 
-        new BukkitRunnable()
-        {
+        new BukkitRunnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 final List<String> commands = values.getPlayerDeathCommands();
 
-                if (commands.isEmpty())
-                {
+                if (commands.isEmpty()) {
                     VoidFall.debug("Nothing to execute because commands list are empty!", p, "warn");
                     VoidFall.debug("Path to: player.on-server-leave.execute-commands", p, "warn");
                     return;
                 }
 
-                if (values.isPlayerDeathTriggerRandom())
-                {
+                if (values.isPlayerDeathTriggerRandom()) {
                     Actions.executeRandom(p, commands, p.getWorld().toString(), "player");
-                }
-                else
-                {
-                    for (String cmd : commands)
-                    {
+                } else {
+                    for (String cmd : commands) {
                         Actions.execute(p, cmd, p.getWorld().toString(), "player");
                     }
                 }

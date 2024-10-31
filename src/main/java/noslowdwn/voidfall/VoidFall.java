@@ -13,16 +13,10 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public final class VoidFall extends JavaPlugin
-{
-
-    private static VoidFall instance;
-    private static int subVersion;
+public final class VoidFall extends JavaPlugin {
 
     @Override
-    public void onEnable()
-    {
-        setInstance(this);
+    public void onEnable() {
         subVersion = extractMainVersion(Bukkit.getVersion());
 
         Config.load();
@@ -32,10 +26,8 @@ public final class VoidFall extends JavaPlugin
 
         Plugin wgEvents = Bukkit.getPluginManager().getPlugin("WorldGuardEvents");
 
-        this.getCommand("voidfall").setExecutor((sender, command, label, args) ->
-        {
-            if (sender instanceof Player && !sender.hasPermission("voidfall.reload"))
-            {
+        this.getCommand("voidfall").setExecutor((sender, command, label, args) -> {
+            if (sender instanceof Player && !sender.hasPermission("voidfall.reload")) {
                 sender.sendMessage(ColorsParser.of(sender, getConfig().getString("messages.no-permission")));
                 return true;
             }
@@ -48,8 +40,7 @@ public final class VoidFall extends JavaPlugin
             ConfigValues.initializeAll();
             sender.sendMessage(ColorsParser.of(sender, getConfig().getString("messages.reload-message")));
 
-            if (wgEvents != null && !wgEvents.isEnabled())
-            {
+            if (wgEvents != null && !wgEvents.isEnabled()) {
                 debug("[VoidFall] Actions on region enter/leave will be disabled!", null, "info");
                 debug("[VoidFall] Please download WorldGuardEvents to enable them.", null, "info");
                 debug("[WorldGuardEvents] https://www.spigotmc.org/resources/worldguard-events.65176/", null, "info");
@@ -61,12 +52,9 @@ public final class VoidFall extends JavaPlugin
         this.getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
         this.getServer().getPluginManager().registerEvents(new YCords(), this);
 
-        if (wgEvents != null && wgEvents.isEnabled())
-        {
+        if (wgEvents != null && wgEvents.isEnabled()) {
             this.getServer().getPluginManager().registerEvents(new Region(), this);
-        }
-        else
-        {
+        } else {
             debug("[VoidFall] Actions on region enter/leave will be disabled!", null, "info");
             debug("[VoidFall] Please download WorldGuardEvents to enable them.", null, "info");
             debug("[WorldGuardEvents] https://www.spigotmc.org/resources/worldguard-events.65176/", null, "info");
@@ -75,27 +63,21 @@ public final class VoidFall extends JavaPlugin
         Bukkit.getScheduler().runTaskLaterAsynchronously(this, UpdateChecker::checkVersion, 60L);
     }
 
-    public static VoidFall getInstance()
-    {
+    public static VoidFall getInstance() {
         return instance;
     }
 
-    public static void setInstance(VoidFall instance)
-    {
+    public static void setInstance(VoidFall instance) {
         Objects.requireNonNull(instance);
-        if (VoidFall.instance != null)
-        {
+        if (VoidFall.instance != null) {
             throw new UnsupportedOperationException();
         }
         VoidFall.instance = instance;
     }
 
-    public static void debug(String msg, Player p, String type)
-    {
-        if (instance.getConfig().getBoolean("debug-mode", false))
-        {
-            switch (type)
-            {
+    public static void debug(String msg, Player p, String type) {
+        if (instance.getConfig().getBoolean("debug-mode", false)) {
+            switch (type) {
                 case "info":
                     Bukkit.getLogger().info(ColorsParser.of(p, msg));
                     break;
@@ -114,11 +96,9 @@ public final class VoidFall extends JavaPlugin
         } else {
             return 0;
         }
-
     }
 
-    public static int getSubVersion()
-    {
+    public static int getSubVersion() {
         return subVersion;
     }
 

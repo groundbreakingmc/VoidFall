@@ -15,46 +15,43 @@ import java.util.List;
 
 import static noslowdwn.voidfall.VoidFall.getInstance;
 
-public class Region implements Listener
-{
+public class Region implements Listener {
 
     private static final ConfigValues values = new ConfigValues();
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onRegionEntered(RegionEnteredEvent e)
-    {
-        if (values.isRegionsEmpty()) return;
+    public void onRegionEntered(RegionEnteredEvent e) {
+        if (values.isRegionsEmpty()) {
+            return;
+        }
 
         final Player player = Bukkit.getPlayer(e.getUUID());
-        if (player == null) return;
+        if (player == null) {
+            return;
+        }
 
         final String regionName = e.getRegionName();
         final String worldName = player.getWorld().getName();
 
-        if (!values.containsEnterRegionWorld(regionName, worldName)) return;
+        if (!values.containsEnterRegionWorld(regionName, worldName)) {
+            return;
+        }
 
-        new BukkitRunnable()
-        {
+        new BukkitRunnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 final List<String> commands = values.getEntryRegionsCommands(regionName);
 
-                if (commands.isEmpty())
-                {
+                if (commands.isEmpty()) {
                     VoidFall.debug("Nothing to execute because commands list are empty!", player, "warn");
                     VoidFall.debug("Path to: regions." + regionName + ".on-enter.execute-commands", player, "warn");
                     return;
                 }
 
-                if (values.entryRegionsAreUsingRandom(regionName))
-                {
+                if (values.entryRegionsAreUsingRandom(regionName)) {
                     Actions.executeRandom(player, commands, worldName, "regions");
-                }
-                else
-                {
-                    for (String cmd : commands)
-                    {
+                } else {
+                    for (String cmd : commands) {
                         Actions.execute(player, cmd, worldName, "regions");
                     }
                 }
@@ -63,35 +60,33 @@ public class Region implements Listener
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onRegionLeave(RegionLeftEvent e)
-    {
-        if (values.isRegionsEmpty()) return;
+    public void onRegionLeave(RegionLeftEvent e) {
+        if (values.isRegionsEmpty()) {
+            return;
+        }
 
         final Player player = Bukkit.getPlayer(e.getUUID());
-        if (player == null) return;
+        if (player == null) {
+            return;
+        }
 
         final String regionName = e.getRegionName();
         final String worldName = player.getWorld().getName();
 
-        if (!values.containsLeaveRegionWorld(regionName, worldName)) return;
+        if (!values.containsLeaveRegionWorld(regionName, worldName)) {
+            return;
+        }
 
-        new BukkitRunnable()
-        {
+        new BukkitRunnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 final List<String> commands = values.getLeaveRegionsCommands(regionName);
 
-                if (!commands.isEmpty())
-                {
-                    if (values.leaveRegionsAreUsingRandom(regionName))
-                    {
+                if (!commands.isEmpty()) {
+                    if (values.leaveRegionsAreUsingRandom(regionName)) {
                         Actions.executeRandom(player, commands, worldName, "regions");
-                    }
-                    else
-                    {
-                        for (String cmd : commands)
-                        {
+                    } else {
+                        for (String cmd : commands) {
                             Actions.execute(player, cmd, worldName, "regions");
                         }
                     }
