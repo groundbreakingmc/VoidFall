@@ -3,7 +3,7 @@ package noslowdwn.voidfall.handlers;
 import net.raidstone.wgevents.events.RegionEnteredEvent;
 import net.raidstone.wgevents.events.RegionLeftEvent;
 import noslowdwn.voidfall.VoidFall;
-import noslowdwn.voidfall.utils.ConfigValues;
+import noslowdwn.voidfall.utils.config.ConfigValues;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

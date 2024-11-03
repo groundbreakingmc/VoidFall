@@ -1,4 +1,4 @@
-package noslowdwn.voidfall.utils;
+package noslowdwn.voidfall.utils.config;
 
 import noslowdwn.voidfall.VoidFall;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -43,7 +43,7 @@ public class ConfigValues {
         if (!worldDisplayName.isEmpty()) {
             worldDisplayName.clear();
         }
-        final FileConfiguration config = this.plugin.getConfig();
+        final FileConfiguration config = new ConfigLoader(plugin).loadAndGet("config", 1.0);
         worldDisplayName.putAll(config.getConfigurationSection("messages.worlds-display-names").getValues(false));
 
         // Player Actions

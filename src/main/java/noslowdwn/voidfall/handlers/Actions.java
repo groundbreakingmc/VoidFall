@@ -3,7 +3,7 @@ package noslowdwn.voidfall.handlers;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import noslowdwn.voidfall.VoidFall;
-import noslowdwn.voidfall.utils.ConfigValues;
+import noslowdwn.voidfall.utils.config.ConfigValues;
 import noslowdwn.voidfall.utils.colorizer.IColorizer;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
