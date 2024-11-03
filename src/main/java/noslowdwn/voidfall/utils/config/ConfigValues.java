@@ -2,6 +2,7 @@ package noslowdwn.voidfall.utils.config;
 
 import lombok.Getter;
 import noslowdwn.voidfall.VoidFall;
+import noslowdwn.voidfall.utils.colorizer.IColorizer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -46,16 +47,18 @@ public class ConfigValues {
     }
 
     public void setupValues() {
+        final FileConfiguration config = new ConfigLoader(this.plugin).loadAndGet("config", 1.0);
+        final IColorizer colorizer = this.plugin.getColorizer();
+
         if (!worldDisplayName.isEmpty()) {
             worldDisplayName.clear();
         }
-        final FileConfiguration config = new ConfigLoader(plugin).loadAndGet("config", 1.0);
         worldDisplayName.putAll(config.getConfigurationSection("messages.worlds-display-names").getValues(false));
 
         final ConfigurationSection messages = config.getConfigurationSection("messages");
         if (messages != null) {
-            noPermissionMessage = messages.getString("no-permission");
-            reloadMessage = messages.getString("reload-message");
+            noPermissionMessage = colorizer.colorize(messages.getString("no-permission"));
+            reloadMessage = colorizer.colorize(messages.getString("reload-message"));
         }
 
         // Player Actions
