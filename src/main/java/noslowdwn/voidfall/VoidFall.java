@@ -42,9 +42,9 @@ public final class VoidFall extends JavaPlugin {
 
             final boolean isWgEventsEnabled = Bukkit.getPluginManager().isPluginEnabled("WorldGuardEvents");
             if (!isWgEventsEnabled) {
-                debug("[VoidFall] Actions on region enter/leave will be disabled!", null, "info");
-                debug("[VoidFall] Please download WorldGuardEvents to enable them.", null, "info");
-                debug("[VoidFall] https://www.spigotmc.org/resources/worldguard-events.65176/", null, "info");
+                this.debug("[VoidFall] Actions on region enter/leave will be disabled!", null, "info");
+                this.debug("[VoidFall] Please download WorldGuardEvents to enable them.", null, "info");
+                this.debug("[VoidFall] https://www.spigotmc.org/resources/worldguard-events.65176/", null, "info");
             }
 
             return true;
@@ -57,9 +57,9 @@ public final class VoidFall extends JavaPlugin {
         if (isWgEventsEnabled) {
             this.getServer().getPluginManager().registerEvents(new Region(this), this);
         } else {
-            debug("[VoidFall] Actions on region enter/leave will be disabled!", null, "info");
-            debug("[VoidFall] Please download WorldGuardEvents to enable them.", null, "info");
-            debug("[VoidFall] https://www.spigotmc.org/resources/worldguard-events.65176/", null, "info");
+            this.debug("[VoidFall] Actions on region enter/leave will be disabled!", null, "info");
+            this.debug("[VoidFall] Please download WorldGuardEvents to enable them.", null, "info");
+            this.debug("[VoidFall] https://www.spigotmc.org/resources/worldguard-events.65176/", null, "info");
         }
 
         Bukkit.getScheduler().runTaskLaterAsynchronously(this, () -> new UpdateChecker(this).checkVersion(), 60L);
