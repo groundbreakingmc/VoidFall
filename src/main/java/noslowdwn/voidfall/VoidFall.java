@@ -81,16 +81,6 @@ public final class VoidFall extends JavaPlugin {
         }
     }
 
-    private int extractMainVersion(String versionString) {
-        Pattern p = Pattern.compile("(?<=MC: |^)(1\\.\\d+)(?=\\D|$)");
-        Matcher m = p.matcher(versionString);
-        if (m.find()) {
-            return Integer.parseInt(m.group().replace("1.", ""));
-        } else {
-            return 0;
-        }
-    }
-
     public IColorizer getColorizerByVersion() {
         final boolean is16OrAbove = this.getSubVersion() >= 16;
         return is16OrAbove
