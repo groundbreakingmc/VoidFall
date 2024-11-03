@@ -5,10 +5,11 @@ import noslowdwn.voidfall.handlers.Actions;
 import noslowdwn.voidfall.handlers.PlayerEvents;
 import noslowdwn.voidfall.handlers.Region;
 import noslowdwn.voidfall.handlers.YCords;
-import noslowdwn.voidfall.utils.*;
+import noslowdwn.voidfall.utils.UpdateChecker;
 import noslowdwn.voidfall.utils.colorizer.IColorizer;
 import noslowdwn.voidfall.utils.colorizer.LegacyColorizer;
 import noslowdwn.voidfall.utils.colorizer.VanillaColorizer;
+import noslowdwn.voidfall.utils.config.ConfigValues;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -26,10 +27,6 @@ public final class VoidFall extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        final Config configLoader = new Config(this);
-        configLoader.load();
-        configLoader.checkVersion();
-
         this.configValues = new ConfigValues(this);
         this.configValues.setupValues();
 
@@ -44,11 +41,6 @@ public final class VoidFall extends JavaPlugin {
                 sender.sendMessage(colorizer.colorize(getConfig().getString("messages.no-permission")));
                 return true;
             }
-
-            configLoader.load();
-            configLoader.checkVersion();
-
-            reloadConfig();
 
             this.configValues.setupValues();
             sender.sendMessage(colorizer.colorize(getConfig().getString("messages.reload-message")));
