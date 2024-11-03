@@ -89,7 +89,7 @@ public final class VoidFall extends JavaPlugin {
         try {
             return Integer.parseInt(super.getServer().getVersion().split("\\.")[1]);
         } catch (NumberFormatException ex) {
-            super.getLogger().warning("\u001b[32mFailed to extract server version. Plugin may not work correctly!");
+            super.getLogger().warning("Failed to extract server version. Plugin may not work correctly!");
             return 0;
         }
     }
