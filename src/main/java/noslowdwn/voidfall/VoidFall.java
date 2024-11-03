@@ -31,7 +31,6 @@ public final class VoidFall extends JavaPlugin {
 
         this.actionsExecutor = new Actions(this);
 
-        final boolean wgEvents = Bukkit.getPluginManager().isPluginEnabled("WorldGuardEvents");
 
         super.getCommand("voidfall").setExecutor((sender, command, label, args) -> {
             if (!sender.hasPermission("voidfall.reload")) {
@@ -42,7 +41,8 @@ public final class VoidFall extends JavaPlugin {
             this.configValues.setupValues();
             sender.sendMessage(colorizer.colorize(getConfig().getString("messages.reload-message")));
 
-            if (!wgEvents) {
+            final boolean isWgEventsEnabled = Bukkit.getPluginManager().isPluginEnabled("WorldGuardEvents");
+            if (!isWgEventsEnabled) {
                 debug("[VoidFall] Actions on region enter/leave will be disabled!", null, "info");
                 debug("[VoidFall] Please download WorldGuardEvents to enable them.", null, "info");
                 debug("[VoidFall] https://www.spigotmc.org/resources/worldguard-events.65176/", null, "info");
@@ -54,12 +54,13 @@ public final class VoidFall extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new PlayerEvents(this), this);
         this.getServer().getPluginManager().registerEvents(new YCords(this), this);
 
-        if (wgEvents) {
+        final boolean isWgEventsEnabled = Bukkit.getPluginManager().isPluginEnabled("WorldGuardEvents");
+        if (isWgEventsEnabled) {
             this.getServer().getPluginManager().registerEvents(new Region(this), this);
         } else {
             debug("[VoidFall] Actions on region enter/leave will be disabled!", null, "info");
             debug("[VoidFall] Please download WorldGuardEvents to enable them.", null, "info");
-            debug("[WorldGuardEvents] https://www.spigotmc.org/resources/worldguard-events.65176/", null, "info");
+            debug("[VoidFall] https://www.spigotmc.org/resources/worldguard-events.65176/", null, "info");
         }
 
         Bukkit.getScheduler().runTaskLaterAsynchronously(this, () -> new UpdateChecker(this).checkVersion(), 60L);
