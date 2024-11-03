@@ -12,7 +12,6 @@ import noslowdwn.voidfall.utils.colorizer.VanillaColorizer;
 import noslowdwn.voidfall.utils.config.ConfigValues;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @Getter
