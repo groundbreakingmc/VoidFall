@@ -43,7 +43,7 @@ public class ConfigLoader {
                 config.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(defConfigStream, StandardCharsets.UTF_8)));
             }
         } catch (IOException e) {
-            this.plugin.getLogger().warning("Error loading default configuration: " + e.getMessage());
+            this.plugin.getMyLogger().warning("Error loading default configuration: " + e.getMessage());
         }
     }
 
@@ -61,7 +61,7 @@ public class ConfigLoader {
     private void createBackupAndUpdate(final String fileName) {
         final File folder = this.plugin.getDataFolder();
         if (!folder.exists() && !folder.mkdirs()) {
-            this.plugin.getLogger().warning("An error occurred while creating the backups folder!");
+            this.plugin.getMyLogger().warning("An error occurred while creating the backups folder!");
             return;
         }
 
@@ -72,7 +72,7 @@ public class ConfigLoader {
         if (file.renameTo(backupFile)) {
             this.plugin.saveResource(fileName + ".yml", true);
         } else {
-            this.plugin.getLogger().warning("Your configuration file \"" + fileName + ".yml\" is outdated, but creating a new one isn't possible.");
+            this.plugin.getMyLogger().warning("Your configuration file \"" + fileName + ".yml\" is outdated, but creating a new one isn't possible.");
         }
     }
 }

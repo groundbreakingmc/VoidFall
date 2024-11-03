@@ -44,8 +44,8 @@ public class Actions {
         if (str.startsWith("[CONSOLE] ")) {
             str = str.replace("[CONSOLE] ", "");
             if (str.isEmpty()) {
-                this.plugin.debug("Missing command for [CONSOLE] action. Check your config file.", "warn");
-                this.plugin.debug("Path to: worlds." + world + ".execute-commands", "warn");
+                this.plugin.getMyLogger().warning("Missing command for [CONSOLE] action. Check your config file.");
+                this.plugin.getMyLogger().warning("Path to: worlds." + world + ".execute-commands");
             } else {
                 final String fStr = str;
                 getScheduler().runTask(this.plugin, () ->
@@ -68,8 +68,8 @@ public class Actions {
         } else if (str.startsWith("[PLAYER] ")) {
             str = str.replace("[PLAYER] ", "");
             if (str.isEmpty()) {
-                this.plugin.debug("Missing command for [PLAYER] action. Check your config file.", "warn");
-                this.plugin.debug("Path to: worlds." + world + ".execute-commands", "warn");
+                this.plugin.getMyLogger().warning("Missing command for [PLAYER] action. Check your config file.");
+                this.plugin.getMyLogger().warning("Path to: worlds." + world + ".execute-commands");
             } else {
                 final String fStr = str;
                 getScheduler().runTask(this.plugin, () ->
@@ -86,26 +86,26 @@ public class Actions {
             int fadeIn = 10, stay = 40, fadeOut = 15;
             switch (params.length) {
                 case 0:
-                    this.plugin.debug("Missing arguments for [TITLE] action. Check your config file.", "warn");
-                    this.plugin.debug("Path to: worlds." + world + ".execute-commands", "warn");
+                    this.plugin.getMyLogger().warning("Missing arguments for [TITLE] action. Check your config file.");
+                    this.plugin.getMyLogger().warning("Path to: worlds." + world + ".execute-commands");
                     break;
                 case 5:
                     try {
                         fadeOut = Integer.parseInt(params[4]);
                     } catch (NumberFormatException e) {
-                        this.plugin.debug("The value: " + params[4] + " specified in \"FadeOut\" for the [TITLE] action is invalid. Please check your config file.", "warn");
+                        this.plugin.getMyLogger().warning("The value: " + params[4] + " specified in \"FadeOut\" for the [TITLE] action is invalid. Please check your config file.");
                     }
                 case 4:
                     try {
                         stay = Integer.parseInt(params[3]);
                     } catch (NumberFormatException e) {
-                        this.plugin.debug("The value: " + params[3] + " specified in \"Stay\" for the [TITLE] action is invalid. Please check your config file.", "warn");
+                        this.plugin.getMyLogger().warning("The value: " + params[3] + " specified in \"Stay\" for the [TITLE] action is invalid. Please check your config file.");
                     }
                 case 3:
                     try {
                         stay = Integer.parseInt(params[2]);
                     } catch (NumberFormatException e) {
-                        this.plugin.debug("The value: " + params[2] + " specified in \"FadeIn\" for the [TITLE] action is invalid. Please check your config file.", "warn");
+                        this.plugin.getMyLogger().warning("The value: " + params[2] + " specified in \"FadeIn\" for the [TITLE] action is invalid. Please check your config file.");
                     }
                 case 2:
                     sub = params[1];
@@ -122,8 +122,8 @@ public class Actions {
         } else if (str.startsWith("[ACTIONBAR] ")) {
             str = str.replace("[ACTIONBAR] ", "");
             if (str.isEmpty()) {
-                this.plugin.debug("Missing arguments for [ACTIONBAR] action. Check your config file.", "warn");
-                this.plugin.debug("Path to: worlds." + world + ".execute-commands", "warn");
+                this.plugin.getMyLogger().warning("Missing arguments for [ACTIONBAR] action. Check your config file.");
+                this.plugin.getMyLogger().warning("Path to: worlds." + world + ".execute-commands");
             } else {
                 final String fStr = str;
                 getScheduler().runTask(this.plugin, () ->
@@ -145,11 +145,11 @@ public class Actions {
             switch (params.length) {
                 case 0:
                     if (all) {
-                        this.plugin.debug("Missing arguments for [PLAY_SOUND_ALL] action! Check your config file.", "warn");
-                        this.plugin.debug("Path to: worlds." + world + ".execute-commands", "warn");
+                        this.plugin.getMyLogger().warning("Missing arguments for [PLAY_SOUND_ALL] action! Check your config file.");
+                        this.plugin.getMyLogger().warning("Path to: worlds." + world + ".execute-commands");
                     } else {
-                        this.plugin.debug("Missing arguments for [PLAY_SOUND] action! Check your config file.", "warn");
-                        this.plugin.debug("Path to: worlds." + world + ".execute-commands", "warn");
+                        this.plugin.getMyLogger().warning("Missing arguments for [PLAY_SOUND] action! Check your config file.");
+                        this.plugin.getMyLogger().warning("Path to: worlds." + world + ".execute-commands");
                     }
                     break;
                 case 3:
@@ -157,9 +157,9 @@ public class Actions {
                         pitch = Float.parseFloat(params[2]);
                     } catch (final NumberFormatException exception) {
                         if (all) {
-                            this.plugin.debug("The value: " + params[2] + " specified in \"Pitch\" for the [PLAY_SOUND_ALL] action is invalid. Please check your config file.", "warn");
+                            this.plugin.getMyLogger().warning("The value: " + params[2] + " specified in \"Pitch\" for the [PLAY_SOUND_ALL] action is invalid. Please check your config file.");
                         } else {
-                            this.plugin.debug("The value: " + params[2] + " specified in \"Pitch\" for the [PLAY_SOUND] action is invalid. Please check your config file.", "warn");
+                            this.plugin.getMyLogger().warning("The value: " + params[2] + " specified in \"Pitch\" for the [PLAY_SOUND] action is invalid. Please check your config file.");
                         }
                     }
                 case 2:
@@ -167,9 +167,9 @@ public class Actions {
                         volume = Float.parseFloat(params[1]);
                     } catch (final NumberFormatException exception) {
                         if (all) {
-                            this.plugin.debug("The value: " + params[1] + " specified in \"Volume\" for the [PLAY_SOUND_ALL] action is invalid. Please check your config file.", "warn");
+                            this.plugin.getMyLogger().warning("The value: " + params[1] + " specified in \"Volume\" for the [PLAY_SOUND_ALL] action is invalid. Please check your config file.");
                         } else {
-                            this.plugin.debug("The value: " + params[1] + " specified in \"Volume\" for the [PLAY_SOUND] action is invalid. Please check your config file.", "warn");
+                            this.plugin.getMyLogger().warning("The value: " + params[1] + " specified in \"Volume\" for the [PLAY_SOUND] action is invalid. Please check your config file.");
                         }
                     }
                 case 1:
@@ -177,9 +177,9 @@ public class Actions {
                         sound = Sound.valueOf(params[0].toUpperCase());
                     } catch (final IllegalArgumentException exception) {
                         if (all) {
-                            this.plugin.debug("The value: " + params[0] + " specified in \"Sound\" for the [PLAY_SOUND_ALL] action is invalid. Please check your config file.", "warn");
+                            this.plugin.getMyLogger().warning("The value: " + params[0] + " specified in \"Sound\" for the [PLAY_SOUND_ALL] action is invalid. Please check your config file.");
                         } else {
-                            this.plugin.debug("The value: " + params[0] + " specified in \"Sound\" for the [PLAY_SOUND] action is invalid. Please check your config file.", "warn");
+                            this.plugin.getMyLogger().warning("The value: " + params[0] + " specified in \"Sound\" for the [PLAY_SOUND] action is invalid. Please check your config file.");
                         }
                     }
                 default:
@@ -207,27 +207,27 @@ public class Actions {
 
             switch (params.length) {
                 case 0:
-                    this.plugin.debug("Missing arguments for [EFFECT] action! Check your config file.", "warn");
-                    this.plugin.debug("Path to: worlds." + world + ".execute-commands", "warn");
+                    this.plugin.getMyLogger().warning("Missing arguments for [EFFECT] action! Check your config file.");
+                    this.plugin.getMyLogger().warning("Path to: worlds." + world + ".execute-commands");
                     break;
                 case 3:
                     try {
                         duration = Integer.parseInt(params[2]) * 20;
                     } catch (final NumberFormatException e) {
                         e.printStackTrace();
-                        this.plugin.debug("The value: " + params[2] + " specified in \"Duration\" for the [EFFECT] action is invalid. Please check your config file.", "warn");
+                        this.plugin.getMyLogger().warning("The value: " + params[2] + " specified in \"Duration\" for the [EFFECT] action is invalid. Please check your config file.");
                     }
                 case 2:
                     try {
                         amplifier = Integer.parseInt(params[2]);
                     } catch (final NumberFormatException e) {
                         e.printStackTrace();
-                        this.plugin.debug("The value: " + params[1] + " specified in \"Amplifier\" for the [EFFECT] action is invalid. Please check your config file.", "warn");
+                        this.plugin.getMyLogger().warning("The value: " + params[1] + " specified in \"Amplifier\" for the [EFFECT] action is invalid. Please check your config file.");
                     }
                 case 1:
                     effect = PotionEffectType.getByName(params[0].toUpperCase());
                     if (effect == null) {
-                        this.plugin.debug("The value: " + params[0] + " specified in \"PotionEffect\" for the [EFFECT] action is invalid. Please check your config file.", "warn");
+                        this.plugin.getMyLogger().warning("The value: " + params[0] + " specified in \"PotionEffect\" for the [EFFECT] action is invalid. Please check your config file.");
                     }
                 default:
                     final PotionEffectType fEffect = effect;
@@ -246,8 +246,8 @@ public class Actions {
 
             switch (params.length) {
                 case 0:
-                    this.plugin.debug("Missing arguments for [TELEPORT] action! Check your config file.", "warn");
-                    this.plugin.debug("Path to: worlds." + world + ".execute-commands", "warn");
+                    this.plugin.getMyLogger().warning("Missing arguments for [TELEPORT] action! Check your config file.");
+                    this.plugin.getMyLogger().warning("Path to: worlds." + world + ".execute-commands");
                     break;
                 case 6:
                     try {
@@ -258,7 +258,7 @@ public class Actions {
                             yaw = Float.parseFloat(params[5]);
                         }
                     } catch (final NumberFormatException e) {
-                        this.plugin.debug("The value: " + params[5] + " specified in \"Yaw\" for the [TELEPORT] action is invalid. Please check your config file.", "warn");
+                        this.plugin.getMyLogger().warning("The value: " + params[5] + " specified in \"Yaw\" for the [TELEPORT] action is invalid. Please check your config file.");
                     }
                 case 5:
                     try {
@@ -269,7 +269,7 @@ public class Actions {
                             pitch = Float.parseFloat(params[4]);
                         }
                     } catch (final NumberFormatException e) {
-                        this.plugin.debug("The value: " + params[4] + " specified in \"Pitch\" for the [TELEPORT] action is invalid. Please check your config file.", "warn");
+                        this.plugin.getMyLogger().warning("The value: " + params[4] + " specified in \"Pitch\" for the [TELEPORT] action is invalid. Please check your config file.");
                     }
                 case 4:
                     try {
@@ -280,7 +280,7 @@ public class Actions {
                             z = Double.parseDouble(params[3]);
                         }
                     } catch (final NumberFormatException e) {
-                        this.plugin.debug("The value: " + params[3] + " specified in \"Cord z\" for the [TELEPORT] action is invalid. Please check your config file.", "warn");
+                        this.plugin.getMyLogger().warning("The value: " + params[3] + " specified in \"Cord z\" for the [TELEPORT] action is invalid. Please check your config file.");
                     }
                 case 3:
                     try {
@@ -291,7 +291,7 @@ public class Actions {
                             y = Double.parseDouble(params[2]);
                         }
                     } catch (final NumberFormatException e) {
-                        this.plugin.debug("The value: " + params[2] + " specified in \"Cord y\" for the [TELEPORT] action is invalid. Please check your config file.", "warn");
+                        this.plugin.getMyLogger().warning("The value: " + params[2] + " specified in \"Cord y\" for the [TELEPORT] action is invalid. Please check your config file.");
                     }
                 case 2:
                     try {
@@ -302,7 +302,7 @@ public class Actions {
                             x = Double.parseDouble(params[1]);
                         }
                     } catch (final NumberFormatException e) {
-                        this.plugin.debug("The value: " + params[1] + " specified in \"Cord x\" for the [TELEPORT] action is invalid. Please check your config file.", "warn");
+                        this.plugin.getMyLogger().warning("The value: " + params[1] + " specified in \"Cord x\" for the [TELEPORT] action is invalid. Please check your config file.");
                     }
                 case 1:
                     if (params[0].equals("~")) {
@@ -312,7 +312,7 @@ public class Actions {
                     }
                 default:
                     if (tpWorld == null) {
-                        this.plugin.debug("The value: " + params[0] + " specified in \"World\" for the [TELEPORT] action is invalid. Please check your config file.", "warn");
+                        this.plugin.getMyLogger().warning("The value: " + params[0] + " specified in \"World\" for the [TELEPORT] action is invalid. Please check your config file.");
                         tpWorld = getServer().getWorlds().get(0);
                     }
 
@@ -331,8 +331,8 @@ public class Actions {
             str = str.replace("[GAMEMODE] ", "");
             GameMode gm;
             if (str.isEmpty()) {
-                this.plugin.debug("Missing arguments for [GAMEMODE] action! Check your config file.", "warn");
-                this.plugin.debug("Path to: worlds." + world + ".execute-commands", "warn");
+                this.plugin.getMyLogger().warning("Missing arguments for [GAMEMODE] action! Check your config file.");
+                this.plugin.getMyLogger().warning("Path to: worlds." + world + ".execute-commands");
             } else {
                 switch (str) {
                     case "1":
@@ -352,8 +352,8 @@ public class Actions {
                         gm = GameMode.SURVIVAL;
                         break;
                     default:
-                        this.plugin.debug("The gamemode given for [GAMEMODE]: " + str + ", doesn't exist or not valid!", "warn");
-                        this.plugin.debug("&cPath to: worlds." + world + ".execute-commands", "warn");
+                        this.plugin.getMyLogger().warning("The gamemode given for [GAMEMODE]: " + str + ", doesn't exist or not valid!");
+                        this.plugin.getMyLogger().warning("&cPath to: worlds." + world + ".execute-commands");
                         return;
                 }
 
@@ -363,9 +363,9 @@ public class Actions {
                 });
             }
         } else {
-            this.plugin.debug("&cYou're trying to cause an action that doesn't exist.", "warn");
-            this.plugin.debug("&cPath to: worlds." + world + ".execute-commands", "warn");
-            this.plugin.debug("&cAction: " + str, "warn");
+            this.plugin.getMyLogger().warning("&cYou're trying to cause an action that doesn't exist.");
+            this.plugin.getMyLogger().warning("&cPath to: worlds." + world + ".execute-commands");
+            this.plugin.getMyLogger().warning("&cAction: " + str);
         }
     }
 }

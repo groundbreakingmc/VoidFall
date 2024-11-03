@@ -49,8 +49,8 @@ public class Region implements Listener {
                 final List<String> commands = configValues.getEntryRegionsCommands(regionName);
 
                 if (commands.isEmpty()) {
-                    plugin.debug("Nothing to execute because commands list are empty!", "warn");
-                    plugin.debug("Path to: regions." + regionName + ".on-enter.execute-commands", "warn");
+                    plugin.getMyLogger().warning("Nothing to execute because commands list are empty!");
+                    plugin.getMyLogger().warning("Path to: regions." + regionName + ".on-enter.execute-commands");
                     return;
                 }
 

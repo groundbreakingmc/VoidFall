@@ -68,8 +68,8 @@ public class YCords implements Listener {
                 final List<String> commands = configValues.getWorldCommands(world, mode);
 
                 if (commands.isEmpty()) {
-                    plugin.debug("Nothing to execute because commands list are empty!", "warn");
-                    plugin.debug("Path to: worlds." + world + "." + mode + ".execute-commands", "warn");
+                    plugin.getMyLogger().warning("Nothing to execute because commands list are empty!");
+                    plugin.getMyLogger().warning("Path to: worlds." + world + "." + mode + ".execute-commands");
                     return;
                 }
 
