@@ -35,25 +35,7 @@ public final class VoidFall extends JavaPlugin {
 
         this.actionsExecutor = new Actions(this);
 
-
-        super.getCommand("voidfall").setExecutor((sender, command, label, args) -> {
-            if (!sender.hasPermission("voidfall.reload")) {
-                sender.sendMessage(colorizer.colorize(getConfig().getString("messages.no-permission")));
-                return true;
-            }
-
-            this.configValues.setupValues();
-            sender.sendMessage(colorizer.colorize(getConfig().getString("messages.reload-message")));
-
-            final boolean isWgEventsEnabled = Bukkit.getPluginManager().isPluginEnabled("WorldGuardEvents");
-            if (!isWgEventsEnabled) {
-                this.myLogger.info("[VoidFall] Actions on region enter/leave will be disabled!");
-                this.myLogger.info("[VoidFall] Please download WorldGuardEvents to enable them.");
-                this.myLogger.info("[VoidFall] https://www.spigotmc.org/resources/worldguard-events.65176/");
-            }
-
-            return true;
-        });
+        this.registerCommand();
 
         this.getServer().getPluginManager().registerEvents(new PlayerEvents(this), this);
         this.getServer().getPluginManager().registerEvents(new YCords(this), this);
@@ -68,6 +50,12 @@ public final class VoidFall extends JavaPlugin {
         }
 
         Bukkit.getScheduler().runTaskLaterAsynchronously(this, () -> new UpdateChecker(this).checkVersion(), 60L);
+    }
+
+    private void registerCommand() {
+        final VoidFallCommand command = new VoidFallCommand(this);
+        super.getCommand("voidfall").setExecutor(command);
+        super.getCommand("voidfall").setTabCompleter(command);
     }
 
     public IColorizer getColorizerByVersion(final int subVersion) {

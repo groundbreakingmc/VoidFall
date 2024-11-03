@@ -1,6 +1,8 @@
 package noslowdwn.voidfall.utils.config;
 
+import lombok.Getter;
 import noslowdwn.voidfall.VoidFall;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
@@ -8,9 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Getter
 public class ConfigValues {
 
     private static final Map<String, Object> worldDisplayName = new HashMap<>();
+
+    private String noPermissionMessage;
+    private String reloadMessage;
 
     // Player Actions
     private static final List<String> playerActionsList = new ArrayList<>();
@@ -45,6 +51,12 @@ public class ConfigValues {
         }
         final FileConfiguration config = new ConfigLoader(plugin).loadAndGet("config", 1.0);
         worldDisplayName.putAll(config.getConfigurationSection("messages.worlds-display-names").getValues(false));
+
+        final ConfigurationSection messages = config.getConfigurationSection("messages");
+        if (messages != null) {
+            noPermissionMessage = messages.getString("no-permission");
+            reloadMessage = messages.getString("reload-message");
+        }
 
         // Player Actions
         if (!playerActionsList.isEmpty()) {
