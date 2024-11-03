@@ -42,9 +42,9 @@ public final class VoidFall extends JavaPlugin {
 
             final boolean isWgEventsEnabled = Bukkit.getPluginManager().isPluginEnabled("WorldGuardEvents");
             if (!isWgEventsEnabled) {
-                this.debug("[VoidFall] Actions on region enter/leave will be disabled!", null, "info");
-                this.debug("[VoidFall] Please download WorldGuardEvents to enable them.", null, "info");
-                this.debug("[VoidFall] https://www.spigotmc.org/resources/worldguard-events.65176/", null, "info");
+                this.debug("[VoidFall] Actions on region enter/leave will be disabled!", "info");
+                this.debug("[VoidFall] Please download WorldGuardEvents to enable them.", "info");
+                this.debug("[VoidFall] https://www.spigotmc.org/resources/worldguard-events.65176/", "info");
             }
 
             return true;
@@ -57,22 +57,22 @@ public final class VoidFall extends JavaPlugin {
         if (isWgEventsEnabled) {
             this.getServer().getPluginManager().registerEvents(new Region(this), this);
         } else {
-            this.debug("[VoidFall] Actions on region enter/leave will be disabled!", null, "info");
-            this.debug("[VoidFall] Please download WorldGuardEvents to enable them.", null, "info");
-            this.debug("[VoidFall] https://www.spigotmc.org/resources/worldguard-events.65176/", null, "info");
+            this.debug("[VoidFall] Actions on region enter/leave will be disabled!", "info");
+            this.debug("[VoidFall] Please download WorldGuardEvents to enable them.", "info");
+            this.debug("[VoidFall] https://www.spigotmc.org/resources/worldguard-events.65176/", "info");
         }
 
         Bukkit.getScheduler().runTaskLaterAsynchronously(this, () -> new UpdateChecker(this).checkVersion(), 60L);
     }
 
-    public void debug(String msg, Player p, String type) {
+    public void debug(final String message, final String type) {
         if (super.getConfig().getBoolean("debug-mode", false)) {
             switch (type) {
                 case "info":
-                    Bukkit.getLogger().info(colorizer.colorize(msg));
+                    Bukkit.getLogger().info(colorizer.colorize(message));
                     break;
                 case "warn":
-                    Bukkit.getLogger().warning(colorizer.colorize(msg));
+                    Bukkit.getLogger().warning(colorizer.colorize(message));
                     break;
             }
         }

@@ -43,8 +43,8 @@ public class PlayerEvents implements Listener {
                 final List<String> commands = configValues.getPlayerServerJoinCommands();
 
                 if (commands.isEmpty()) {
-                    plugin.debug("Nothing to execute because commands list are empty!", p, "warn");
-                    plugin.debug("Path to: player.on-server-join.execute-commands", p, "warn");
+                    plugin.debug("Nothing to execute because commands list are empty!", "warn");
+                    plugin.debug("Path to: player.on-server-join.execute-commands", "warn");
                     return;
                 }
 
@@ -77,8 +77,8 @@ public class PlayerEvents implements Listener {
                 final List<String> commands = configValues.getPlayerServerQuitCommands();
 
                 if (commands.isEmpty()) {
-                    plugin.debug("Nothing to execute because commands list are empty!", p, "warn");
-                    plugin.debug("Path to: player.on-server-leave.execute-commands", p, "warn");
+                    plugin.debug("Nothing to execute because commands list are empty!", "warn");
+                    plugin.debug("Path to: player.on-server-leave.execute-commands", "warn");
                     return;
                 }
 
@@ -116,8 +116,8 @@ public class PlayerEvents implements Listener {
                 final List<String> commands = configValues.getPlayerDeathCommands();
 
                 if (commands.isEmpty()) {
-                    plugin.debug("Nothing to execute because commands list are empty!", p, "warn");
-                    plugin.debug("Path to: player.on-server-leave.execute-commands", p, "warn");
+                    plugin.debug("Nothing to execute because commands list are empty!", "warn");
+                    plugin.debug("Path to: player.on-server-leave.execute-commands", "warn");
                     return;
                 }
 

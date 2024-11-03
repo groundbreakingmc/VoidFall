@@ -76,7 +76,7 @@ public class UpdateChecker implements Listener {
                     Bukkit.getConsoleSender().sendMessage(colorizer.colorize("&f=================================="));
                 }
             } catch (Exception e) {
-                this.plugin.debug(colorizer.colorize("&c[VoidFall] Failed to check for updates: " + e.getMessage()), null, "warn");
+                this.plugin.debug(colorizer.colorize("&c[VoidFall] Failed to check for updates: " + e.getMessage()), "warn");
             }
         }
     }
