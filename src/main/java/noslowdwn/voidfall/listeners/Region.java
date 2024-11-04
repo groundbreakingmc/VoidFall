@@ -1,8 +1,9 @@
-package noslowdwn.voidfall.handlers;
+package noslowdwn.voidfall.listeners;
 
 import net.raidstone.wgevents.events.RegionEnteredEvent;
 import net.raidstone.wgevents.events.RegionLeftEvent;
 import noslowdwn.voidfall.VoidFall;
+import noslowdwn.voidfall.actions.AbstractAction;
 import noslowdwn.voidfall.utils.config.ConfigValues;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -17,12 +18,10 @@ public class Region implements Listener {
 
     private final VoidFall plugin;
     private final ConfigValues configValues;
-    private final Actions actionsExecutor;
 
     public Region(final VoidFall plugin) {
         this.plugin = plugin;
         this.configValues = plugin.getConfigValues();
-        this.actionsExecutor = plugin.getActionsExecutor();
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -46,7 +45,7 @@ public class Region implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                final List<String> commands = configValues.getEntryRegionsCommands(regionName);
+                final List<String> commands = configValues.getEntryRegionActions(regionName);
 
                 if (commands.isEmpty()) {
                     plugin.getMyLogger().warning("Nothing to execute because commands list are empty!");
@@ -86,7 +85,7 @@ public class Region implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                final List<String> commands = configValues.getLeaveRegionsCommands(regionName);
+                final List<AbstractAction> commands = configValues.getLeaveRegionActions(regionName);
 
                 if (!commands.isEmpty()) {
                     if (configValues.leaveRegionsAreUsingRandom(regionName)) {

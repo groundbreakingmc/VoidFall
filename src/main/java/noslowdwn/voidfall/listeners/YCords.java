@@ -1,4 +1,4 @@
-package noslowdwn.voidfall.handlers;
+package noslowdwn.voidfall.listeners;
 
 import noslowdwn.voidfall.VoidFall;
 import noslowdwn.voidfall.utils.config.ConfigValues;
@@ -19,12 +19,10 @@ public class YCords implements Listener {
 
     private final VoidFall plugin;
     private final ConfigValues configValues;
-    private final Actions actionsExecutor;
 
     public YCords(final VoidFall plugin) {
         this.plugin = plugin;
         this.configValues = plugin.getConfigValues();
-        this.actionsExecutor = plugin.getActionsExecutor();
     }
 
     @EventHandler

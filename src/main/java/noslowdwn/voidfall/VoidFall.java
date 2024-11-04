@@ -1,10 +1,7 @@
 package noslowdwn.voidfall;
 
 import lombok.Getter;
-import noslowdwn.voidfall.handlers.Actions;
-import noslowdwn.voidfall.handlers.PlayerEvents;
-import noslowdwn.voidfall.handlers.Region;
-import noslowdwn.voidfall.handlers.YCords;
+import noslowdwn.voidfall.listeners.*;
 import noslowdwn.voidfall.utils.UpdateChecker;
 import noslowdwn.voidfall.utils.colorizer.IColorizer;
 import noslowdwn.voidfall.utils.colorizer.LegacyColorizer;
@@ -20,24 +17,28 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class VoidFall extends JavaPlugin {
 
     private ConfigValues configValues;
+
     private IColorizer colorizer;
+
     private ILogger myLogger;
-    private Actions actionsExecutor;
+
+    private JoinListener joinListener;
+    private QuitListener quitListener;
+    private DeathListener deathListener;
 
     @Override
     public void onEnable() {
         this.configValues = new ConfigValues(this);
+
+        this.registerListenerClasses();
         this.configValues.setupValues();
 
         final int subVersion = this.getSubVersion();
         this.colorizer = this.getColorizerByVersion(subVersion);
         this.myLogger = this.getLoggerByVersion(subVersion);
 
-        this.actionsExecutor = new Actions(this);
-
         this.registerCommand();
 
-        this.getServer().getPluginManager().registerEvents(new PlayerEvents(this), this);
         this.getServer().getPluginManager().registerEvents(new YCords(this), this);
 
         final boolean isWgEventsEnabled = Bukkit.getPluginManager().isPluginEnabled("WorldGuardEvents");
@@ -56,6 +57,12 @@ public final class VoidFall extends JavaPlugin {
         final VoidFallCommand command = new VoidFallCommand(this);
         super.getCommand("voidfall").setExecutor(command);
         super.getCommand("voidfall").setTabCompleter(command);
+    }
+
+    private void registerListenerClasses() {
+        joinListener = new JoinListener(this);
+        quitListener = new QuitListener(this);
+        deathListener = new DeathListener(this);
     }
 
     public IColorizer getColorizerByVersion(final int subVersion) {
