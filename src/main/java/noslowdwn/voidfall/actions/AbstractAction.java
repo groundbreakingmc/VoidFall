@@ -11,14 +11,8 @@ public abstract class AbstractAction {
     protected final VoidFall plugin;
     private final String string;
 
-    private static final String[] placeholders = { "%player%", "%world%", "%world_display_name%" };
-
-    public void run(final Player player) {
-        final String playerName = player.getName();
-        final String worldName = player.getWorld().getName();
-        final String worldDisplayName = this.plugin.getConfigValues().getWorldDisplayName().getOrDefault(worldName, worldName);
-        final String[] replacement = { playerName, worldName, worldDisplayName };
-        final String formattedString = StringUtil.replaceEach(string, placeholders, replacement);
+    public void run(final Player player, final String[] searchList, final String[] replacementList) {
+        final String formattedString = StringUtil.replaceEach(string, searchList, replacementList);
         this.process(player, formattedString);
     }
 

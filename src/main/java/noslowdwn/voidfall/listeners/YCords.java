@@ -1,8 +1,11 @@
 package noslowdwn.voidfall.listeners;
 
 import noslowdwn.voidfall.VoidFall;
+import noslowdwn.voidfall.actions.AbstractAction;
+import noslowdwn.voidfall.constructors.WorldsConstructor;
 import noslowdwn.voidfall.utils.config.ConfigValues;
 import org.bukkit.Bukkit;
+import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,10 +18,10 @@ import java.util.Set;
 
 public class YCords implements Listener {
 
-    private final Set<Player> executing = new HashSet<>();
-
     private final VoidFall plugin;
     private final ConfigValues configValues;
+
+    private final String[] placeholders = { "%player%", "%world%", "%world_display_name%" };
 
     public YCords(final VoidFall plugin) {
         this.plugin = plugin;
@@ -26,61 +29,47 @@ public class YCords implements Listener {
     }
 
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent e) {
-        final Player p = e.getPlayer();
-        if (executing.contains(p)) {
+    public void onPlayerMove(final PlayerMoveEvent event) {
+        final Player player = event.getPlayer();
+        final String worldName = player.getWorld().getName();
+        final WorldsConstructor world = this.configValues.getWorlds().get(worldName);
+        if (world == null) {
             return;
         }
 
-        final String world = p.getWorld().getName();
-        if (!this.configValues.containsWorld(world)) {
+        final List<AbstractAction> actions;
+
+        final String playerName = player.getName();
+        final double playerHeight = player.getLocation().getY();
+
+        if (world.floorModeEnabled && playerHeight <= world.floorExecuteHeight) {
+            if (world.executingFloorContains(this.plugin, playerName)) {
+                return;
+            }
+
+            actions = world.floorActions;
+        } else if (world.roofModeEnabled && playerHeight <= world.roofExecuteHeight) {
+            if (world.executingRoofContains(this.plugin, playerName)) {
+                return;
+            }
+
+            actions = world.roofActions;
+        } else {
             return;
         }
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                final double pHeight = p.getLocation().getY();
+        final String[] replacements = this.getReplacements(player);
+        for (int i = 0; i < actions.size(); i++) {
+            final AbstractAction action = actions.get(i);
+            action.run(player, this.placeholders, replacements);
+        }
+    }
 
-                if (executing.contains(p)) {
-                    return;
-                }
-                if (configValues.worldHasFloorMode(world) && pHeight <= configValues.worldFloorHeight(world)) {
-                    remove(p, world);
-                    run(p, world, "floor");
-                } else if (configValues.worldHasRoofMode(world) && pHeight >= configValues.worldRoofHeight(world)) {
-                    remove(p, world);
-                    run(p, world, "roof");
-                }
-            }
+    public String[] getReplacements(final Player player) {
+        final String playerName = player.getName();
+        final String worldName = player.getWorld().getName();
+        final String worldDisplayName = this.plugin.getConfigValues().getWorldDisplayName().getOrDefault(worldName, worldName);
 
-            private void remove(Player p, String world) {
-                Bukkit.getScheduler().runTaskLater(
-                        plugin,
-                        () -> executing.remove(p),
-                        configValues.getWorldRepeatFix(world) * 20L
-                );
-            }
-
-            private void run(Player p, String world, String mode) {
-                final List<String> commands = configValues.getWorldCommands(world, mode);
-
-                if (commands.isEmpty()) {
-                    plugin.getMyLogger().warning("Nothing to execute because commands list are empty!");
-                    plugin.getMyLogger().warning("Path to: worlds." + world + "." + mode + ".execute-commands");
-                    return;
-                }
-
-                executing.add(p);
-
-                if (configValues.isWorldRunModeRandom(world, mode)) {
-                    actionsExecutor.executeRandom(p, commands, world, "worlds");
-                } else {
-                    for (String str : commands) {
-                        actionsExecutor.execute(p, str, world, "worlds");
-                    }
-                }
-            }
-        }.runTaskAsynchronously(plugin);
+        return new String[]{ playerName, worldName, worldDisplayName };
     }
 }
