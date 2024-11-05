@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 
 import static org.bukkit.Bukkit.getScheduler;
 
-public class ShowTitle extends AbstractAction {
+public final class ShowTitle extends AbstractAction {
 
     public ShowTitle(final VoidFall plugin, final String string) {
         super(plugin, string);

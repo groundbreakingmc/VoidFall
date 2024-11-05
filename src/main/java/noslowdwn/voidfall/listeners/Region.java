@@ -14,7 +14,7 @@ import org.bukkit.event.Listener;
 
 import java.util.List;
 
-public class Region implements Listener {
+public final class Region implements Listener {
 
     private final VoidFall plugin;
     private final ConfigValues configValues;

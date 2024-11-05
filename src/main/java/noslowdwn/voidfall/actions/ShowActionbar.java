@@ -3,7 +3,7 @@ package noslowdwn.voidfall.actions;
 import noslowdwn.voidfall.VoidFall;
 import org.bukkit.entity.Player;
 
-public class ShowActionbar extends AbstractAction {
+public final class ShowActionbar extends AbstractAction {
 
     public ShowActionbar(final VoidFall plugin, final String string) {
         super(plugin, string);

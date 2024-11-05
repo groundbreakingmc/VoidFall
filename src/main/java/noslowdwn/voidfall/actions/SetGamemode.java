@@ -4,7 +4,7 @@ import noslowdwn.voidfall.VoidFall;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
-public class SetGamemode extends AbstractAction {
+public final class SetGamemode extends AbstractAction {
 
     private final String world;
 

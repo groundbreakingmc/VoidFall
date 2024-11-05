@@ -3,7 +3,7 @@ package noslowdwn.voidfall.actions;
 import noslowdwn.voidfall.VoidFall;
 import org.bukkit.entity.Player;
 
-public class SendMessage extends AbstractAction {
+public final class SendMessage extends AbstractAction {
 
     public SendMessage(final VoidFall plugin, final String string) {
         super(plugin, string);

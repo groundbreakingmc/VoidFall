@@ -5,7 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-public class TeleportPlayer extends AbstractAction {
+public final class TeleportPlayer extends AbstractAction {
     
     public TeleportPlayer(final VoidFall plugin, final String string) {
         super(plugin, string);

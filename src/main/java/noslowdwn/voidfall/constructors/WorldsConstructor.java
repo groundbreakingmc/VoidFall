@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 @Builder
-public class WorldsConstructor {
+public final class WorldsConstructor {
 
     public final boolean roofModeEnabled;
     public final int roofExecuteHeight;

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 @Builder
-public class RegionConstructor {
+public final class RegionConstructor {
 
     public final Set<String> worlds;
 

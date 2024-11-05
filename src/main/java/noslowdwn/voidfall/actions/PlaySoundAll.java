@@ -5,7 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
-public class PlaySoundAll extends AbstractAction {
+public final class PlaySoundAll extends AbstractAction {
 
     public PlaySoundAll(final VoidFall plugin, final String string) {
         super(plugin, string);

@@ -4,7 +4,7 @@ import noslowdwn.voidfall.VoidFall;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class SendBroadcast extends AbstractAction {
+public final class SendBroadcast extends AbstractAction {
 
     public SendBroadcast(final VoidFall plugin, final String string) {
         super(plugin, string);

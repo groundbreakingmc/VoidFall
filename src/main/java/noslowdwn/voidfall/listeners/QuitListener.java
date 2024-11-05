@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.List;
 
-public class QuitListener implements Listener {
+public final class QuitListener implements Listener {
 
     private final VoidFall plugin;
     private final ConfigValues configValues;

@@ -4,7 +4,7 @@ import noslowdwn.voidfall.VoidFall;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
-public class PlaySound extends AbstractAction {
+public final class PlaySound extends AbstractAction {
 
     public PlaySound(final VoidFall plugin, final String string) {
         super(plugin, string);

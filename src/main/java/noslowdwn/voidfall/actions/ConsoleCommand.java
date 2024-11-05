@@ -4,7 +4,7 @@ import noslowdwn.voidfall.VoidFall;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
-public class ConsoleCommand extends AbstractAction {
+public final class ConsoleCommand extends AbstractAction {
 
     public ConsoleCommand(final VoidFall plugin, final String string) {
         super(plugin, string);

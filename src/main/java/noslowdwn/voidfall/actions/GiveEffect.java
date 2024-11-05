@@ -7,7 +7,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import static org.bukkit.Bukkit.getScheduler;
 
-public class GiveEffect extends AbstractAction {
+public final class GiveEffect extends AbstractAction {
 
     public GiveEffect(final VoidFall plugin, final String string) {
         super(plugin, string);

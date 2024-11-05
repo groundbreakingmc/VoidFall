@@ -13,7 +13,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
-public class DeathListener implements Listener {
+public final class DeathListener implements Listener {
 
     private final VoidFall plugin;
     private final ConfigValues configValues;

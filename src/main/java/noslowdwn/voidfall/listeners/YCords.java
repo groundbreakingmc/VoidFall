@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import java.util.List;
 
-public class YCords implements Listener {
+public final class YCords implements Listener {
 
     private final VoidFall plugin;
     private final ConfigValues configValues;

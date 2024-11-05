@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.List;
 
-public class JoinListener implements Listener {
+public final class JoinListener implements Listener {
 
     private final VoidFall plugin;
     private final ConfigValues configValues;
