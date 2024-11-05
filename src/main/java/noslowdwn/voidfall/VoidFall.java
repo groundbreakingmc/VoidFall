@@ -45,9 +45,9 @@ public final class VoidFall extends JavaPlugin {
         if (isWgEventsEnabled) {
             this.getServer().getPluginManager().registerEvents(new Region(this), this);
         } else {
-            this.myLogger.info("[VoidFall] Actions on region enter/leave will be disabled!");
-            this.myLogger.info("[VoidFall] Please download WorldGuardEvents to enable them.");
-            this.myLogger.info("[VoidFall] https://www.spigotmc.org/resources/worldguard-events.65176/");
+            this.myLogger.info("Actions on region enter/leave will be disabled!");
+            this.myLogger.info("Please download WorldGuardEvents to enable them.");
+            this.myLogger.info("https://www.spigotmc.org/resources/worldguard-events.65176/");
         }
 
         Bukkit.getScheduler().runTaskLaterAsynchronously(this, () -> new UpdateChecker(this).checkVersion(), 60L);
