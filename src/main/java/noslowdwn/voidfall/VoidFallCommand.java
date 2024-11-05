@@ -27,13 +27,7 @@ public final class VoidFallCommand implements CommandExecutor, TabCompleter {
         }
 
         this.plugin.getConfigValues().setupValues();
-
-        final boolean isWgEventsEnabled = Bukkit.getPluginManager().isPluginEnabled("WorldGuardEvents");
-        if (!isWgEventsEnabled) {
-            this.plugin.getMyLogger().info("Actions on region enter/leave will be disabled!");
-            this.plugin.getMyLogger().info("Please download WorldGuardEvents to enable them.");
-            this.plugin.getMyLogger().info("https://www.spigotmc.org/resources/worldguard-events.65176/");
-        }
+        this.plugin.registerRegionsListener();
 
         final long endTime = System.currentTimeMillis();
         final String resultTime = String.valueOf(endTime - startTime);

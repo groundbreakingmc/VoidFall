@@ -25,6 +25,7 @@ public final class VoidFall extends JavaPlugin {
     private JoinListener joinListener;
     private QuitListener quitListener;
     private DeathListener deathListener;
+    private Region regionListener;
 
     @Override
     public void onEnable() {
@@ -40,8 +41,7 @@ public final class VoidFall extends JavaPlugin {
         this.registerCommand();
 
         this.getServer().getPluginManager().registerEvents(new YCords(this), this);
-
-
+        this.registerRegionsListener();
 
         Bukkit.getScheduler().runTaskLaterAsynchronously(this, () -> new UpdateChecker(this).checkVersion(), 60L);
     }
@@ -56,16 +56,18 @@ public final class VoidFall extends JavaPlugin {
         joinListener = new JoinListener(this);
         quitListener = new QuitListener(this);
         deathListener = new DeathListener(this);
+        regionListener = new Region(this);
     }
 
     public void registerRegionsListener() {
         final boolean isWgEventsEnabled = Bukkit.getPluginManager().isPluginEnabled("WorldGuardEvents");
         if (isWgEventsEnabled) {
-            this.getServer().getPluginManager().registerEvents(new Region(this), this);
+            this.regionListener.registerEvent();
         } else {
             this.myLogger.info("Actions on region enter/leave will be disabled!");
             this.myLogger.info("Please download WorldGuardEvents to enable them.");
             this.myLogger.info("https://www.spigotmc.org/resources/worldguard-events.65176/");
+            this.regionListener.unregisterEvent();
         }
     }
 
