@@ -43,7 +43,7 @@ public final class VoidFall extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new YCords(this), this);
         this.registerRegionsListener();
 
-        Bukkit.getScheduler().runTaskLaterAsynchronously(this, () -> new UpdatesChecker(this).checkVersion(), 60L);
+        Bukkit.getScheduler().runTaskLaterAsynchronously(this, () -> new UpdatesChecker(this).check(), 60L);
     }
 
     private void registerCommand() {
