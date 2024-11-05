@@ -1,3 +1,33 @@
+# ██╗░░░██╗░█████╗░██╗██████╗░███████╗░█████╗░██╗░░░░░██╗░░░░░
+# ██║░░░██║██╔══██╗██║██╔══██╗██╔════╝██╔══██╗██║░░░░░██║░░░░░
+# ╚██╗░██╔╝██║░░██║██║██║░░██║█████╗░░███████║██║░░░░░██║░░░░░
+# ░╚████╔╝░██║░░██║██║██║░░██║██╔══╝░░██╔══██║██║░░░░░██║░░░░░
+# ░░╚██╔╝░░╚█████╔╝██║██████╔╝██║░░░░░██║░░██║███████╗███████╗
+# ░░░╚═╝░░░░╚════╝░╚═╝╚═════╝░╚═╝░░░░░╚═╝░░╚═╝╚══════╝╚══════╝
+#
+#  /voidfall reload - reload the plugin (Permission: voidfall.reload)
+#  /voidfall update - update the plugin (Can be used only from console)
+#
+# Settings
+settings:
+  # Config version (Needed to prevent errors when updating the plugin)
+  # Do not change otherwise your config will be backed up and reset to default
+  config-version: 1.4
+
+  # Updates checker. May be useful if bugs are found and the plugin is updated, so you don't have to monitor yourself
+  updates:
+    # Should updates be checked?
+    check: true
+    # Should plugin automatically download updates?
+    auto-update: false
+
+  # Messages formatting:
+  # LEGACY - color with & and hex &# (Works only on: 1.16+)
+  # LEGACY_ADVANCED - better legacy format with &## support (&##123 = &#112233) (Works only on: 1.16+)
+  # MINIMESSAGE - цвет через <цвет></цвет> (Работает только на: 1.17+)
+  # VANILLA - default messages formatting with &
+  messages-serializer: VANILLA
+
 # Available actions:
 # [CONSOLE] - execute a command as the console
 # [PLAYER] - execute a command as the player (Do not write any /)
@@ -140,16 +170,10 @@ messages:
   reload-message: '&aThe VoidFall plugin has been successfully reloaded.'
   # Messages if there are not enough permissions to use the command
   no-permission: '&cSorry, but you do not have enough permissions to use this command.'
+  usage-error: '&cPlease use "/voidfall reload" to reload the plugin!'
+
   # World names that will be displayed in %world_display_name%
   worlds-display-names:
     world: '&aworld'
     world_nether: '&cnether'
     world_the_end: '&dend'
-
-# Required if sounds suddenly stop working or messages are not displayed and so on.
-debug-mode: false
-# Config version (Needed to prevent errors when updating the plugin)
-# Do not change otherwise your config will be backed up and reset to default
-config-version: 1.3
-# Should updates be checked? May be useful if bugs are found and the plugin is updated, so you don't have to monitor yourself
-check-updates: true

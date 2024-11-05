@@ -2,7 +2,7 @@ package noslowdwn.voidfall;
 
 import lombok.Getter;
 import noslowdwn.voidfall.listeners.*;
-import noslowdwn.voidfall.utils.UpdateChecker;
+import noslowdwn.voidfall.utils.UpdatesChecker;
 import noslowdwn.voidfall.utils.colorizer.IColorizer;
 import noslowdwn.voidfall.utils.colorizer.LegacyColorizer;
 import noslowdwn.voidfall.utils.colorizer.VanillaColorizer;
@@ -43,7 +43,7 @@ public final class VoidFall extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new YCords(this), this);
         this.registerRegionsListener();
 
-        Bukkit.getScheduler().runTaskLaterAsynchronously(this, () -> new UpdateChecker(this).checkVersion(), 60L);
+        Bukkit.getScheduler().runTaskLaterAsynchronously(this, () -> new UpdatesChecker(this).checkVersion(), 60L);
     }
 
     private void registerCommand() {

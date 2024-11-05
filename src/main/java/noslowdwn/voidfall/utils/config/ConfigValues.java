@@ -30,6 +30,7 @@ public class ConfigValues {
     // Messages
     private String noPermissionMessage;
     private String reloadMessage;
+    private String usageError;
 
     private final Map<String, String> worldDisplayName = new HashMap<>();
 
@@ -218,6 +219,7 @@ public class ConfigValues {
             final IColorizer colorizer = this.plugin.getColorizer();
             noPermissionMessage = colorizer.colorize(messages.getString("no-permission"));
             reloadMessage = colorizer.colorize(messages.getString("reload-message"));
+            usageError = colorizer.colorize(messages.getString("usage-error"));
             worldDisplayName.clear();
             final ConfigurationSection namesSection = messages.getConfigurationSection("worlds-display-names");
             for (final String key : namesSection.getKeys(false)) {
