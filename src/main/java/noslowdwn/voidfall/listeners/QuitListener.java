@@ -14,6 +14,8 @@ public class QuitListener implements Listener {
     private final VoidFall plugin;
     private final ConfigValues configValues;
 
+    private final String[] placeholders = {"%player%"};
+
     private boolean isRegistered;
 
     public QuitListener(final VoidFall plugin) {
@@ -49,10 +51,11 @@ public class QuitListener implements Listener {
 
     private void processEvent(final PlayerQuitEvent event) {
         final Player player = event.getPlayer();
+        final String[] replacement = {player.getName()};
         final List<AbstractAction> actions = this.configValues.getPlayerServerQuitActions();
         for (int i = 0; i < actions.size(); i++) {
             final AbstractAction action = actions.get(i);
-            action.run(player);
+            action.run(player, placeholders, replacement);
         }
     }
 }

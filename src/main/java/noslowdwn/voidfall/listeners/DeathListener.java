@@ -18,6 +18,8 @@ public class DeathListener implements Listener {
     private final VoidFall plugin;
     private final ConfigValues configValues;
 
+    private final String[] placeholders = {"%player%"};
+
     private boolean isRegistered;
 
     public DeathListener(final VoidFall plugin) {
@@ -63,10 +65,12 @@ public class DeathListener implements Listener {
             }.runTaskLater(plugin, 1L);
         }
 
+        final String[] replacement = {player.getName()};
+
         final List<AbstractAction> actions = this.configValues.getPlayerDeathActions();
         for (int i = 0; i < actions.size(); i++) {
             final AbstractAction action = actions.get(i);
-            action.run(player);
+            action.run(player, placeholders, replacement);
         }
     }
 }

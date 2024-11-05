@@ -17,6 +17,8 @@ public class JoinListener implements Listener {
     private final VoidFall plugin;
     private final ConfigValues configValues;
 
+    private final String[] placeholders = {"%player%"};
+
     private boolean isRegistered;
 
     public JoinListener(final VoidFall plugin) {
@@ -52,10 +54,11 @@ public class JoinListener implements Listener {
 
     private void processEvent(final PlayerJoinEvent event) {
         final Player player = event.getPlayer();
+        final String[] replacement = {player.getName()};
         final List<AbstractAction> actions = this.configValues.getPlayerServerJoinActions();
         for (int i = 0; i < actions.size(); i++) {
             final AbstractAction action = actions.get(i);
-            action.run(player);
+            action.run(player, placeholders, replacement);
         }
     }
 }
