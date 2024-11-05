@@ -4,17 +4,12 @@ import noslowdwn.voidfall.VoidFall;
 import noslowdwn.voidfall.actions.AbstractAction;
 import noslowdwn.voidfall.constructors.WorldsConstructor;
 import noslowdwn.voidfall.utils.config.ConfigValues;
-import org.bukkit.Bukkit;
-import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class YCords implements Listener {
 

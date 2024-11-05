@@ -1,9 +1,8 @@
 package noslowdwn.voidfall.utils.logging;
 
-import noslowdwn.voidfall.VoidFall;
-
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import noslowdwn.voidfall.VoidFall;
 
 public final class PaperLogger implements ILogger {
 

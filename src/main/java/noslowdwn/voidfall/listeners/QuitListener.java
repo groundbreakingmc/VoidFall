@@ -4,7 +4,10 @@ import noslowdwn.voidfall.VoidFall;
 import noslowdwn.voidfall.actions.AbstractAction;
 import noslowdwn.voidfall.utils.config.ConfigValues;
 import org.bukkit.entity.Player;
-import org.bukkit.event.*;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.List;

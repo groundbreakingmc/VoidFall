@@ -5,9 +5,7 @@ import lombok.Builder;
 import noslowdwn.voidfall.VoidFall;
 import noslowdwn.voidfall.actions.AbstractAction;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
