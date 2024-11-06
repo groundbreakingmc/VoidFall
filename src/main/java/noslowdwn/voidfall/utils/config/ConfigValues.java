@@ -172,47 +172,63 @@ public class ConfigValues {
     private void setupPlayerActions(final FileConfiguration config, final Actions actions) {
         final ConfigurationSection player = config.getConfigurationSection("player");
         if (player != null) {
-            final ConfigurationSection joinSection = player.getConfigurationSection("on-server-join");
-            if (joinSection != null) {
-                this.isPlayerServerJoinTriggerRandom = joinSection.getBoolean("random");
-                final List<String> joinCommands = player.getStringList("execute-commands");
-                if (!joinCommands.isEmpty()) {
-                    for (int i = 0; i < joinCommands.size(); i++) {
-                        final String command = joinCommands.get(i);
-                        final AbstractAction action = actions.getAction(command, null);
-                        this.playerServerJoinActions.add(action);
-                    }
-                    this.plugin.getJoinListener().registerEvent();
-                } else {
-                    this.plugin.getJoinListener().unregisterEvent();
+            this.setupOnJoin(player, actions);
+            this.setupOnQuit(player, actions);
+            this.setupOnDeath(player, actions);
+        } else {
+            this.plugin.getMyLogger().warning("Failed to load section \"player\" from file \"config.yml\". Please check your configuration file, or delete it and restart your server!");
+            this.plugin.getMyLogger().warning("If you think this is a plugin error, leave a issue on the https://github.com/grounbreakingmc/VoidFall/issues");
+        }
+    }
+
+    private void setupOnJoin(final ConfigurationSection playerSection, final Actions actions) {
+        final ConfigurationSection joinSection = playerSection.getConfigurationSection("on-server-join");
+        if (joinSection != null) {
+            this.isPlayerServerJoinTriggerRandom = joinSection.getBoolean("random");
+            final List<String> joinCommands = playerSection.getStringList("execute-commands");
+            if (!joinCommands.isEmpty()) {
+                for (int i = 0; i < joinCommands.size(); i++) {
+                    final String command = joinCommands.get(i);
+                    final AbstractAction action = actions.getAction(command, null);
+                    this.playerServerJoinActions.add(action);
                 }
+                this.plugin.getJoinListener().registerEvent();
             } else {
                 this.plugin.getJoinListener().unregisterEvent();
             }
+        } else {
+            this.plugin.getJoinListener().unregisterEvent();
+        }
+    }
 
-            final ConfigurationSection quitSection = player.getConfigurationSection("on-server-leave");
-            if (quitSection != null) {
-                this.isPlayerServerQuitTriggerRandom = quitSection.getBoolean("random");
-                final List<String> quitCommands = player.getStringList("execute-commands");
-                if (!quitCommands.isEmpty()) {
-                    for (int i = 0; i < quitCommands.size(); i++) {
-                        final String command = quitCommands.get(i);
-                        final AbstractAction action = actions.getAction(command, null);
-                        this.playerServerQuitActions.add(action);
-                    }
-                    this.plugin.getQuitListener().registerEvent();
-                } else {
-                    this.plugin.getQuitListener().unregisterEvent();
+    private void setupOnQuit(final ConfigurationSection playerSection, final Actions actions) {
+        final ConfigurationSection quitSection = playerSection.getConfigurationSection("on-server-leave");
+        if (quitSection != null) {
+            this.isPlayerServerQuitTriggerRandom = quitSection.getBoolean("random");
+            final List<String> quitCommands = playerSection.getStringList("execute-commands");
+            if (!quitCommands.isEmpty()) {
+                for (int i = 0; i < quitCommands.size(); i++) {
+                    final String command = quitCommands.get(i);
+                    final AbstractAction action = actions.getAction(command, null);
+                    this.playerServerQuitActions.add(action);
                 }
+                this.plugin.getQuitListener().registerEvent();
             } else {
                 this.plugin.getQuitListener().unregisterEvent();
             }
+        } else {
+            this.plugin.getQuitListener().unregisterEvent();
+        }
+    }
 
-            final ConfigurationSection deathSection = player.getConfigurationSection("on-death");
+    private void setupOnDeath(final ConfigurationSection playerSection, final Actions actions) {
+        final ConfigurationSection quitSection = playerSection.getConfigurationSection("on-server-leave");
+        if (quitSection != null) {
+            final ConfigurationSection deathSection = playerSection.getConfigurationSection("on-death");
             if (deathSection != null) {
                 this.isPlayerDeathTriggerRandom = deathSection.getBoolean("random");
                 this.isInstantlyRespawnEnabled = deathSection.getBoolean("instantly-respawn");
-                final List<String> deathCommands = player.getStringList("execute-commands");
+                final List<String> deathCommands = playerSection.getStringList("execute-commands");
                 if (!deathCommands.isEmpty()) {
                     for (int i = 0; i < deathCommands.size(); i++) {
                         final String command = deathCommands.get(i);
@@ -227,8 +243,7 @@ public class ConfigValues {
                 this.plugin.getDeathListener().unregisterEvent();
             }
         } else {
-            this.plugin.getMyLogger().warning("Failed to load section \"player\" from file \"config.yml\". Please check your configuration file, or delete it and restart your server!");
-            this.plugin.getMyLogger().warning("If you think this is a plugin error, leave a issue on the https://github.com/grounbreakingmc/VoidFall/issues");
+            this.plugin.getQuitListener().unregisterEvent();
         }
     }
 
