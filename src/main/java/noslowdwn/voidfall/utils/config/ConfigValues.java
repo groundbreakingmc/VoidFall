@@ -201,8 +201,13 @@ public class ConfigValues {
                         this.playerServerQuitActions.add(action);
                     }
                     this.plugin.getQuitListener().registerEvent();
+                } else {
+                    this.plugin.getQuitListener().unregisterEvent();
                 }
+            } else {
+                this.plugin.getQuitListener().unregisterEvent();
             }
+
             final ConfigurationSection deathSection = player.getConfigurationSection("on-death");
             if (deathSection != null) {
                 this.isPlayerDeathTriggerRandom = deathSection.getBoolean("random");
