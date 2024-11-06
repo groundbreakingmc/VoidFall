@@ -210,6 +210,8 @@ public class ConfigValues {
                         this.playerDeathActions.add(action);
                     }
                     this.plugin.getDeathListener().registerEvent();
+                } else {
+                    this.plugin.getDeathListener().unregisterEvent();
                 }
             }
         } else {
