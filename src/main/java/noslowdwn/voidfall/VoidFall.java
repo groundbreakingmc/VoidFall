@@ -50,7 +50,7 @@ public final class VoidFall extends JavaPlugin {
 
         this.registerCommand();
 
-        final boolean isWgEventsEnabled = Bukkit.getPluginManager().isPluginEnabled("WorldGuardEvents");
+        this.isWgEventsEnabled = Bukkit.getPluginManager().isPluginEnabled("WorldGuardEvents");
         if (!isWgEventsEnabled) {
             this.myLogger.info("Actions on region enter/leave will be disabled!");
             this.myLogger.info("Please download WorldGuardEvents to enable them.");
