@@ -222,28 +222,23 @@ public class ConfigValues {
     }
 
     private void setupOnDeath(final ConfigurationSection playerSection, final Actions actions) {
-        final ConfigurationSection quitSection = playerSection.getConfigurationSection("on-server-leave");
-        if (quitSection != null) {
-            final ConfigurationSection deathSection = playerSection.getConfigurationSection("on-death");
-            if (deathSection != null) {
-                this.isPlayerDeathTriggerRandom = deathSection.getBoolean("random");
-                this.isInstantlyRespawnEnabled = deathSection.getBoolean("instantly-respawn");
-                final List<String> deathCommands = deathSection.getStringList("execute-commands");
-                if (!deathCommands.isEmpty()) {
-                    for (int i = 0; i < deathCommands.size(); i++) {
-                        final String command = deathCommands.get(i);
-                        final AbstractAction action = actions.getAction(command, null);
-                        this.playerDeathActions.add(action);
-                    }
-                    this.plugin.getDeathListener().registerEvent();
-                } else {
-                    this.plugin.getDeathListener().unregisterEvent();
+        final ConfigurationSection deathSection = playerSection.getConfigurationSection("on-death");
+        if (deathSection != null) {
+            this.isPlayerDeathTriggerRandom = deathSection.getBoolean("random");
+            this.isInstantlyRespawnEnabled = deathSection.getBoolean("instantly-respawn");
+            final List<String> deathCommands = deathSection.getStringList("execute-commands");
+            if (!deathCommands.isEmpty()) {
+                for (int i = 0; i < deathCommands.size(); i++) {
+                    final String command = deathCommands.get(i);
+                    final AbstractAction action = actions.getAction(command, null);
+                    this.playerDeathActions.add(action);
                 }
+                this.plugin.getDeathListener().registerEvent();
             } else {
                 this.plugin.getDeathListener().unregisterEvent();
             }
         } else {
-            this.plugin.getQuitListener().unregisterEvent();
+            this.plugin.getDeathListener().unregisterEvent();
         }
     }
 
