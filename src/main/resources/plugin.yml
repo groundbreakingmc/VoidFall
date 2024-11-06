@@ -6,7 +6,7 @@ authors: [ noslowdwn ]
 
 softdepend: [ PlaceholderAPI, WorldGuardEvents ]
 
-main: noslowdwn.voidfall.VoidFall
+main: groundbreakingmc.voidfall.VoidFall
 
 commands:
   voidfall: {}
