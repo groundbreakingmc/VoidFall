@@ -46,7 +46,6 @@ public final class VoidFallCommand implements CommandExecutor, TabCompleter {
         }
 
         this.plugin.getConfigValues().setupValues();
-        this.plugin.registerRegionsListener();
 
         final long endTime = System.currentTimeMillis();
         final String resultTime = String.valueOf(endTime - startTime);
