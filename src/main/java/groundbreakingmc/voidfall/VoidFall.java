@@ -1,21 +1,20 @@
 package groundbreakingmc.voidfall;
 
 import groundbreakingmc.voidfall.listeners.height.HeightListerner;
-import groundbreakingmc.voidfall.utils.UpdatesChecker;
-import groundbreakingmc.voidfall.utils.config.ConfigValues;
-import groundbreakingmc.voidfall.utils.logging.BukkitLogger;
-import lombok.Getter;
-import noslowdwn.voidfall.listeners.*;
 import groundbreakingmc.voidfall.listeners.player.DeathListener;
 import groundbreakingmc.voidfall.listeners.player.JoinListener;
 import groundbreakingmc.voidfall.listeners.player.QuitListener;
 import groundbreakingmc.voidfall.listeners.wgevents.EntryRegion;
 import groundbreakingmc.voidfall.listeners.wgevents.LeaveRegion;
+import groundbreakingmc.voidfall.utils.UpdatesChecker;
 import groundbreakingmc.voidfall.utils.colorizer.IColorizer;
 import groundbreakingmc.voidfall.utils.colorizer.LegacyColorizer;
 import groundbreakingmc.voidfall.utils.colorizer.VanillaColorizer;
+import groundbreakingmc.voidfall.utils.config.ConfigValues;
+import groundbreakingmc.voidfall.utils.logging.BukkitLogger;
 import groundbreakingmc.voidfall.utils.logging.ILogger;
 import groundbreakingmc.voidfall.utils.logging.PaperLogger;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
