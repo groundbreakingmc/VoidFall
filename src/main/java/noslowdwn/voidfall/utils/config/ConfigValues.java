@@ -185,7 +185,7 @@ public class ConfigValues {
         final ConfigurationSection joinSection = playerSection.getConfigurationSection("on-server-join");
         if (joinSection != null) {
             this.isPlayerServerJoinTriggerRandom = joinSection.getBoolean("random");
-            final List<String> joinCommands = playerSection.getStringList("execute-commands");
+            final List<String> joinCommands = joinSection.getStringList("execute-commands");
             if (!joinCommands.isEmpty()) {
                 for (int i = 0; i < joinCommands.size(); i++) {
                     final String command = joinCommands.get(i);
@@ -205,7 +205,7 @@ public class ConfigValues {
         final ConfigurationSection quitSection = playerSection.getConfigurationSection("on-server-leave");
         if (quitSection != null) {
             this.isPlayerServerQuitTriggerRandom = quitSection.getBoolean("random");
-            final List<String> quitCommands = playerSection.getStringList("execute-commands");
+            final List<String> quitCommands = quitSection.getStringList("execute-commands");
             if (!quitCommands.isEmpty()) {
                 for (int i = 0; i < quitCommands.size(); i++) {
                     final String command = quitCommands.get(i);
@@ -228,7 +228,7 @@ public class ConfigValues {
             if (deathSection != null) {
                 this.isPlayerDeathTriggerRandom = deathSection.getBoolean("random");
                 this.isInstantlyRespawnEnabled = deathSection.getBoolean("instantly-respawn");
-                final List<String> deathCommands = playerSection.getStringList("execute-commands");
+                final List<String> deathCommands = deathSection.getStringList("execute-commands");
                 if (!deathCommands.isEmpty()) {
                     for (int i = 0; i < deathCommands.size(); i++) {
                         final String command = deathCommands.get(i);
