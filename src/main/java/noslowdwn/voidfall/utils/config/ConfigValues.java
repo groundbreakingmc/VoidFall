@@ -51,10 +51,10 @@ public class ConfigValues {
     }
 
     private void setupWorldActions(final FileConfiguration config, final Actions actions) {
-        final ConfigurationSection worlds = config.getConfigurationSection("worlds");
-        if (worlds != null) {
-            for (final String worldName : worlds.getKeys(false)) {
-                final ConfigurationSection worldSection = worlds.getConfigurationSection(worldName);
+        final ConfigurationSection worldsSection = config.getConfigurationSection("worlds");
+        if (worldsSection != null) {
+            for (final String worldName : worldsSection.getKeys(false)) {
+                final ConfigurationSection worldSection = worldsSection.getConfigurationSection(worldName);
 
                 boolean roofEnabled = false;
                 int roofExecuteHeight = 666;
