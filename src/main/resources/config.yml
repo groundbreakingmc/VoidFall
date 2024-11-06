@@ -12,7 +12,7 @@
 settings:
   # Config version (Needed to prevent errors when updating the plugin)
   # Do not change otherwise your config will be backed up and reset to default
-  config-version: 1.4
+  config-version: 1.5
 
   # Updates checker. May be useful if bugs are found and the plugin is updated, so you don't have to monitor yourself
   updates:
