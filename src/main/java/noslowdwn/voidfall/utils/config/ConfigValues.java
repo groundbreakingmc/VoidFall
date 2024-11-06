@@ -193,12 +193,11 @@ public class ConfigValues {
                     this.playerServerJoinActions.add(action);
                 }
                 this.plugin.getJoinListener().registerEvent();
-            } else {
-                this.plugin.getJoinListener().unregisterEvent();
+                return;
             }
-        } else {
-            this.plugin.getJoinListener().unregisterEvent();
         }
+
+        this.plugin.getJoinListener().unregisterEvent();
     }
 
     private void setupOnQuit(final ConfigurationSection playerSection, final Actions actions) {
@@ -213,12 +212,11 @@ public class ConfigValues {
                     this.playerServerQuitActions.add(action);
                 }
                 this.plugin.getQuitListener().registerEvent();
-            } else {
-                this.plugin.getQuitListener().unregisterEvent();
+                return;
             }
-        } else {
-            this.plugin.getQuitListener().unregisterEvent();
         }
+
+        this.plugin.getQuitListener().unregisterEvent();
     }
 
     private void setupOnDeath(final ConfigurationSection playerSection, final Actions actions) {
@@ -234,12 +232,11 @@ public class ConfigValues {
                     this.playerDeathActions.add(action);
                 }
                 this.plugin.getDeathListener().registerEvent();
-            } else {
-                this.plugin.getDeathListener().unregisterEvent();
+                return;
             }
-        } else {
-            this.plugin.getDeathListener().unregisterEvent();
         }
+
+        this.plugin.getDeathListener().unregisterEvent();
     }
 
     private void setupMessages(final FileConfiguration config) {
