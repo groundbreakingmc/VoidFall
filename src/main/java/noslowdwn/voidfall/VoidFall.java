@@ -26,6 +26,7 @@ public final class VoidFall extends JavaPlugin {
     private QuitListener quitListener;
     private DeathListener deathListener;
     private Region regionListener;
+    private YCords yCords;
 
     @Override
     public void onEnable() {
@@ -40,7 +41,6 @@ public final class VoidFall extends JavaPlugin {
 
         this.registerCommand();
 
-        this.getServer().getPluginManager().registerEvents(new YCords(this), this);
         this.registerRegionsListener();
 
         Bukkit.getScheduler().runTaskLaterAsynchronously(this, () -> new UpdatesChecker(this).check(), 60L);
@@ -57,6 +57,7 @@ public final class VoidFall extends JavaPlugin {
         this.quitListener = new QuitListener(this);
         this.deathListener = new DeathListener(this);
         this.regionListener = new Region(this);
+        this.yCords = new YCords(this);
     }
 
     public void registerRegionsListener() {
