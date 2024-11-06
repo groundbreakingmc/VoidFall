@@ -2,7 +2,7 @@ name: VoidFall
 description: Execute an action for the player who triggered the event
 version: '${project.version}'
 
-authors: [ noslowdwn ]
+author: Groundbreakingmc
 
 softdepend: [ PlaceholderAPI, WorldGuardEvents ]
 
