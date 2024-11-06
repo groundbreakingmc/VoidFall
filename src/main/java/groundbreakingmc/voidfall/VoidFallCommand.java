@@ -18,7 +18,7 @@ public final class VoidFallCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length < 1) {
-
+            this.usageError(sender);
             return true;
         }
 
