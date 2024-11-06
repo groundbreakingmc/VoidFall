@@ -8,6 +8,10 @@ import java.lang.reflect.Field;
 
 public class RegisterUtil {
 
+    private RegisterUtil() {
+
+    }
+
     public static void register(final VoidFall plugin, final Listener listener) {
         try {
             final Field registerField = listener.getClass().getField("isRegistered");
