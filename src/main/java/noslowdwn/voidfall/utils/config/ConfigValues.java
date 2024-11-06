@@ -5,6 +5,13 @@ import noslowdwn.voidfall.VoidFall;
 import noslowdwn.voidfall.actions.AbstractAction;
 import noslowdwn.voidfall.constructors.RegionConstructor;
 import noslowdwn.voidfall.constructors.WorldsConstructor;
+import noslowdwn.voidfall.listeners.RegisterUtil;
+import noslowdwn.voidfall.listeners.height.HeightListerner;
+import noslowdwn.voidfall.listeners.player.DeathListener;
+import noslowdwn.voidfall.listeners.player.JoinListener;
+import noslowdwn.voidfall.listeners.player.QuitListener;
+import noslowdwn.voidfall.listeners.wgevents.EntryRegion;
+import noslowdwn.voidfall.listeners.wgevents.LeaveRegion;
 import noslowdwn.voidfall.utils.colorizer.IColorizer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -109,10 +116,12 @@ public class ConfigValues {
 
                 this.worlds.put(worldName, world);
             }
+
+            final HeightListerner heightListerner = this.plugin.getHeightListerner();
             if (!this.worlds.isEmpty()) {
-                this.plugin.getHeightListerner().registerEvent();
+                RegisterUtil.register(this.plugin, heightListerner);
             } else {
-                this.plugin.getHeightListerner().unregisterEvent();
+                RegisterUtil.unregister(heightListerner);
             }
         } else {
             this.plugin.getMyLogger().warning("Failed to load section \"worlds\" from file \"config.yml\". Please check your configuration file, or delete it and restart your server!");
@@ -124,6 +133,8 @@ public class ConfigValues {
         this.regions.clear();
         final ConfigurationSection regionsSection = config.getConfigurationSection("regions");
         if (regionsSection != null) {
+            boolean enter = false;
+            boolean leave = false;
             for (String regionName : regionsSection.getKeys(false)) {
                 final ConfigurationSection keySection = regionsSection.getConfigurationSection(regionName);
 
@@ -138,6 +149,7 @@ public class ConfigValues {
                         final AbstractAction action = actions.getAction(string, regionName);
                         enterActions.add(action);
                     }
+                    enter = true;
                 }
 
                 boolean leaveRandom = false;
@@ -151,6 +163,7 @@ public class ConfigValues {
                         final AbstractAction action = actions.getAction(string, regionName);
                         leaveActions.add(action);
                     }
+                    leave = true;
                 }
 
                 final RegionConstructor region = RegionConstructor.builder()
@@ -162,6 +175,20 @@ public class ConfigValues {
                         .build();
 
                 this.regions.put(regionName, region);
+            }
+
+            final EntryRegion entryRegion = this.plugin.getEntryRegionListener();
+            if (enter) {
+                RegisterUtil.register(this.plugin, entryRegion);
+            } else {
+                RegisterUtil.unregister(entryRegion);
+            }
+
+            final LeaveRegion leaveRegion = this.plugin.getLeaveRegionListener();
+            if (leave) {
+                RegisterUtil.register(this.plugin, leaveRegion);
+            } else {
+                RegisterUtil.unregister(leaveRegion);
             }
         } else {
             this.plugin.getMyLogger().warning("Failed to load section \"regions\" from file \"config.yml\". Please check your configuration file, or delete it and restart your server!");
@@ -183,6 +210,7 @@ public class ConfigValues {
 
     private void setupOnJoin(final ConfigurationSection playerSection, final Actions actions) {
         final ConfigurationSection joinSection = playerSection.getConfigurationSection("on-server-join");
+        final JoinListener joinListener = this.plugin.getJoinListener();
         if (joinSection != null) {
             this.isPlayerServerJoinTriggerRandom = joinSection.getBoolean("random");
             final List<String> joinCommands = joinSection.getStringList("execute-commands");
@@ -192,16 +220,17 @@ public class ConfigValues {
                     final AbstractAction action = actions.getAction(command, null);
                     this.playerServerJoinActions.add(action);
                 }
-                this.plugin.getJoinListener().registerEvent();
+                RegisterUtil.register(this.plugin, joinListener);
                 return;
             }
         }
 
-        this.plugin.getJoinListener().unregisterEvent();
+        RegisterUtil.unregister(joinListener);
     }
 
     private void setupOnQuit(final ConfigurationSection playerSection, final Actions actions) {
         final ConfigurationSection quitSection = playerSection.getConfigurationSection("on-server-leave");
+        final QuitListener quitListener = this.plugin.getQuitListener();
         if (quitSection != null) {
             this.isPlayerServerQuitTriggerRandom = quitSection.getBoolean("random");
             final List<String> quitCommands = quitSection.getStringList("execute-commands");
@@ -211,16 +240,17 @@ public class ConfigValues {
                     final AbstractAction action = actions.getAction(command, null);
                     this.playerServerQuitActions.add(action);
                 }
-                this.plugin.getQuitListener().registerEvent();
+                RegisterUtil.register(this.plugin, quitListener);
                 return;
             }
         }
 
-        this.plugin.getQuitListener().unregisterEvent();
+        RegisterUtil.unregister(quitListener);
     }
 
     private void setupOnDeath(final ConfigurationSection playerSection, final Actions actions) {
         final ConfigurationSection deathSection = playerSection.getConfigurationSection("on-death");
+        final DeathListener deathListener = this.plugin.getDeathListener();
         if (deathSection != null) {
             this.isPlayerDeathTriggerRandom = deathSection.getBoolean("random");
             this.isInstantlyRespawnEnabled = deathSection.getBoolean("instantly-respawn");
@@ -231,12 +261,12 @@ public class ConfigValues {
                     final AbstractAction action = actions.getAction(command, null);
                     this.playerDeathActions.add(action);
                 }
-                this.plugin.getDeathListener().registerEvent();
+                RegisterUtil.register(this.plugin, deathListener);
                 return;
             }
         }
 
-        this.plugin.getDeathListener().unregisterEvent();
+        RegisterUtil.unregister(deathListener);
     }
 
     private void setupMessages(final FileConfiguration config) {
