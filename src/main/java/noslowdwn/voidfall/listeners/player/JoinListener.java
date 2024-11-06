@@ -1,4 +1,4 @@
-package noslowdwn.voidfall.listeners;
+package noslowdwn.voidfall.listeners.player;
 
 import noslowdwn.voidfall.VoidFall;
 import noslowdwn.voidfall.actions.AbstractAction;
@@ -8,11 +8,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.List;
 
-public final class QuitListener implements Listener {
+public final class JoinListener implements Listener {
 
     private final VoidFall plugin;
     private final ConfigValues configValues;
@@ -21,23 +21,23 @@ public final class QuitListener implements Listener {
 
     private boolean isRegistered;
 
-    public QuitListener(final VoidFall plugin) {
+    public JoinListener(final VoidFall plugin) {
         this.plugin = plugin;
         this.configValues = plugin.getConfigValues();
     }
 
     @EventHandler
-    public void onQuit(final PlayerQuitEvent event) {
+    public void onQuit(final PlayerJoinEvent event) {
         this.processEvent(event);
     }
 
     public void registerEvent() {
         if (!this.isRegistered) {
             this.plugin.getServer().getPluginManager().registerEvent(
-                    PlayerQuitEvent.class,
+                    PlayerJoinEvent.class,
                     this,
                     EventPriority.MONITOR,
-                    (listener, event) -> this.onQuit((PlayerQuitEvent) event),
+                    (listener, event) -> this.onQuit((PlayerJoinEvent) event),
                     this.plugin
             );
 
@@ -46,16 +46,16 @@ public final class QuitListener implements Listener {
     }
 
     public void unregisterEvent() {
-        if (this.isRegistered) {
+        if (!this.isRegistered) {
             HandlerList.unregisterAll(this);
             this.isRegistered = false;
         }
     }
 
-    private void processEvent(final PlayerQuitEvent event) {
+    private void processEvent(final PlayerJoinEvent event) {
         final Player player = event.getPlayer();
         final String[] replacement = {player.getName()};
-        final List<AbstractAction> actions = this.configValues.getPlayerServerQuitActions();
+        final List<AbstractAction> actions = this.configValues.getPlayerServerJoinActions();
         for (int i = 0; i < actions.size(); i++) {
             final AbstractAction action = actions.get(i);
             action.run(player, placeholders, replacement);

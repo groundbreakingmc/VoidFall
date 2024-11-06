@@ -1,4 +1,4 @@
-package noslowdwn.voidfall.listeners;
+package noslowdwn.voidfall.listeners.player;
 
 import noslowdwn.voidfall.VoidFall;
 import noslowdwn.voidfall.actions.AbstractAction;
