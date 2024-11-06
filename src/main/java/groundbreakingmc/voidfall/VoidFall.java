@@ -7,9 +7,7 @@ import groundbreakingmc.voidfall.listeners.player.QuitListener;
 import groundbreakingmc.voidfall.listeners.wgevents.EntryRegion;
 import groundbreakingmc.voidfall.listeners.wgevents.LeaveRegion;
 import groundbreakingmc.voidfall.utils.UpdatesChecker;
-import groundbreakingmc.voidfall.utils.colorizer.IColorizer;
-import groundbreakingmc.voidfall.utils.colorizer.LegacyColorizer;
-import groundbreakingmc.voidfall.utils.colorizer.VanillaColorizer;
+import groundbreakingmc.voidfall.utils.colorizer.*;
 import groundbreakingmc.voidfall.utils.config.ConfigValues;
 import groundbreakingmc.voidfall.utils.logging.BukkitLogger;
 import groundbreakingmc.voidfall.utils.logging.ILogger;
@@ -47,7 +45,7 @@ public final class VoidFall extends JavaPlugin {
         this.configValues.setupValues();
 
         final int subVersion = this.getSubVersion();
-        this.colorizer = this.getColorizerByVersion(subVersion);
+        this.colorizer = this.getColorizerByVersion();
         this.myLogger = this.getLoggerByVersion(subVersion);
 
         this.registerCommand();
@@ -77,9 +75,19 @@ public final class VoidFall extends JavaPlugin {
         this.heightListerner = new HeightListerner(this);
     }
 
-    public IColorizer getColorizerByVersion(final int subVersion) {
-        final boolean is16OrAbove = subVersion >= 16;
-        return is16OrAbove ? new LegacyColorizer() : new VanillaColorizer();
+    public IColorizer getColorizerByVersion() {
+        final String colorizerMode = super.getConfig().getString("settings.messages-serializer").toUpperCase();
+
+        switch (colorizerMode) {
+            case "MINIMESSAGE":
+                return new MiniMessageColorizer();
+            case "LEGACY":
+                return new LegacyColorizer();
+            case "LEGACY_ADVANCED":
+                return new LegacyAdvancedColorizer();
+            default:
+                return new VanillaColorizer();
+        }
     }
 
     public ILogger getLoggerByVersion(final int subVersion) {
