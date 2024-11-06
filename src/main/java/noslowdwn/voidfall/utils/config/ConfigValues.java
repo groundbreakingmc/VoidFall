@@ -67,7 +67,7 @@ public class ConfigValues {
                 int roofExecuteHeight = 666;
                 int roofRepeatFix = 3;
                 boolean roofRandom = false;
-                List<AbstractAction> roofCommands = new ArrayList<>();
+                final List<AbstractAction> roofCommands = new ArrayList<>();
                 final ConfigurationSection roofSection = worldSection.getConfigurationSection("roof");
                 if (roofSection != null) {
                     roofEnabled = true;
@@ -86,7 +86,7 @@ public class ConfigValues {
                 int floorExecuteHeight = 0;
                 int floorRepeatFix = 3;
                 boolean floorRandom = false;
-                List<AbstractAction> floorCommands = new ArrayList<>();
+                final List<AbstractAction> floorCommands = new ArrayList<>();
                 final ConfigurationSection floorSection = worldSection.getConfigurationSection("floor");
                 if (floorSection != null) {
                     floorEnabled = true;
