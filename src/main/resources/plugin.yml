@@ -15,6 +15,3 @@ permissions:
   voidfall.reload:
     default: op
     description: Allows you to reload the plugin
-  voidfall.updates:
-    default: false
-    description: Allows you to see updates notifications on join
