@@ -26,7 +26,7 @@ public final class VoidFall extends JavaPlugin {
     private QuitListener quitListener;
     private DeathListener deathListener;
     private Region regionListener;
-    private YCords yCords;
+    private HeightListerner heightListerner;
 
     @Override
     public void onEnable() {
@@ -57,7 +57,7 @@ public final class VoidFall extends JavaPlugin {
         this.quitListener = new QuitListener(this);
         this.deathListener = new DeathListener(this);
         this.regionListener = new Region(this);
-        this.yCords = new YCords(this);
+        this.heightListerner = new HeightListerner(this);
     }
 
     public void registerRegionsListener() {
