@@ -14,7 +14,6 @@ import java.util.List;
 
 public final class EntryRegion implements Listener {
 
-    private final VoidFall plugin;
     private final ConfigValues configValues;
 
     private final String[] placeholders = {"%player%", "%region%"};
@@ -22,7 +21,6 @@ public final class EntryRegion implements Listener {
     private boolean isRegistered;
 
     public EntryRegion(final VoidFall plugin) {
-        this.plugin = plugin;
         this.configValues = plugin.getConfigValues();
     }
 

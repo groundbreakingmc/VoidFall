@@ -65,28 +65,6 @@ public final class HeightListerner implements Listener {
         }
     }
 
-    public void registerEvent() {
-        if (!this.isRegistered) {
-            this.plugin.getServer().getPluginManager().registerEvent(
-                    PlayerMoveEvent.class,
-                    this,
-                    EventPriority.MONITOR,
-                    (listener, event) -> this.onPlayerMove((PlayerMoveEvent) event),
-                    this.plugin,
-                    true
-            );
-
-            this.isRegistered = true;
-        }
-    }
-
-    public void unregisterEvent() {
-        if (this.isRegistered) {
-            HandlerList.unregisterAll(this);
-            this.isRegistered = false;
-        }
-    }
-
     public String[] getReplacements(final Player player) {
         final String playerName = player.getName();
         final String worldName = player.getWorld().getName();

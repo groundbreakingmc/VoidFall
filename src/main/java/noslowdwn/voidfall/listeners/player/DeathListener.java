@@ -29,32 +29,6 @@ public final class DeathListener implements Listener {
 
     @EventHandler
     public void onQuit(final PlayerDeathEvent event) {
-        this.processEvent(event);
-    }
-
-    public void registerEvent() {
-        if (!this.isRegistered) {
-            this.plugin.getServer().getPluginManager().registerEvent(
-                    PlayerDeathEvent.class,
-                    this,
-                    EventPriority.MONITOR,
-                    (listener, event) -> this.onQuit((PlayerDeathEvent) event),
-                    this.plugin,
-                    true
-            );
-
-            this.isRegistered = true;
-        }
-    }
-
-    public void unregisterEvent() {
-        if (this.isRegistered) {
-            HandlerList.unregisterAll(this);
-            this.isRegistered = false;
-        }
-    }
-
-    private void processEvent(final PlayerDeathEvent event) {
         final Player player = event.getEntity();
 
         if (configValues.isInstantlyRespawnEnabled()) {
