@@ -2,6 +2,12 @@ package noslowdwn.voidfall;
 
 import lombok.Getter;
 import noslowdwn.voidfall.listeners.*;
+import noslowdwn.voidfall.listeners.height.HeightListerner;
+import noslowdwn.voidfall.listeners.player.DeathListener;
+import noslowdwn.voidfall.listeners.player.JoinListener;
+import noslowdwn.voidfall.listeners.player.QuitListener;
+import noslowdwn.voidfall.listeners.wgevents.EntryRegion;
+import noslowdwn.voidfall.listeners.wgevents.LeaveRegion;
 import noslowdwn.voidfall.utils.UpdatesChecker;
 import noslowdwn.voidfall.utils.colorizer.IColorizer;
 import noslowdwn.voidfall.utils.colorizer.LegacyColorizer;
@@ -25,7 +31,8 @@ public final class VoidFall extends JavaPlugin {
     private JoinListener joinListener;
     private QuitListener quitListener;
     private DeathListener deathListener;
-    private Region regionListener;
+    private EntryRegion entryRegionListener;
+    private LeaveRegion leaveRegionListener;
     private HeightListerner heightListerner;
 
     @Override
@@ -56,19 +63,20 @@ public final class VoidFall extends JavaPlugin {
         this.joinListener = new JoinListener(this);
         this.quitListener = new QuitListener(this);
         this.deathListener = new DeathListener(this);
-        this.regionListener = new Region(this);
+        this.entryRegionListener = new EntryRegion(this);
+        this.leaveRegionListener = new LeaveRegion(this);
         this.heightListerner = new HeightListerner(this);
     }
 
     public void registerRegionsListener() {
         final boolean isWgEventsEnabled = Bukkit.getPluginManager().isPluginEnabled("WorldGuardEvents");
         if (isWgEventsEnabled) {
-            this.regionListener.registerEvent();
+            // temp removed
         } else {
             this.myLogger.info("Actions on region enter/leave will be disabled!");
             this.myLogger.info("Please download WorldGuardEvents to enable them.");
             this.myLogger.info("https://www.spigotmc.org/resources/worldguard-events.65176/");
-            this.regionListener.unregisterEvent();
+            // temp removed
         }
     }
 
