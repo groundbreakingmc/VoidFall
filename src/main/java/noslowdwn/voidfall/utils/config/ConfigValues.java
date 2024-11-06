@@ -183,8 +183,13 @@ public class ConfigValues {
                         this.playerServerJoinActions.add(action);
                     }
                     this.plugin.getJoinListener().registerEvent();
+                } else {
+                    this.plugin.getJoinListener().unregisterEvent();
                 }
+            } else {
+                this.plugin.getJoinListener().unregisterEvent();
             }
+
             final ConfigurationSection quitSection = player.getConfigurationSection("on-server-leave");
             if (quitSection != null) {
                 this.isPlayerServerQuitTriggerRandom = quitSection.getBoolean("random");

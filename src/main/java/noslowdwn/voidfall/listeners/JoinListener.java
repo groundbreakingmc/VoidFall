@@ -32,24 +32,24 @@ public final class JoinListener implements Listener {
     }
 
     public void registerEvent() {
-        if (this.isRegistered) {
-            this.unregisterEvent();
+        if (!this.isRegistered) {
+            this.plugin.getServer().getPluginManager().registerEvent(
+                    PlayerJoinEvent.class,
+                    this,
+                    EventPriority.MONITOR,
+                    (listener, event) -> this.onQuit((PlayerJoinEvent) event),
+                    this.plugin
+            );
+
+            this.isRegistered = true;
         }
-
-        this.plugin.getServer().getPluginManager().registerEvent(
-                PlayerJoinEvent.class,
-                this,
-                EventPriority.MONITOR,
-                (listener, event) -> this.onQuit((PlayerJoinEvent) event),
-                this.plugin
-        );
-
-        this.isRegistered = true;
     }
 
-    private void unregisterEvent() {
-        HandlerList.unregisterAll(this);
-        this.isRegistered = false;
+    public void unregisterEvent() {
+        if (!this.isRegistered) {
+            HandlerList.unregisterAll(this);
+            this.isRegistered = false;
+        }
     }
 
     private void processEvent(final PlayerJoinEvent event) {
