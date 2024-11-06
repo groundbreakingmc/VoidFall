@@ -35,6 +35,8 @@ public final class VoidFall extends JavaPlugin {
     private LeaveRegion leaveRegionListener;
     private HeightListerner heightListerner;
 
+    private boolean isWgEventsEnabled;
+
     @Override
     public void onEnable() {
         this.configValues = new ConfigValues(this);
@@ -48,7 +50,12 @@ public final class VoidFall extends JavaPlugin {
 
         this.registerCommand();
 
-        this.registerRegionsListener();
+        final boolean isWgEventsEnabled = Bukkit.getPluginManager().isPluginEnabled("WorldGuardEvents");
+        if (!isWgEventsEnabled) {
+            this.myLogger.info("Actions on region enter/leave will be disabled!");
+            this.myLogger.info("Please download WorldGuardEvents to enable them.");
+            this.myLogger.info("https://www.spigotmc.org/resources/worldguard-events.65176/");
+        }
 
         Bukkit.getScheduler().runTaskLaterAsynchronously(this, () -> new UpdatesChecker(this).check(), 60L);
     }
@@ -66,18 +73,6 @@ public final class VoidFall extends JavaPlugin {
         this.entryRegionListener = new EntryRegion(this);
         this.leaveRegionListener = new LeaveRegion(this);
         this.heightListerner = new HeightListerner(this);
-    }
-
-    public void registerRegionsListener() {
-        final boolean isWgEventsEnabled = Bukkit.getPluginManager().isPluginEnabled("WorldGuardEvents");
-        if (isWgEventsEnabled) {
-            // temp removed
-        } else {
-            this.myLogger.info("Actions on region enter/leave will be disabled!");
-            this.myLogger.info("Please download WorldGuardEvents to enable them.");
-            this.myLogger.info("https://www.spigotmc.org/resources/worldguard-events.65176/");
-            // temp removed
-        }
     }
 
     public IColorizer getColorizerByVersion(final int subVersion) {
