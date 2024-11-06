@@ -109,6 +109,11 @@ public class ConfigValues {
 
                 this.worlds.put(worldName, world);
             }
+            if (!this.worlds.isEmpty()) {
+                this.plugin.getHeightListerner().registerEvent();
+            } else {
+                this.plugin.getHeightListerner().unregisterEvent();
+            }
         } else {
             this.plugin.getMyLogger().warning("Failed to load section \"worlds\" from file \"config.yml\". Please check your configuration file, or delete it and restart your server!");
             this.plugin.getMyLogger().warning("If you think this is a plugin error, leave a issue on the https://github.com/grounbreakingmc/VoidFall/issues");

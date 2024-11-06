@@ -6,7 +6,10 @@ import noslowdwn.voidfall.constructors.WorldsConstructor;
 import noslowdwn.voidfall.utils.config.ConfigValues;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import java.util.List;
@@ -17,6 +20,8 @@ public final class HeightListerner implements Listener {
     private final ConfigValues configValues;
 
     private final String[] placeholders = { "%player%", "%world%", "%world_display_name%" };
+
+    private boolean isRegistered;
 
     public HeightListerner(final VoidFall plugin) {
         this.plugin = plugin;
@@ -57,6 +62,28 @@ public final class HeightListerner implements Listener {
         for (int i = 0; i < actions.size(); i++) {
             final AbstractAction action = actions.get(i);
             action.run(player, this.placeholders, replacements);
+        }
+    }
+
+    public void registerEvent() {
+        if (!this.isRegistered) {
+            this.plugin.getServer().getPluginManager().registerEvent(
+                    PlayerMoveEvent.class,
+                    this,
+                    EventPriority.MONITOR,
+                    (listener, event) -> this.onPlayerMove((PlayerMoveEvent) event),
+                    this.plugin,
+                    true
+            );
+
+            this.isRegistered = true;
+        }
+    }
+
+    public void unregisterEvent() {
+        if (this.isRegistered) {
+            HandlerList.unregisterAll(this);
+            this.isRegistered = false;
         }
     }
 
