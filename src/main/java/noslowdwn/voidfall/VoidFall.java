@@ -53,10 +53,10 @@ public final class VoidFall extends JavaPlugin {
     }
 
     private void registerListenerClasses() {
-        joinListener = new JoinListener(this);
-        quitListener = new QuitListener(this);
-        deathListener = new DeathListener(this);
-        regionListener = new Region(this);
+        this.joinListener = new JoinListener(this);
+        this.quitListener = new QuitListener(this);
+        this.deathListener = new DeathListener(this);
+        this.regionListener = new Region(this);
     }
 
     public void registerRegionsListener() {
