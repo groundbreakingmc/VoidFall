@@ -30,7 +30,7 @@ public final class Region implements Listener {
         this.configValues = plugin.getConfigValues();
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler
     public void onRegionEntered(final RegionEnteredEvent event) {
         final Player player = Bukkit.getPlayer(event.getUUID());
         if (player == null) {
@@ -54,7 +54,7 @@ public final class Region implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler
     public void onRegionLeave(final RegionLeftEvent event) {
         final Player player = Bukkit.getPlayer(event.getUUID());
         if (player == null) {
