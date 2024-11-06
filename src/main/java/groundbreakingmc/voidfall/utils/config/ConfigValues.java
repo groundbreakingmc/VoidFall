@@ -49,15 +49,14 @@ public final class ConfigValues {
 
     public void setupValues() {
         final FileConfiguration config = new ConfigLoader(this.plugin).loadAndGet("config", 1.0);
-        final Actions actions = new Actions(this.plugin);
 
-        this.setupWorldActions(config, actions);
-        this.setupRegionActions(config, actions);
-        this.setupPlayerActions(config, actions);
+        this.setupWorldActions(config);
+        this.setupRegionActions(config);
+        this.setupPlayerActions(config);
         this.setupMessages(config);
     }
 
-    private void setupWorldActions(final FileConfiguration config, final Actions actions) {
+    private void setupWorldActions(final FileConfiguration config) {
         final ConfigurationSection worldsSection = config.getConfigurationSection("worlds");
         if (worldsSection != null) {
             for (final String worldName : worldsSection.getKeys(false)) {
@@ -77,8 +76,11 @@ public final class ConfigValues {
                     final List<String> commands = roofSection.getStringList("execute-commands");
                     for (int i = 0; i < commands.size(); i++) {
                         final String command = commands.get(i);
-                        final AbstractAction action = actions.getAction(command, worldName);
-                        roofCommands.add(action);
+                        final ActionType actionType = ActionType.fromString(command);
+                        if (actionType != null) {
+                            final AbstractAction action = actionType.createAction(this.plugin, command);
+                            roofCommands.add(action);
+                        }
                     }
                 }
 
@@ -96,8 +98,11 @@ public final class ConfigValues {
                     final List<String> commands = floorSection.getStringList("execute-commands");
                     for (int i = 0; i < commands.size(); i++) {
                         final String command = commands.get(i);
-                        final AbstractAction action = actions.getAction(command, worldName);
-                        floorCommands.add(action);
+                        final ActionType actionType = ActionType.fromString(command);
+                        if (actionType != null) {
+                            final AbstractAction action = actionType.createAction(this.plugin, command);
+                            floorCommands.add(action);
+                        }
                     }
                 }
 
@@ -129,7 +134,7 @@ public final class ConfigValues {
         }
     }
 
-    private void setupRegionActions(final FileConfiguration config, final Actions actions) {
+    private void setupRegionActions(final FileConfiguration config) {
         this.regions.clear();
         final ConfigurationSection regionsSection = config.getConfigurationSection("regions");
         if (regionsSection != null) {
@@ -145,9 +150,12 @@ public final class ConfigValues {
                     enterRandom = enterSection.getBoolean("random");
                     final List<String> executeCommands = enterSection.getStringList("execute-commands");
                     for (int i = 0; i < executeCommands.size(); i++) {
-                        final String string = executeCommands.get(i);
-                        final AbstractAction action = actions.getAction(string, regionName);
-                        enterActions.add(action);
+                        final String command = executeCommands.get(i);
+                        final ActionType actionType = ActionType.fromString(command);
+                        if (actionType != null) {
+                            final AbstractAction action = actionType.createAction(this.plugin, command);
+                            enterActions.add(action);
+                        }
                     }
                     enter = true;
                 }
@@ -159,9 +167,12 @@ public final class ConfigValues {
                     leaveRandom = leaveSection.getBoolean("random");
                     final List<String> executeCommands = leaveSection.getStringList("execute-commands");
                     for (int i = 0; i < executeCommands.size(); i++) {
-                        final String string = executeCommands.get(i);
-                        final AbstractAction action = actions.getAction(string, regionName);
-                        leaveActions.add(action);
+                        final String command = executeCommands.get(i);
+                        final ActionType actionType = ActionType.fromString(command);
+                        if (actionType != null) {
+                            final AbstractAction action = actionType.createAction(this.plugin, command);
+                            leaveActions.add(action);
+                        }
                     }
                     leave = true;
                 }
@@ -196,19 +207,19 @@ public final class ConfigValues {
         }
     }
 
-    private void setupPlayerActions(final FileConfiguration config, final Actions actions) {
+    private void setupPlayerActions(final FileConfiguration config) {
         final ConfigurationSection player = config.getConfigurationSection("player");
         if (player != null) {
-            this.setupOnJoin(player, actions);
-            this.setupOnQuit(player, actions);
-            this.setupOnDeath(player, actions);
+            this.setupOnJoin(player);
+            this.setupOnQuit(player);
+            this.setupOnDeath(player);
         } else {
             this.plugin.getMyLogger().warning("Failed to load section \"player\" from file \"config.yml\". Please check your configuration file, or delete it and restart your server!");
             this.plugin.getMyLogger().warning("If you think this is a plugin error, leave a issue on the https://github.com/grounbreakingmc/VoidFall/issues");
         }
     }
 
-    private void setupOnJoin(final ConfigurationSection playerSection, final Actions actions) {
+    private void setupOnJoin(final ConfigurationSection playerSection) {
         final ConfigurationSection joinSection = playerSection.getConfigurationSection("on-server-join");
         final JoinListener joinListener = this.plugin.getJoinListener();
         if (joinSection != null) {
@@ -217,8 +228,11 @@ public final class ConfigValues {
             if (!joinCommands.isEmpty()) {
                 for (int i = 0; i < joinCommands.size(); i++) {
                     final String command = joinCommands.get(i);
-                    final AbstractAction action = actions.getAction(command, null);
-                    this.playerServerJoinActions.add(action);
+                    final ActionType actionType = ActionType.fromString(command);
+                    if (actionType != null) {
+                        final AbstractAction action = actionType.createAction(this.plugin, command);
+                        this.playerServerJoinActions.add(action);
+                    }
                 }
                 RegisterUtil.register(this.plugin, joinListener);
                 return;
@@ -228,7 +242,7 @@ public final class ConfigValues {
         RegisterUtil.unregister(joinListener);
     }
 
-    private void setupOnQuit(final ConfigurationSection playerSection, final Actions actions) {
+    private void setupOnQuit(final ConfigurationSection playerSection) {
         final ConfigurationSection quitSection = playerSection.getConfigurationSection("on-server-leave");
         final QuitListener quitListener = this.plugin.getQuitListener();
         if (quitSection != null) {
@@ -237,8 +251,11 @@ public final class ConfigValues {
             if (!quitCommands.isEmpty()) {
                 for (int i = 0; i < quitCommands.size(); i++) {
                     final String command = quitCommands.get(i);
-                    final AbstractAction action = actions.getAction(command, null);
-                    this.playerServerQuitActions.add(action);
+                    final ActionType actionType = ActionType.fromString(command);
+                    if (actionType != null) {
+                        final AbstractAction action = actionType.createAction(this.plugin, command);
+                        this.playerServerQuitActions.add(action);
+                    }
                 }
                 RegisterUtil.register(this.plugin, quitListener);
                 return;
@@ -248,7 +265,7 @@ public final class ConfigValues {
         RegisterUtil.unregister(quitListener);
     }
 
-    private void setupOnDeath(final ConfigurationSection playerSection, final Actions actions) {
+    private void setupOnDeath(final ConfigurationSection playerSection) {
         final ConfigurationSection deathSection = playerSection.getConfigurationSection("on-death");
         final DeathListener deathListener = this.plugin.getDeathListener();
         if (deathSection != null) {
@@ -258,8 +275,11 @@ public final class ConfigValues {
             if (!deathCommands.isEmpty()) {
                 for (int i = 0; i < deathCommands.size(); i++) {
                     final String command = deathCommands.get(i);
-                    final AbstractAction action = actions.getAction(command, null);
-                    this.playerDeathActions.add(action);
+                    final ActionType actionType = ActionType.fromString(command);
+                    if (actionType != null) {
+                        final AbstractAction action = actionType.createAction(this.plugin, command);
+                        this.playerDeathActions.add(action);
+                    }
                 }
                 RegisterUtil.register(this.plugin, deathListener);
                 return;
