@@ -34,8 +34,10 @@ public final class SetGamemode extends AbstractAction {
                 gm = GameMode.SURVIVAL;
                 break;
             default:
-                super.plugin.getMyLogger().warning("The gamemode given for [GAMEMODE]: " + string + ", doesn't exist or not valid!");
-                super.plugin.getMyLogger().warning("&cPath to: worlds." + this.world + ".execute-commands");
+                if (this.world != null) {
+                    super.plugin.getMyLogger().warning("The gamemode given for [GAMEMODE]: " + string + ", doesn't exist or not valid!");
+                    super.plugin.getMyLogger().warning("&cPath to: worlds." + this.world + ".execute-commands");
+                }
                 return;
         }
 
