@@ -19,7 +19,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import java.util.*;
 
 @Getter
-public class ConfigValues {
+public final class ConfigValues {
 
     private final Map<String, WorldsConstructor> worlds = new HashMap<>();
     private final Map<String, RegionConstructor> regions = new HashMap<>();

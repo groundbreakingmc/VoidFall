@@ -4,7 +4,7 @@ import noslowdwn.voidfall.VoidFall;
 import noslowdwn.voidfall.actions.*;
 import noslowdwn.voidfall.utils.colorizer.IColorizer;
 
-public class Actions {
+public final class Actions {
 
     private final VoidFall plugin;
     private final IColorizer colorizer;

@@ -15,7 +15,7 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 
-public class UpdatesChecker implements Listener {
+public final class UpdatesChecker implements Listener {
 
     private final VoidFall plugin;
 
