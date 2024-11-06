@@ -40,7 +40,7 @@ public final class DeathListener implements Listener {
         this.plugin.getServer().getPluginManager().registerEvent(
                 PlayerDeathEvent.class,
                 this,
-                EventPriority.LOW,
+                EventPriority.MONITOR,
                 (listener, event) -> this.onQuit((PlayerDeathEvent) event),
                 this.plugin,
                 true

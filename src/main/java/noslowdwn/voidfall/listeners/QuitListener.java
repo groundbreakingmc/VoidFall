@@ -39,7 +39,7 @@ public final class QuitListener implements Listener {
         this.plugin.getServer().getPluginManager().registerEvent(
                 PlayerQuitEvent.class,
                 this,
-                EventPriority.LOW,
+                EventPriority.MONITOR,
                 (listener, event) -> this.onQuit((PlayerQuitEvent) event),
                 this.plugin
         );

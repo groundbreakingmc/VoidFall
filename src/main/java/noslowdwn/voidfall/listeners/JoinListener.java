@@ -39,7 +39,7 @@ public final class JoinListener implements Listener {
         this.plugin.getServer().getPluginManager().registerEvent(
                 PlayerJoinEvent.class,
                 this,
-                EventPriority.LOW,
+                EventPriority.MONITOR,
                 (listener, event) -> this.onQuit((PlayerJoinEvent) event),
                 this.plugin
         );
