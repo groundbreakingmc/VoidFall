@@ -15,6 +15,7 @@ import groundbreakingmc.voidfall.utils.logging.BukkitLogger;
 import groundbreakingmc.voidfall.utils.logging.ILogger;
 import groundbreakingmc.voidfall.utils.logging.PaperLogger;
 import lombok.Getter;
+import me.clip.placeholderapi.metrics.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -38,6 +39,8 @@ public final class VoidFall extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        new Metrics(this, 23829);
+
         this.configValues = new ConfigValues(this);
 
         this.registerListenerClasses();
