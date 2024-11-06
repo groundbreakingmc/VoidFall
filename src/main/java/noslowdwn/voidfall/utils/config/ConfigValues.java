@@ -213,6 +213,8 @@ public class ConfigValues {
                 } else {
                     this.plugin.getDeathListener().unregisterEvent();
                 }
+            } else {
+                this.plugin.getDeathListener().unregisterEvent();
             }
         } else {
             this.plugin.getMyLogger().warning("Failed to load section \"player\" from file \"config.yml\". Please check your configuration file, or delete it and restart your server!");
