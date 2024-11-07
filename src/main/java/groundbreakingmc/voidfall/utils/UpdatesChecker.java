@@ -28,9 +28,9 @@ public final class UpdatesChecker implements Listener {
     }
 
     public void check() {
-        final ConfigurationSection updates = this.plugin.getConfig().getConfigurationSection("updates");
+        final ConfigurationSection updates = this.plugin.getConfig().getConfigurationSection("settings.updates");
         if (updates == null) {
-            this.plugin.getMyLogger().warning("Failed to load section \"updates\" from file \"config.yml\". Please check your configuration file, or delete it and restart your server!");
+            this.plugin.getMyLogger().warning("Failed to load section \"settings.updates\" from file \"config.yml\". Please check your configuration file, or delete it and restart your server!");
             this.plugin.getMyLogger().warning("If you think this is a plugin error, leave a issue on the https://github.com/grounbreakingmc/GigaChat/issues");
             return;
         }
