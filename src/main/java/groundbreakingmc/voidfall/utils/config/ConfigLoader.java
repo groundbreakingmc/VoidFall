@@ -31,8 +31,8 @@ public final class ConfigLoader {
         }
 
         FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-        setDefaults(config, fileName);
-        config = checkVersion(config, fileName, fileVersion);
+        this.setDefaults(config, fileName);
+        config = this.checkVersion(config, fileName, fileVersion);
 
         return config;
     }
@@ -51,8 +51,8 @@ public final class ConfigLoader {
         final double configVersion = config.getDouble("settings.config-version", 0);
 
         if (configVersion != fileVersion) {
-            createBackupAndUpdate(fileName);
-            return loadAndGet(fileName, fileVersion);
+            this.createBackupAndUpdate(fileName);
+            return this.loadAndGet(fileName, fileVersion);
         }
 
         return config;
