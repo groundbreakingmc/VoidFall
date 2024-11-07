@@ -14,7 +14,7 @@ public class RegisterUtil {
 
     public static void register(final VoidFall plugin, final Listener listener) {
         try {
-            final Field registerField = listener.getClass().getField("isRegistered");
+            final Field registerField = listener.getClass().getDeclaredField("isRegistered");
             registerField.setAccessible(true);
             final boolean isRegistered = registerField.getBoolean(listener);
             if (!isRegistered) {
@@ -28,7 +28,7 @@ public class RegisterUtil {
 
     public static void unregister(final Listener listener) {
         try {
-            final Field registerField = listener.getClass().getField("isRegistered");
+            final Field registerField = listener.getClass().getDeclaredField("isRegistered");
             registerField.setAccessible(true);
             final boolean isRegistered = registerField.getBoolean(listener);
             if (isRegistered) {
