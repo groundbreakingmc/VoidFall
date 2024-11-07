@@ -1,4 +1,4 @@
-# [![CodeFactor](https://www.codefactor.io/repository/github/noslowdwn/voidfall/badge)](https://www.codefactor.io/repository/github/noslowdwn/voidfall) VoidFall 1.3
+# [![CodeFactor](https://www.codefactor.io/repository/github/noslowdwn/voidfall/badge)](https://www.codefactor.io/repository/github/noslowdwn/voidfall) VoidFall 2.0
 The plugin provides actions for players and allows to execute it if somebody triggered it!
 
 ## Features
@@ -34,7 +34,8 @@ The plugin provides actions for players and allows to execute it if somebody tri
 - en
    - <a href="https://modrinth.com/plugin/voidfall">**modrinth.com**</a>
 - ru
-   - <a href="https://spigotmc.ru/resources/voidfall.2239/">**spigotmc.ru**</a>
+   <!-- Not supported in the moment -->
+   <!-- - <a href="https://spigotmc.ru/resources/voidfall.2239/">**spigotmc.ru**</a> -->
    - <a href="https://black-minecraft.com/resources/voidfall.5648/">**black-minecraft.com**</a>
 
 
