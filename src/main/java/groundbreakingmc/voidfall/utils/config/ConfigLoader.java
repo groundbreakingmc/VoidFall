@@ -26,7 +26,7 @@ public final class ConfigLoader {
 
         try {
             new YamlConfiguration().load(file);
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             ex.printStackTrace();
         }
 
