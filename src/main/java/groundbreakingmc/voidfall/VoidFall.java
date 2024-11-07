@@ -42,12 +42,12 @@ public final class VoidFall extends JavaPlugin {
         this.configValues = new ConfigValues(this);
 
         this.registerListenerClasses();
-        this.configValues.setupValues();
 
         final int subVersion = this.getSubVersion();
         this.colorizer = this.getColorizerByVersion();
         this.myLogger = this.getLoggerByVersion(subVersion);
 
+        this.configValues.setupValues();
         this.registerCommand();
 
         this.isWgEventsEnabled = Bukkit.getPluginManager().isPluginEnabled("WorldGuardEvents");
