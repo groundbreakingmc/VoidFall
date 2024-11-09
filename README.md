@@ -1,4 +1,4 @@
-# [![CodeFactor](https://www.codefactor.io/repository/github/groundbreakingmc/voidfall/badge)](https://www.codefactor.io/repository/github/groundbreakingmc/voidfall) VoidFall 2.0
+# VoidFall 2.0 [![CodeFactor](https://www.codefactor.io/repository/github/groundbreakingmc/voidfall/badge)](https://www.codefactor.io/repository/github/groundbreakingmc/voidfall)
 The plugin provides actions for players and allows to execute it if somebody triggered it!
 
 ## Features
