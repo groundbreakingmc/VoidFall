@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 
 import java.lang.reflect.Field;
 
-public class RegisterUtil {
+public final class RegisterUtil {
 
     private RegisterUtil() {
 
