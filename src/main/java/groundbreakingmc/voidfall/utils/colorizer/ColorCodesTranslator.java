@@ -5,6 +5,7 @@ import it.unimi.dsi.fastutil.chars.CharSet;
 
 public final class ColorCodesTranslator {
 
+    private static final char COLOR_CHAR = '§';
     private static final CharSet CODES = new CharOpenHashSet(new char[]{
             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
             'a', 'b', 'c', 'd', 'e', 'f',
@@ -13,16 +14,20 @@ public final class ColorCodesTranslator {
             'K', 'L', 'M', 'N', 'O', 'R', 'X'
     });
 
-    public static String translateAlternateColorCodes(final char altColorChar, final String textToTranslate) {
-        char[] b = textToTranslate.toCharArray();
-
-        for (int i = 0, length = b.length - 1; i < length; ++i) {
-            if (b[i] == altColorChar && CODES.contains(b[i + 1])) {
-                b[i++] = '§';
-                b[i] = Character.toLowerCase(b[i]);
+    public static String translateAlternateColorCodes(char altColorChar, String textToTranslate) {
+        final char[] charArray = textToTranslate.toCharArray();
+        int i = 0;
+        while (i < charArray.length - 1) {
+            if (charArray[i] == altColorChar) {
+                final char nextChar = charArray[i + 1];
+                if (CODES.contains(nextChar)) {
+                    charArray[i] = COLOR_CHAR;
+                    charArray[++i] = (char) (nextChar | 0x20);
+                }
             }
+            i++;
         }
 
-        return new String(b);
+        return new String(charArray);
     }
 }
