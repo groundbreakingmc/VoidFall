@@ -5,6 +5,10 @@ import it.unimi.dsi.fastutil.chars.CharSet;
 
 public final class ColorCodesTranslator {
 
+    private ColorCodesTranslator() {
+
+    }
+
     private static final char COLOR_CHAR = '§';
     private static final CharSet CODES = new CharOpenHashSet(new char[]{
             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
