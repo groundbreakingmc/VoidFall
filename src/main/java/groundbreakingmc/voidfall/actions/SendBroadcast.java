@@ -12,8 +12,8 @@ public final class SendBroadcast extends AbstractAction {
 
     @Override
     public void process(final Player player, final String string) {
-        Bukkit.getOnlinePlayers().forEach(player1 ->
-                player1.sendMessage(string)
+        Bukkit.getOnlinePlayers().forEach(target ->
+                target.sendMessage(string)
         );
     }
 }

@@ -40,8 +40,9 @@ public final class PlaySoundAll extends AbstractAction {
             default:
                 final Sound fSound = sound;
                 float fVolume = volume, fPitch = pitch;
-                Bukkit.getOnlinePlayers().forEach(player1 ->
-                        player1.playSound(player1.getLocation(), fSound, fVolume, fPitch)
+
+                Bukkit.getOnlinePlayers().forEach(target ->
+                        target.playSound(target.getLocation(), fSound, fVolume, fPitch)
                 );
         }
     }
