@@ -15,23 +15,23 @@ public final class SetGamemode extends AbstractAction {
 
     @Override
     public void process(final Player player, final String string) {
-        final GameMode gm;
+        final GameMode gameMode;
         switch (string) {
             case "1":
             case "creative":
-                gm = GameMode.CREATIVE;
+                gameMode = GameMode.CREATIVE;
                 break;
             case "2":
             case "adventure":
-                gm = GameMode.ADVENTURE;
+                gameMode = GameMode.ADVENTURE;
                 break;
             case "3":
             case "spectator":
-                gm = GameMode.SPECTATOR;
+                gameMode = GameMode.SPECTATOR;
                 break;
             case "0":
             case "survival":
-                gm = GameMode.SURVIVAL;
+                gameMode = GameMode.SURVIVAL;
                 break;
             default:
                 if (this.world != null) {
@@ -41,8 +41,6 @@ public final class SetGamemode extends AbstractAction {
                 return;
         }
 
-        super.plugin.getServer().getScheduler().runTask(super.plugin, () ->
-                player.setGameMode(gm)
-        );
+        player.setGameMode(gameMode);
     }
 }

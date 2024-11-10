@@ -13,8 +13,6 @@ public final class PlayerCommand extends AbstractAction {
 
     @Override
     public void process(final Player player, final String string) {
-        getScheduler().runTask(super.plugin, () ->
-                player.chat("/" + string)
-        );
+        player.chat("/" + string);
     }
 }

@@ -39,6 +39,7 @@ public final class PlaySound extends AbstractAction {
             default:
                 final Sound fSound = sound;
                 float fVolume = volume, fPitch = pitch;
+
                 player.playSound(player.getLocation(), fSound, fVolume, fPitch);
         }
 

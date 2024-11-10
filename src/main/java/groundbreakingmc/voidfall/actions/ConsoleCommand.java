@@ -13,8 +13,7 @@ public final class ConsoleCommand extends AbstractAction {
     @Override
     public void process(final Player player, final String string) {
         final Server server = super.plugin.getServer();
-        super.plugin.getServer().getScheduler().runTask(super.plugin, () ->
-                server.dispatchCommand(server.getConsoleSender(), string)
-        );
+
+        server.dispatchCommand(server.getConsoleSender(), string);
     }
 }

@@ -43,9 +43,8 @@ public final class GiveEffect extends AbstractAction {
                 final PotionEffectType fEffect = effect;
                 int fDuration = duration;
                 int fAmplifier = amplifier;
-                getScheduler().runTask(super.plugin, () ->
-                    player.addPotionEffect(new PotionEffect(fEffect, fDuration, fAmplifier))
-                );
+
+                player.addPotionEffect(new PotionEffect(fEffect, fDuration, fAmplifier));
         }
 
     }

@@ -43,9 +43,8 @@ public final class ShowTitle extends AbstractAction {
             default:
                 final String text = main, subText = sub;
                 final int stayTime = stay, fadeOutTime = fadeOut;
-                getScheduler().runTask(super.plugin, () ->
-                    player.sendTitle(text, subText, fadeIn, stayTime, fadeOutTime)
-                );
+
+                player.sendTitle(text, subText, fadeIn, stayTime, fadeOutTime);
         }
     }
 }
