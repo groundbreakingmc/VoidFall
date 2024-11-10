@@ -29,7 +29,7 @@ public final class GiveEffect extends AbstractAction {
                 }
             case 2:
                 try {
-                    amplifier = Integer.parseInt(params[2]);
+                    amplifier = Integer.parseInt(params[1]);
                 } catch (final NumberFormatException e) {
                     super.plugin.getMyLogger().warning("The value: " + params[1] + " specified in \"Amplifier\" for the [EFFECT] action is invalid. Please check your config file.");
                 }
