@@ -6,6 +6,7 @@ import groundbreakingmc.voidfall.listeners.player.JoinListener;
 import groundbreakingmc.voidfall.listeners.player.QuitListener;
 import groundbreakingmc.voidfall.listeners.wgevents.EntryRegion;
 import groundbreakingmc.voidfall.listeners.wgevents.LeaveRegion;
+import groundbreakingmc.voidfall.utils.PapiUtil;
 import groundbreakingmc.voidfall.utils.UpdatesChecker;
 import groundbreakingmc.voidfall.utils.colorizer.*;
 import groundbreakingmc.voidfall.utils.config.ConfigValues;
@@ -46,6 +47,8 @@ public final class VoidFall extends JavaPlugin {
         final int subVersion = this.getSubVersion();
         this.colorizer = this.getColorizerByVersion();
         this.myLogger = this.getLoggerByVersion(subVersion);
+
+        PapiUtil.setPapiStatus(this);
 
         this.configValues.setupValues();
         this.registerCommand();

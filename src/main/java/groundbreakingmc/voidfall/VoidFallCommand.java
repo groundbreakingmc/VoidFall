@@ -1,5 +1,6 @@
 package groundbreakingmc.voidfall;
 
+import groundbreakingmc.voidfall.utils.PapiUtil;
 import groundbreakingmc.voidfall.utils.UpdatesChecker;
 import org.bukkit.command.*;
 import org.jetbrains.annotations.NotNull;
@@ -46,6 +47,7 @@ public final class VoidFallCommand implements CommandExecutor, TabCompleter {
         }
 
         this.plugin.getConfigValues().setupValues();
+        PapiUtil.setPapiStatus(this.plugin);
 
         final long endTime = System.currentTimeMillis();
         final String resultTime = String.valueOf(endTime - startTime);
