@@ -8,7 +8,7 @@ import static org.bukkit.Bukkit.getScheduler;
 public final class ShowTitle extends AbstractAction {
 
     public ShowTitle(final VoidFall plugin, final String string) {
-        super(plugin, string);
+        super(plugin, plugin.getColorizer().colorize(string));
     }
 
     @Override
@@ -37,9 +37,9 @@ public final class ShowTitle extends AbstractAction {
                     super.plugin.getMyLogger().warning("The value: " + params[2] + " specified in \"FadeIn\" for the [TITLE] action is invalid. Please check your config file.");
                 }
             case 2:
-                sub = super.plugin.getColorizer().colorize(params[1]);
+                sub = params[1];
             case 1:
-                main = super.plugin.getColorizer().colorize(params[0]);
+                main = params[0];
             default:
                 final String text = main, subText = sub;
                 final int stayTime = stay, fadeOutTime = fadeOut;

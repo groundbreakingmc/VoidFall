@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 public final class ShowActionbar extends AbstractAction {
 
     public ShowActionbar(final VoidFall plugin, final String string) {
-        super(plugin, string);
+        super(plugin, plugin.getColorizer().colorize(string));
     }
 
     @Override

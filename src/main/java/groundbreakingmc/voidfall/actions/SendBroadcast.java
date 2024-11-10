@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 public final class SendBroadcast extends AbstractAction {
 
     public SendBroadcast(final VoidFall plugin, final String string) {
-        super(plugin, string);
+        super(plugin, plugin.getColorizer().colorize(string));
     }
 
     @Override
