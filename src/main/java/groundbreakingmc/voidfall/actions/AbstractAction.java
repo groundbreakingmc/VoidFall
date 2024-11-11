@@ -16,7 +16,7 @@ public abstract class AbstractAction {
         final String formattedString = this.plugin.getColorizer().colorize(
                 PapiUtil.parse(
                     player,
-                    StringUtil.replaceEach(string, searchList, replacementList)
+                    StringUtil.replaceEach(this.string, searchList, replacementList)
             )
         );
         this.process(player, formattedString);
