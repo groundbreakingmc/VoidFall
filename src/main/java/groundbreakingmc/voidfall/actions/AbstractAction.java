@@ -13,9 +13,11 @@ public abstract class AbstractAction {
     private final String string;
 
     public void run(final Player player, final String[] searchList, final String[] replacementList) {
-        final String formattedString = PapiUtil.parse(
-                player,
-                StringUtil.replaceEach(string, searchList, replacementList)
+        final String formattedString = this.plugin.getColorizer().colorize(
+                PapiUtil.parse(
+                    player,
+                    StringUtil.replaceEach(string, searchList, replacementList)
+            )
         );
         this.process(player, formattedString);
     }
