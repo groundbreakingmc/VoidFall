@@ -16,7 +16,7 @@ public final class SetGamemode extends AbstractAction {
     @Override
     public void process(final Player player, final String string) {
         final GameMode gameMode;
-        switch (string) {
+        switch (string.toLowerCase()) {
             case "1":
             case "creative":
                 gameMode = GameMode.CREATIVE;
