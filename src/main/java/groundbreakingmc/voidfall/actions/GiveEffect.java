@@ -18,8 +18,8 @@ public final class GiveEffect extends AbstractAction {
         final PotionEffectType effect = this.getEffect(params[0]);
         final int duration = this.getDuration(params);
         final int amplifier = this.getAmplifier(params);
-        final boolean ambient = params.length > 3 && Boolean.parseBoolean(params[3]);
-        final boolean particles = params.length > 4 && Boolean.parseBoolean(params[4]);
+        final boolean ambient = params.length <= 3 || Boolean.parseBoolean(params[3]);
+        final boolean particles = params.length <= 4 || Boolean.parseBoolean(params[4]);
         final Color color = this.getColor(params);
         player.addPotionEffect(new PotionEffect(effect, duration, amplifier, ambient, particles, color));
     }
