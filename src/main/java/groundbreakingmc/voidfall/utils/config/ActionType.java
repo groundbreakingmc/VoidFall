@@ -29,7 +29,7 @@ public enum ActionType {
     }
 
     public AbstractAction createAction(final VoidFall plugin, final String string) {
-        return this.actionFactory.create(plugin, string.replace(this.prefix, "").trim(), this.prefix);
+        return this.actionFactory.create(plugin, string.substring(this.prefix.length()).trim(), this.prefix);
     }
 
     public static ActionType fromString(final String string) {
