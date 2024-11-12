@@ -31,7 +31,8 @@ public final class TeleportPlayer extends AbstractAction {
         if (params.length > paramNumb) {
             final String param = params[paramNumb];
             if (param.charAt(0) == '~') {
-                final float arg = Float.parseFloat(param.replace("~", ""));
+                final String stringNumb = param.substring(1);
+                final float arg = stringNumb.isEmpty() ? 0 : Float.parseFloat(param.substring(1));
                 return current + arg;
             } else {
                 try {
@@ -48,7 +49,8 @@ public final class TeleportPlayer extends AbstractAction {
         if (params.length > paramNumb) {
             final String param = params[paramNumb];
             if (param.charAt(0) == '~') {
-                final double arg = Double.parseDouble(param.replace("~", ""));
+                final String stringNumb = param.substring(1);
+                final double arg = stringNumb.isEmpty() ? 0 : Double.parseDouble(param.substring(1));
                 return current + arg;
             } else {
                 try {
