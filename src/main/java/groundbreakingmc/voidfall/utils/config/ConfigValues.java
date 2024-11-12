@@ -1,7 +1,7 @@
 package groundbreakingmc.voidfall.utils.config;
 
 import groundbreakingmc.voidfall.constructors.RegionConstructor;
-import groundbreakingmc.voidfall.listeners.height.HeightListerner;
+import groundbreakingmc.voidfall.listeners.height.HeightListener;
 import lombok.Getter;
 import groundbreakingmc.voidfall.VoidFall;
 import groundbreakingmc.voidfall.actions.AbstractAction;
@@ -122,11 +122,11 @@ public final class ConfigValues {
                 this.worlds.put(worldName, world);
             }
 
-            final HeightListerner heightListerner = this.plugin.getHeightListerner();
+            final HeightListener heightListener = this.plugin.getHeightListener();
             if (!this.worlds.isEmpty()) {
-                RegisterUtil.register(this.plugin, heightListerner);
+                RegisterUtil.register(this.plugin, heightListener);
             } else {
-                RegisterUtil.unregister(heightListerner);
+                RegisterUtil.unregister(heightListener);
             }
         } else {
             this.plugin.getMyLogger().warning("Failed to load section \"worlds\" from file \"config.yml\". Please check your configuration file, or delete it and restart your server!");

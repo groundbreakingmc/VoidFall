@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import java.util.List;
 
-public final class HeightListerner implements Listener {
+public final class HeightListener implements Listener {
 
     private final VoidFall plugin;
     private final ConfigValues configValues;
@@ -20,7 +20,7 @@ public final class HeightListerner implements Listener {
 
     private boolean isRegistered;
 
-    public HeightListerner(final VoidFall plugin) {
+    public HeightListener(final VoidFall plugin) {
         this.plugin = plugin;
         this.configValues = plugin.getConfigValues();
     }
