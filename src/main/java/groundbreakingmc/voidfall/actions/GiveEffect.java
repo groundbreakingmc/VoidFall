@@ -20,8 +20,7 @@ public final class GiveEffect extends AbstractAction {
         final int amplifier = this.getAmplifier(params);
         final boolean ambient = params.length <= 3 || Boolean.parseBoolean(params[3]);
         final boolean particles = params.length <= 4 || Boolean.parseBoolean(params[4]);
-        final Color color = this.getColor(params);
-        player.addPotionEffect(new PotionEffect(effect, duration, amplifier, ambient, particles, color));
+        player.addPotionEffect(new PotionEffect(effect, duration, amplifier, ambient, particles));
     }
 
     private PotionEffectType getEffect(final String param) {
@@ -53,20 +52,5 @@ public final class GiveEffect extends AbstractAction {
             }
         }
         return 60;
-    }
-
-    private Color getColor(final String[] params) {
-        if (params.length > 5) {
-            try {
-                final String[] colors = params[4].split("\\.");
-                final int red = Integer.parseInt(colors[0]);
-                final int green = Integer.parseInt(colors[1]);
-                final int blue = Integer.parseInt(colors[2]);
-                return Color.fromRGB(red, green, blue);
-            } catch (final NumberFormatException ignore) {
-                super.plugin.getMyLogger().warning("The value: " + params[2] + " specified in \"Duration\" for the [EFFECT] action is invalid. Please check your config file.");
-            }
-        }
-        return null;
     }
 }
