@@ -106,27 +106,31 @@ public final class ConfigValues {
                     }
                 }
 
-                final WorldsConstructor world = WorldsConstructor.builder()
-                        .roofModeEnabled(roofEnabled)
-                        .roofExecuteHeight(roofExecuteHeight)
-                        .roofRepeatFix(roofRepeatFix)
-                        .roofRandom(roofRandom)
-                        .roofActions(roofCommands)
-                        .floorModeEnabled(floorEnabled)
-                        .floorExecuteHeight(floorExecuteHeight)
-                        .floorRepeatFix(floorRepeatFix)
-                        .floorRandom(floorRandom)
-                        .floorActions(floorCommands)
-                        .build();
+                if (!roofCommands.isEmpty() || !floorCommands.isEmpty()) {
+                    final WorldsConstructor world = WorldsConstructor.builder()
+                            .roofModeEnabled(roofEnabled)
+                            .roofExecuteHeight(roofExecuteHeight)
+                            .roofRepeatFix(roofRepeatFix)
+                            .roofRandom(roofRandom)
+                            .roofActions(roofCommands)
+                            .floorModeEnabled(floorEnabled)
+                            .floorExecuteHeight(floorExecuteHeight)
+                            .floorRepeatFix(floorRepeatFix)
+                            .floorRandom(floorRandom)
+                            .floorActions(floorCommands)
+                            .build();
 
-                this.worlds.put(worldName, world);
+                    this.worlds.put(worldName, world);
+                }
             }
 
-            final HeightListener heightListener = this.plugin.getHeightListener();
             if (!this.worlds.isEmpty()) {
-                RegisterUtil.register(this.plugin, heightListener);
-            } else {
-                RegisterUtil.unregister(heightListener);
+                final HeightListener heightListener = this.plugin.getHeightListener();
+                if (!this.worlds.isEmpty()) {
+                    RegisterUtil.register(this.plugin, heightListener);
+                } else {
+                    RegisterUtil.unregister(heightListener);
+                }
             }
         } else {
             this.plugin.getMyLogger().warning("Failed to load section \"worlds\" from file \"config.yml\". Please check your configuration file, or delete it and restart your server!");
@@ -177,29 +181,33 @@ public final class ConfigValues {
                     leave = true;
                 }
 
-                final RegionConstructor region = RegionConstructor.builder()
-                        .worlds(new HashSet<>(keySection.getStringList("worlds")))
-                        .enterRandom(enterRandom)
-                        .enterActions(enterActions)
-                        .leaveRandom(leaveRandom)
-                        .leaveActions(leaveActions)
-                        .build();
+                if (!enterActions.isEmpty() || !leaveActions.isEmpty()) {
+                    final RegionConstructor region = RegionConstructor.builder()
+                            .worlds(new HashSet<>(keySection.getStringList("worlds")))
+                            .enterRandom(enterRandom)
+                            .enterActions(enterActions)
+                            .leaveRandom(leaveRandom)
+                            .leaveActions(leaveActions)
+                            .build();
 
-                this.regions.put(regionName, region);
+                    this.regions.put(regionName, region);
+                }
             }
 
-            final EntryRegion entryRegion = this.plugin.getEntryRegionListener();
-            if (enter) {
-                RegisterUtil.register(this.plugin, entryRegion);
-            } else {
-                RegisterUtil.unregister(entryRegion);
-            }
+            if (!this.regions.isEmpty()) {
+                final EntryRegion entryRegion = this.plugin.getEntryRegionListener();
+                if (enter) {
+                    RegisterUtil.register(this.plugin, entryRegion);
+                } else {
+                    RegisterUtil.unregister(entryRegion);
+                }
 
-            final LeaveRegion leaveRegion = this.plugin.getLeaveRegionListener();
-            if (leave) {
-                RegisterUtil.register(this.plugin, leaveRegion);
-            } else {
-                RegisterUtil.unregister(leaveRegion);
+                final LeaveRegion leaveRegion = this.plugin.getLeaveRegionListener();
+                if (leave) {
+                    RegisterUtil.register(this.plugin, leaveRegion);
+                } else {
+                    RegisterUtil.unregister(leaveRegion);
+                }
             }
         } else {
             this.plugin.getMyLogger().warning("Failed to load section \"regions\" from file \"config.yml\". Please check your configuration file, or delete it and restart your server!");
@@ -220,6 +228,7 @@ public final class ConfigValues {
     }
 
     private void setupOnJoin(final ConfigurationSection playerSection) {
+        this.playerServerJoinActions.clear();
         final ConfigurationSection joinSection = playerSection.getConfigurationSection("on-server-join");
         final JoinListener joinListener = this.plugin.getJoinListener();
         if (joinSection != null) {
@@ -234,8 +243,10 @@ public final class ConfigValues {
                         this.playerServerJoinActions.add(action);
                     }
                 }
-                RegisterUtil.register(this.plugin, joinListener);
-                return;
+                if (!this.playerServerJoinActions.isEmpty()) {
+                    RegisterUtil.register(this.plugin, joinListener);
+                    return;
+                }
             }
         }
 
@@ -243,6 +254,7 @@ public final class ConfigValues {
     }
 
     private void setupOnQuit(final ConfigurationSection playerSection) {
+        this.playerServerJoinActions.clear();
         final ConfigurationSection quitSection = playerSection.getConfigurationSection("on-server-leave");
         final QuitListener quitListener = this.plugin.getQuitListener();
         if (quitSection != null) {
@@ -257,8 +269,10 @@ public final class ConfigValues {
                         this.playerServerQuitActions.add(action);
                     }
                 }
-                RegisterUtil.register(this.plugin, quitListener);
-                return;
+                if (!this.playerServerQuitActions.isEmpty()) {
+                    RegisterUtil.register(this.plugin, quitListener);
+                    return;
+                }
             }
         }
 
@@ -266,6 +280,7 @@ public final class ConfigValues {
     }
 
     private void setupOnDeath(final ConfigurationSection playerSection) {
+        this.playerDeathActions.clear();
         final ConfigurationSection deathSection = playerSection.getConfigurationSection("on-death");
         final DeathListener deathListener = this.plugin.getDeathListener();
         if (deathSection != null) {
@@ -281,8 +296,10 @@ public final class ConfigValues {
                         this.playerDeathActions.add(action);
                     }
                 }
-                RegisterUtil.register(this.plugin, deathListener);
-                return;
+                if (!this.playerDeathActions.isEmpty()) {
+                    RegisterUtil.register(this.plugin, deathListener);
+                    return;
+                }
             }
         }
 
