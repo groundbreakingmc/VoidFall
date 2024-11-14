@@ -27,42 +27,6 @@ public final class TeleportPlayer extends AbstractAction {
         player.teleport(location);
     }
 
-    private float getLook(final float current, final String[] params, final int paramNumb, final float defaultValue, final String specifiedIn) {
-        if (params.length > paramNumb) {
-            final String param = params[paramNumb];
-            if (param.charAt(0) == '~') {
-                final String stringNumb = param.substring(1);
-                final float arg = stringNumb.isEmpty() ? 0 : Float.parseFloat(param.substring(1));
-                return current + arg;
-            } else {
-                try {
-                    return Float.parseFloat(param);
-                } catch (final NumberFormatException ignore) {
-                    super.plugin.getMyLogger().warning("The value: " + param + " specified in \"" + specifiedIn + "\" for the [TELEPORT] action is invalid. Please check your config file.");
-                }
-            }
-        }
-        return defaultValue;
-    }
-
-    private double getCord(final double current, final String[] params, final int paramNumb, final int defaultValue, final String specifiedIn) {
-        if (params.length > paramNumb) {
-            final String param = params[paramNumb];
-            if (param.charAt(0) == '~') {
-                final String stringNumb = param.substring(1);
-                final double arg = stringNumb.isEmpty() ? 0 : Double.parseDouble(param.substring(1));
-                return current + arg;
-            } else {
-                try {
-                    return Double.parseDouble(param);
-                } catch (final NumberFormatException ignore) {
-                    super.plugin.getMyLogger().warning("The value: " + param + " specified in \"" + specifiedIn + "\" for the [TELEPORT] action is invalid. Please check your config file.");
-                }
-            }
-        }
-        return defaultValue;
-    }
-
     private World getWorld(final Player player, final String[] params) {
         if (params.length > 0){
             final String param = params[0];
@@ -77,5 +41,67 @@ public final class TeleportPlayer extends AbstractAction {
             }
         }
         return super.plugin.getServer().getWorlds().get(0);
+    }
+
+    private double getCord(final double current, final String[] params, final int paramNumb, final int defaultValue, final String specifiedIn) {
+        if (params.length > paramNumb) {
+            final String param = params[paramNumb];
+            if (param.charAt(0) == '~') {
+                final char operationChar = param.charAt(1);
+                final int operationNumb = operationChar == '-' ? 1 : operationChar == '*' ? 2 : operationChar == '/' ? 3 :  operationChar == '%' ? 4 : 0;
+                final String stringNumb = param.substring(operationNumb == 0 ? 1 : 2);
+                final double arg = stringNumb.isEmpty() ? 0 : Double.parseDouble(stringNumb);
+                switch (operationNumb) {
+                    case 0:
+                        return current + arg;
+                    case 1:
+                        return current - arg;
+                    case 2:
+                        return current * arg;
+                    case 3:
+                        return arg != 0 ? current / arg : current;
+                    case 4:
+                        return arg != 0 ? current % arg : 0;
+                }
+            } else {
+                try {
+                    return Double.parseDouble(param);
+                } catch (final NumberFormatException ignore) {
+                    super.plugin.getMyLogger().warning("The value: " + param + " specified in \"" + specifiedIn + "\" for the [TELEPORT] action is invalid. Please check your config file.");
+                }
+            }
+        }
+        return defaultValue;
+    }
+
+    private float getLook(final float current, final String[] params, final int paramNumb, final float defaultValue, final String specifiedIn) {
+        if (params.length > paramNumb) {
+            final String param = params[paramNumb];
+            if (param.charAt(0) == '~') {
+                final char operationChar = param.charAt(1);
+                final int operationNumb = operationChar == '-' ? 1 : operationChar == '*' ? 2 : operationChar == '/' ? 3 :  operationChar == '%' ? 4 : 0;
+                final String stringNumb = param.substring(operationNumb == 0 ? 1 : 2);
+                final float arg = stringNumb.isEmpty() ? 0 : Float.parseFloat(stringNumb);
+                switch (operationNumb) {
+                    case 0:
+                        return current + arg;
+                    case 1:
+                        return current - arg;
+                    case 2:
+                        return current * arg;
+                    case 3:
+                        return arg != 0 ? current / arg : current;
+                    case 4:
+                        return arg != 0 ? current % arg : 0;
+                }
+            } else {
+                try {
+                    return Float.parseFloat(param);
+                } catch (final NumberFormatException ignore) {
+                    super.plugin.getMyLogger().warning("The value: " + param + " specified in \"" + specifiedIn + "\" for the [TELEPORT] action is invalid. Please check your config file.");
+                }
+            }
+        }
+        return defaultValue;
     }
 }

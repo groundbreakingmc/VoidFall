@@ -39,6 +39,8 @@ settings:
 # [EFFECT] - give the player a potion effect (Usage EFFECT;STRENGTH;DURATION;AMBIENT;PARTICLES (Strength, duration, ambient and particles are optional)
 # [BROADCAST] - send a message to all players online
 # [TELEPORT] - teleport the player (Usage WORLD;X;Y;Z;YAW;PITCH ("yaw" and "pitch" are optional))
+#            - Use ~ to parse player's cord, use ~+{numb} (ex: ~+1.0) to add 1 to player's cord (Can be applied to x, y, z, yaw, pitch)
+#            - Allowed operators: [ + ], [ - ], [ * ], [ / ] and [ % ]
 # [GAMEMODE] - set the player's game mode (0 or survival | 1 or creative | 2 or adventure | 3 or spectator)
 #
 # Available placeholders:
