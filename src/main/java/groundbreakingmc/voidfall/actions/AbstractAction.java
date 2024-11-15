@@ -2,8 +2,8 @@ package groundbreakingmc.voidfall.actions;
 
 import groundbreakingmc.voidfall.VoidFall;
 import groundbreakingmc.voidfall.utils.PapiUtil;
-import lombok.AllArgsConstructor;
 import groundbreakingmc.voidfall.utils.StringUtil;
+import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 
 @AllArgsConstructor

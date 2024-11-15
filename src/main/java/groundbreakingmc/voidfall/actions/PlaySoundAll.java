@@ -14,36 +14,43 @@ public final class PlaySoundAll extends AbstractAction {
     @Override
     public void process(final Player player, final String string) {
         final String[] params = string.split(";", 3);
+        final Sound sound = this.getSound(params[0]);
+        final float volume = this.getVolume(params);
+        final float pitch = this.getPitch(params);
+        Bukkit.getOnlinePlayers().forEach(target ->
+                target.playSound(target.getLocation(), sound, volume, pitch)
+        );
+    }
 
-        Sound sound = Sound.ENTITY_SHULKER_HURT_CLOSED;
-        float volume = 1f;
-        float pitch = 1f;
-        switch (params.length) {
-            case 3:
-                try {
-                    pitch = Float.parseFloat(params[2]);
-                } catch (final NumberFormatException exception) {
-                    super.plugin.getMyLogger().warning("The value: " + params[2] + " specified in \"Pitch\" for the [PLAY_SOUND_ALL] action is invalid. Please check your config file.");
-                }
-            case 2:
-                try {
-                    volume = Float.parseFloat(params[1]);
-                } catch (final NumberFormatException exception) {
-                    super.plugin.getMyLogger().warning("The value: " + params[1] + " specified in \"Volume\" for the [PLAY_SOUND_ALL] action is invalid. Please check your config file.");
-                }
-            case 1:
-                try {
-                    sound = Sound.valueOf(params[0].toUpperCase());
-                } catch (final IllegalArgumentException exception) {
-                    super.plugin.getMyLogger().warning("The value: " + params[0] + " specified in \"Sound\" for the [PLAY_SOUND_ALL] action is invalid. Please check your config file.");
-                }
-            default:
-                final Sound fSound = sound;
-                float fVolume = volume, fPitch = pitch;
-
-                Bukkit.getOnlinePlayers().forEach(target ->
-                        target.playSound(target.getLocation(), fSound, fVolume, fPitch)
-                );
+    private Sound getSound(final String param) {
+        try {
+            return Sound.valueOf(param.toUpperCase());
+        } catch (final IllegalArgumentException exception) {
+            super.plugin.getMyLogger().warning("The value: " + param + " specified in \"Sound\" for the [PLAY_SOUND] action is invalid. Please check your config file.");
+            return Sound.ENTITY_SHULKER_HURT_CLOSED;
         }
+    }
+
+    private float getVolume(final String[] params) {
+        if (params.length > 1) {
+            try {
+                return Float.parseFloat(params[1]);
+            } catch (final NumberFormatException exception) {
+                super.plugin.getMyLogger().warning("The value: " + params[1] + " specified in \"Volume\" for the [PLAY_SOUND] action is invalid. Please check your config file.");
+            }
+        }
+        return 1f;
+    }
+
+    private float getPitch(final String[] params) {
+        if (params.length > 1) {
+            try {
+                return Float.parseFloat(params[2]);
+            } catch (final NumberFormatException exception) {
+                super.plugin.getMyLogger().warning("The value: " + params[2] + " specified in \"Pitch\" for the [PLAY_SOUND] action is invalid. Please check your config file.");
+                return 1f;
+            }
+        }
+        return 1f;
     }
 }

@@ -3,8 +3,6 @@ package groundbreakingmc.voidfall.actions;
 import groundbreakingmc.voidfall.VoidFall;
 import org.bukkit.entity.Player;
 
-import static org.bukkit.Bukkit.getScheduler;
-
 public final class ShowTitle extends AbstractAction {
 
     public ShowTitle(final VoidFall plugin, final String string) {
@@ -14,37 +12,23 @@ public final class ShowTitle extends AbstractAction {
     @Override
     public void process(final Player player, final String string) {
         final String[] params = string.split(";", 5);
+        final String title = params[0];
+        final String subtitle = params.length > 1 ? params[1] : "";
+        final int fadeIn = this.getNumb(params, 4, 10, "FadeIn");
+        final int stay = this.getNumb(params, 3, 40, "Stay");
+        final int fadeOut = this.getNumb(params, 2, 15, "fadeOut");
+        player.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
+    }
 
-        String main = "", sub = "";
-        int fadeIn = 10, stay = 40, fadeOut = 15;
-        switch (params.length) {
-            case 5:
-                try {
-                    fadeOut = Integer.parseInt(params[4]);
-                } catch (NumberFormatException e) {
-                    super.plugin.getMyLogger().warning("The value: " + params[4] + " specified in \"FadeOut\" for the [TITLE] action is invalid. Please check your config file.");
-                }
-            case 4:
-                try {
-                    stay = Integer.parseInt(params[3]);
-                } catch (NumberFormatException e) {
-                    super.plugin.getMyLogger().warning("The value: " + params[3] + " specified in \"Stay\" for the [TITLE] action is invalid. Please check your config file.");
-                }
-            case 3:
-                try {
-                    stay = Integer.parseInt(params[2]);
-                } catch (NumberFormatException e) {
-                    super.plugin.getMyLogger().warning("The value: " + params[2] + " specified in \"FadeIn\" for the [TITLE] action is invalid. Please check your config file.");
-                }
-            case 2:
-                sub = params[1];
-            case 1:
-                main = params[0];
-            default:
-                final String text = main, subText = sub;
-                final int stayTime = stay, fadeOutTime = fadeOut;
-
-                player.sendTitle(text, subText, fadeIn, stayTime, fadeOutTime);
+    private int getNumb(final String[] params, final int paramNumb, final int defaultValue, final String specifiedIn) {
+        if (params.length > paramNumb) {
+            try {
+                return Integer.parseInt(params[paramNumb]);
+            } catch (NumberFormatException e) {
+                super.plugin.getMyLogger().warning("The value: " + params[paramNumb] + " specified in \"" + specifiedIn + "\" for the [TITLE] action is invalid. Please check your config file.");
+            }
         }
+
+        return defaultValue;
     }
 }

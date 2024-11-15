@@ -1,7 +1,6 @@
 package groundbreakingmc.voidfall.actions;
 
 import groundbreakingmc.voidfall.VoidFall;
-import org.bukkit.Color;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
