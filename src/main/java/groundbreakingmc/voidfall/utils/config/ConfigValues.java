@@ -1,18 +1,18 @@
 package groundbreakingmc.voidfall.utils.config;
 
-import groundbreakingmc.voidfall.constructors.RegionConstructor;
-import groundbreakingmc.voidfall.listeners.height.HeightListener;
-import lombok.Getter;
 import groundbreakingmc.voidfall.VoidFall;
 import groundbreakingmc.voidfall.actions.AbstractAction;
+import groundbreakingmc.voidfall.constructors.RegionConstructor;
 import groundbreakingmc.voidfall.constructors.WorldsConstructor;
 import groundbreakingmc.voidfall.listeners.RegisterUtil;
+import groundbreakingmc.voidfall.listeners.height.HeightListener;
 import groundbreakingmc.voidfall.listeners.player.DeathListener;
 import groundbreakingmc.voidfall.listeners.player.JoinListener;
 import groundbreakingmc.voidfall.listeners.player.QuitListener;
 import groundbreakingmc.voidfall.listeners.wgevents.EntryRegion;
 import groundbreakingmc.voidfall.listeners.wgevents.LeaveRegion;
 import groundbreakingmc.voidfall.utils.colorizer.IColorizer;
+import lombok.Getter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -57,7 +57,9 @@ public final class ConfigValues {
     }
 
     private void setupWorldActions(final FileConfiguration config) {
+        this.worlds.clear();
         final ConfigurationSection worldsSection = config.getConfigurationSection("worlds");
+        final HeightListener heightListener = this.plugin.getHeightListener();
         if (worldsSection != null) {
             for (final String worldName : worldsSection.getKeys(false)) {
                 final ConfigurationSection worldSection = worldsSection.getConfigurationSection(worldName);
@@ -125,22 +127,20 @@ public final class ConfigValues {
             }
 
             if (!this.worlds.isEmpty()) {
-                final HeightListener heightListener = this.plugin.getHeightListener();
-                if (!this.worlds.isEmpty()) {
-                    RegisterUtil.register(this.plugin, heightListener);
-                } else {
-                    RegisterUtil.unregister(heightListener);
-                }
+                RegisterUtil.register(this.plugin, heightListener);
             }
         } else {
             this.plugin.getMyLogger().warning("Failed to load section \"worlds\" from file \"config.yml\". Please check your configuration file, or delete it and restart your server!");
             this.plugin.getMyLogger().warning("If you think this is a plugin error, leave a issue on the https://github.com/grounbreakingmc/VoidFall/issues");
         }
+        RegisterUtil.unregister(heightListener);
     }
 
     private void setupRegionActions(final FileConfiguration config) {
         this.regions.clear();
         final ConfigurationSection regionsSection = config.getConfigurationSection("regions");
+        final EntryRegion entryRegion = this.plugin.getEntryRegionListener();
+        final LeaveRegion leaveRegion = this.plugin.getLeaveRegionListener();
         if (regionsSection != null) {
             boolean enter = false;
             boolean leave = false;
@@ -195,14 +195,12 @@ public final class ConfigValues {
             }
 
             if (!this.regions.isEmpty()) {
-                final EntryRegion entryRegion = this.plugin.getEntryRegionListener();
                 if (enter) {
                     RegisterUtil.register(this.plugin, entryRegion);
                 } else {
                     RegisterUtil.unregister(entryRegion);
                 }
 
-                final LeaveRegion leaveRegion = this.plugin.getLeaveRegionListener();
                 if (leave) {
                     RegisterUtil.register(this.plugin, leaveRegion);
                 } else {
@@ -212,6 +210,8 @@ public final class ConfigValues {
         } else {
             this.plugin.getMyLogger().warning("Failed to load section \"regions\" from file \"config.yml\". Please check your configuration file, or delete it and restart your server!");
             this.plugin.getMyLogger().warning("If you think this is a plugin error, leave a issue on the https://github.com/grounbreakingmc/VoidFall/issues");
+            RegisterUtil.unregister(entryRegion);
+            RegisterUtil.unregister(leaveRegion);
         }
     }
 
@@ -254,7 +254,7 @@ public final class ConfigValues {
     }
 
     private void setupOnQuit(final ConfigurationSection playerSection) {
-        this.playerServerJoinActions.clear();
+        this.playerServerQuitActions.clear();
         final ConfigurationSection quitSection = playerSection.getConfigurationSection("on-server-leave");
         final QuitListener quitListener = this.plugin.getQuitListener();
         if (quitSection != null) {
