@@ -46,62 +46,60 @@ public final class TeleportPlayer extends AbstractAction {
     private double getCord(final double current, final String[] params, final int paramNumb, final int defaultValue, final String specifiedIn) {
         if (params.length > paramNumb) {
             final String param = params[paramNumb];
-            if (param.charAt(0) == '~') {
-                final char operationChar = param.charAt(1);
-                final int operationNumb = operationChar == '-' ? 1 : operationChar == '*' ? 2 : operationChar == '/' ? 3 :  operationChar == '%' ? 4 : 0;
-                final String stringNumb = param.substring(operationNumb == 0 ? 1 : 2);
-                final double arg = stringNumb.isEmpty() ? 0 : Double.parseDouble(stringNumb);
-                switch (operationNumb) {
-                    case 0:
-                        return current + arg;
-                    case 1:
-                        return current - arg;
-                    case 2:
-                        return current * arg;
-                    case 3:
-                        return arg != 0 ? current / arg : current;
-                    case 4:
-                        return arg != 0 ? current % arg : 0;
+            if (param.isEmpty()) {
+                return defaultValue;
+            }
+
+            try {
+                final boolean isRelative = param.charAt(0) == '~';
+                final char operation = isRelative ? (param.length() > 1 ? param.charAt(1) : '=') : param.charAt(0);
+                final String valuePart = isRelative ? param.substring(1 + (operation != '=' ? 1 : 0)) : (Character.isDigit(operation) ? param : param.substring(1));
+
+                final double arg = valuePart.isEmpty() ? 0f : Double.parseDouble(valuePart);
+                switch (operation) {
+                    case '+': return current + arg;
+                    case '-': return isRelative ? current - arg : -arg;
+                    case '*': return current * arg;
+                    case '/': return arg != 0 ? current / arg : current;
+                    case '%': return arg != 0 ? current % arg : 0;
+                    case '=': return current;
+                    default:  return arg;
                 }
-            } else {
-                try {
-                    return Double.parseDouble(param);
-                } catch (final NumberFormatException ignore) {
-                    super.plugin.getMyLogger().warning("The value: " + param + " specified in \"" + specifiedIn + "\" for the [TELEPORT] action is invalid. Please check your config file.");
-                }
+            } catch (NumberFormatException ex) {
+                super.plugin.getMyLogger().warning("The value: " + param + " specified in \"" + specifiedIn + "\" for the [TELEPORT] action is invalid. Please check your config file.");
             }
         }
+
         return defaultValue;
     }
 
     private float getLook(final float current, final String[] params, final int paramNumb, final float defaultValue, final String specifiedIn) {
         if (params.length > paramNumb) {
             final String param = params[paramNumb];
-            if (param.charAt(0) == '~') {
-                final char operationChar = param.charAt(1);
-                final int operationNumb = operationChar == '-' ? 1 : operationChar == '*' ? 2 : operationChar == '/' ? 3 :  operationChar == '%' ? 4 : 0;
-                final String stringNumb = param.substring(operationNumb == 0 ? 1 : 2);
-                final float arg = stringNumb.isEmpty() ? 0 : Float.parseFloat(stringNumb);
-                switch (operationNumb) {
-                    case 0:
-                        return current + arg;
-                    case 1:
-                        return current - arg;
-                    case 2:
-                        return current * arg;
-                    case 3:
-                        return arg != 0 ? current / arg : current;
-                    case 4:
-                        return arg != 0 ? current % arg : 0;
+            if (param.isEmpty()) {
+                return defaultValue;
+            }
+
+            try {
+                final boolean isRelative = param.charAt(0) == '~';
+                final char operation = isRelative ? (param.length() > 1 ? param.charAt(1) : '=') : param.charAt(0);
+                final String valuePart = isRelative ? param.substring(1 + (operation != '=' ? 1 : 0)) : (Character.isDigit(operation) ? param : param.substring(1));
+
+                final float arg = valuePart.isEmpty() ? 0f : Float.parseFloat(valuePart);
+                switch (operation) {
+                    case '+': return current + arg;
+                    case '-': return isRelative ? current - arg : -arg;
+                    case '*': return current * arg;
+                    case '/': return arg != 0 ? current / arg : current;
+                    case '%': return arg != 0 ? current % arg : 0;
+                    case '=': return current;
+                    default:  return arg;
                 }
-            } else {
-                try {
-                    return Float.parseFloat(param);
-                } catch (final NumberFormatException ignore) {
-                    super.plugin.getMyLogger().warning("The value: " + param + " specified in \"" + specifiedIn + "\" for the [TELEPORT] action is invalid. Please check your config file.");
-                }
+            } catch (NumberFormatException ex) {
+                super.plugin.getMyLogger().warning("The value: " + param + " specified in \"" + specifiedIn + "\" for the [TELEPORT] action is invalid. Please check your config file.");
             }
         }
+
         return defaultValue;
     }
 }
