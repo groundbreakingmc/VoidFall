@@ -14,9 +14,9 @@ public final class ShowTitle extends AbstractAction {
         final String[] params = string.split(";", 5);
         final String title = params[0];
         final String subtitle = params.length > 1 ? params[1] : "";
-        final int fadeIn = this.getNumb(params, 4, 10, "FadeIn");
+        final int fadeIn = this.getNumb(params, 2, 10, "FadeIn");
         final int stay = this.getNumb(params, 3, 40, "Stay");
-        final int fadeOut = this.getNumb(params, 2, 15, "fadeOut");
+        final int fadeOut = this.getNumb(params, 4, 15, "fadeOut");
         player.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
     }
 
