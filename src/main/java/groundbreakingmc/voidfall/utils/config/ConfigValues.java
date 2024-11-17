@@ -9,6 +9,7 @@ import groundbreakingmc.voidfall.listeners.height.HeightListener;
 import groundbreakingmc.voidfall.listeners.player.DeathListener;
 import groundbreakingmc.voidfall.listeners.player.JoinListener;
 import groundbreakingmc.voidfall.listeners.player.QuitListener;
+import groundbreakingmc.voidfall.listeners.player.RespawnListener;
 import groundbreakingmc.voidfall.listeners.wgevents.EntryRegion;
 import groundbreakingmc.voidfall.listeners.wgevents.LeaveRegion;
 import groundbreakingmc.voidfall.utils.colorizer.IColorizer;
@@ -33,6 +34,7 @@ public final class ConfigValues {
     private final List<AbstractAction> playerServerJoinActions = new ArrayList<>();
     private final List<AbstractAction> playerServerQuitActions = new ArrayList<>();
     private final List<AbstractAction> playerDeathActions = new ArrayList<>();
+    private final List<AbstractAction> playerRespawnActions = new ArrayList<>();
 
     // Messages
     private String noPermissionMessage;
@@ -221,6 +223,7 @@ public final class ConfigValues {
             this.setupOnJoin(player);
             this.setupOnQuit(player);
             this.setupOnDeath(player);
+            this.setupOnRespawn(player);
         } else {
             this.plugin.getMyLogger().warning("Failed to load section \"player\" from file \"config.yml\". Please check your configuration file, or delete it and restart your server!");
             this.plugin.getMyLogger().warning("If you think this is a plugin error, leave a issue on the https://github.com/grounbreakingmc/VoidFall/issues");
@@ -304,6 +307,33 @@ public final class ConfigValues {
         }
 
         RegisterUtil.unregister(deathListener);
+    }
+
+    private void setupOnRespawn(final ConfigurationSection playerSection) {
+        this.playerRespawnActions.clear();
+        final ConfigurationSection respawnSection = playerSection.getConfigurationSection("on-respawn");
+        final RespawnListener respawnListener = this.plugin.getRespawnListener();
+        if (respawnSection != null) {
+            this.isPlayerDeathTriggerRandom = respawnSection.getBoolean("random");
+            this.isInstantlyRespawnEnabled = respawnSection.getBoolean("instantly-respawn");
+            final List<String> respawnCommands = respawnSection.getStringList("execute-commands");
+            if (!respawnCommands.isEmpty()) {
+                for (int i = 0; i < respawnCommands.size(); i++) {
+                    final String command = respawnCommands.get(i);
+                    final ActionType actionType = ActionType.fromString(command);
+                    if (actionType != null) {
+                        final AbstractAction action = actionType.createAction(this.plugin, command);
+                        this.playerRespawnActions.add(action);
+                    }
+                }
+                if (!this.playerRespawnActions.isEmpty()) {
+                    RegisterUtil.register(this.plugin, respawnListener);
+                    return;
+                }
+            }
+        }
+
+        RegisterUtil.unregister(respawnListener);
     }
 
     private void setupMessages(final FileConfiguration config) {

@@ -139,7 +139,7 @@ regions:
 
 # Player connection/disconnection settings (Can be left empty to disable)
 player:
-  # When a player connects to the server (Can be deleted to disable)
+  # Called when the player is connected to the server (Can be deleted to disable)
   on-server-join:
     # Should a random action from the list be executed?
     random: false
@@ -148,15 +148,24 @@ player:
       - '[ACTIONBAR] &6Welcome!'
       - '[BROADCAST] &a[+] &f%player%'
       - '[PLAY_SOUND_ALL] BLOCK_NOTE_BELL;1;1'
-  # When a player disconnects from the server (Can be deleted to disable)
+  # Called when the player is disconnected from the server (Can be deleted to disable)
   on-server-leave:
     # Should a random action from the list be executed?
     random: false
     # Actions
     execute-commands:
       - '[BROADCAST] &c[-] &f%player%'
-  # When a player died
+  # Called when the player is died (Can be deleted to disable)
   on-death:
+    # Should a random action from the list be executed?
+    random: false
+    # If set to true, then the player will not be offered to respawn, and it will happen instantly automatically
+    instantly-respawn: false
+    # Actions
+    execute-commands:
+      - '[MESSAGE] &cIt''s sad but you died.'
+  # Called when the player respawned (Can be deleted to disable)
+  on-respawn:
     # Should a random action from the list be executed?
     random: false
     # If set to true, then the player will not be offered to respawn, and it will happen instantly automatically

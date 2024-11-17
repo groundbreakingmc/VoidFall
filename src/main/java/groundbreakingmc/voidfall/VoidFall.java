@@ -4,6 +4,7 @@ import groundbreakingmc.voidfall.listeners.height.HeightListener;
 import groundbreakingmc.voidfall.listeners.player.DeathListener;
 import groundbreakingmc.voidfall.listeners.player.JoinListener;
 import groundbreakingmc.voidfall.listeners.player.QuitListener;
+import groundbreakingmc.voidfall.listeners.player.RespawnListener;
 import groundbreakingmc.voidfall.listeners.wgevents.EntryRegion;
 import groundbreakingmc.voidfall.listeners.wgevents.LeaveRegion;
 import groundbreakingmc.voidfall.utils.PapiUtil;
@@ -30,6 +31,7 @@ public final class VoidFall extends JavaPlugin {
     private JoinListener joinListener;
     private QuitListener quitListener;
     private DeathListener deathListener;
+    private RespawnListener respawnListener;
     private EntryRegion entryRegionListener;
     private LeaveRegion leaveRegionListener;
     private HeightListener heightListener;
@@ -73,6 +75,7 @@ public final class VoidFall extends JavaPlugin {
         this.joinListener = new JoinListener(this);
         this.quitListener = new QuitListener(this);
         this.deathListener = new DeathListener(this);
+        this.respawnListener = new RespawnListener(this);
         this.entryRegionListener = new EntryRegion(this);
         this.leaveRegionListener = new LeaveRegion(this);
         this.heightListener = new HeightListener(this);
