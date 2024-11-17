@@ -1,6 +1,6 @@
 package groundbreakingmc.voidfall;
 
-import groundbreakingmc.voidfall.listeners.height.HeightListener;
+import groundbreakingmc.voidfall.listeners.player.MoveListener;
 import groundbreakingmc.voidfall.listeners.player.DeathListener;
 import groundbreakingmc.voidfall.listeners.player.JoinListener;
 import groundbreakingmc.voidfall.listeners.player.QuitListener;
@@ -34,7 +34,7 @@ public final class VoidFall extends JavaPlugin {
     private RespawnListener respawnListener;
     private EntryRegion entryRegionListener;
     private LeaveRegion leaveRegionListener;
-    private HeightListener heightListener;
+    private MoveListener moveListener;
 
     private boolean isWgEventsEnabled;
 
@@ -78,7 +78,7 @@ public final class VoidFall extends JavaPlugin {
         this.respawnListener = new RespawnListener(this);
         this.entryRegionListener = new EntryRegion(this);
         this.leaveRegionListener = new LeaveRegion(this);
-        this.heightListener = new HeightListener(this);
+        this.moveListener = new MoveListener(this);
     }
 
     public IColorizer getColorizerByVersion() {

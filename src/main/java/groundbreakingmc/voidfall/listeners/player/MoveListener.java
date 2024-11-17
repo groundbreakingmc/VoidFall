@@ -1,4 +1,4 @@
-package groundbreakingmc.voidfall.listeners.height;
+package groundbreakingmc.voidfall.listeners.player;
 
 import groundbreakingmc.voidfall.VoidFall;
 import groundbreakingmc.voidfall.actions.AbstractAction;
@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import java.util.List;
 
-public final class HeightListener implements Listener {
+public final class MoveListener implements Listener {
 
     private final VoidFall plugin;
     private final ConfigValues configValues;
@@ -20,7 +20,7 @@ public final class HeightListener implements Listener {
 
     private boolean isRegistered;
 
-    public HeightListener(final VoidFall plugin) {
+    public MoveListener(final VoidFall plugin) {
         this.plugin = plugin;
         this.configValues = plugin.getConfigValues();
     }

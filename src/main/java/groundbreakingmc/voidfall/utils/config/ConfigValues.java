@@ -5,7 +5,7 @@ import groundbreakingmc.voidfall.actions.AbstractAction;
 import groundbreakingmc.voidfall.constructors.RegionConstructor;
 import groundbreakingmc.voidfall.constructors.WorldsConstructor;
 import groundbreakingmc.voidfall.listeners.RegisterUtil;
-import groundbreakingmc.voidfall.listeners.height.HeightListener;
+import groundbreakingmc.voidfall.listeners.player.MoveListener;
 import groundbreakingmc.voidfall.listeners.player.DeathListener;
 import groundbreakingmc.voidfall.listeners.player.JoinListener;
 import groundbreakingmc.voidfall.listeners.player.QuitListener;
@@ -61,7 +61,7 @@ public final class ConfigValues {
     private void setupWorldActions(final FileConfiguration config) {
         this.worlds.clear();
         final ConfigurationSection worldsSection = config.getConfigurationSection("worlds");
-        final HeightListener heightListener = this.plugin.getHeightListener();
+        final MoveListener moveListener = this.plugin.getMoveListener();
         if (worldsSection != null) {
             for (final String worldName : worldsSection.getKeys(false)) {
                 final ConfigurationSection worldSection = worldsSection.getConfigurationSection(worldName);
@@ -129,13 +129,13 @@ public final class ConfigValues {
             }
 
             if (!this.worlds.isEmpty()) {
-                RegisterUtil.register(this.plugin, heightListener);
+                RegisterUtil.register(this.plugin, moveListener);
             }
         } else {
             this.plugin.getMyLogger().warning("Failed to load section \"worlds\" from file \"config.yml\". Please check your configuration file, or delete it and restart your server!");
             this.plugin.getMyLogger().warning("If you think this is a plugin error, leave a issue on the https://github.com/grounbreakingmc/VoidFall/issues");
         }
-        RegisterUtil.unregister(heightListener);
+        RegisterUtil.unregister(moveListener);
     }
 
     private void setupRegionActions(final FileConfiguration config) {
