@@ -50,7 +50,7 @@ public final class ConfigValues {
     }
 
     public void setupValues() {
-        final FileConfiguration config = new ConfigLoader(this.plugin).loadAndGet("config", 1.5);
+        final FileConfiguration config = new ConfigLoader(this.plugin).loadAndGet("config", 1.6);
 
         this.setupWorldActions(config);
         this.setupRegionActions(config);
