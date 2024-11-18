@@ -130,6 +130,7 @@ public final class ConfigValues {
 
             if (!this.worlds.isEmpty()) {
                 RegisterUtil.register(this.plugin, moveListener);
+                return;
             }
         } else {
             this.plugin.getMyLogger().warning("Failed to load section \"worlds\" from file \"config.yml\". Please check your configuration file, or delete it and restart your server!");

@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 
 import java.util.List;
 
-public class RespawnListener implements Listener {
+public final class RespawnListener implements Listener {
 
     private final ConfigValues configValues;
 
