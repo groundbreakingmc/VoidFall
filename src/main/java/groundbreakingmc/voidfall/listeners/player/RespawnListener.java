@@ -16,7 +16,7 @@ public final class RespawnListener implements Listener {
     private final VoidFall plugin;
     private final ConfigValues configValues;
 
-    private final String[] placeholders = {"%player%"};
+    private final String[] placeholders = { "%player%", "%world_display_name%" };
 
     private boolean isRegistered;
 
@@ -28,7 +28,11 @@ public final class RespawnListener implements Listener {
     @EventHandler
     public void onRespawn(final PlayerRespawnEvent event) {
         final Player player = event.getPlayer();
-        final String[] replacement = {player.getName()};
+
+        final String worldName = player.getWorld().getName();
+        final String worldDisplayName = this.configValues.getWorldDisplayName().getOrDefault(worldName, worldName);
+        final String[] replacement = { player.getName(), worldDisplayName };
+
         final List<AbstractAction> actions = this.configValues.getPlayerServerQuitActions();
         new BukkitRunnable() {
             @Override

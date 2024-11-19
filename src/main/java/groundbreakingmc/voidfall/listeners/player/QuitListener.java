@@ -14,7 +14,7 @@ public final class QuitListener implements Listener {
 
     private final ConfigValues configValues;
 
-    private final String[] placeholders = {"%player%"};
+    private final String[] placeholders = { "%player%", "%world_display_name%" };
 
     private boolean isRegistered;
 
@@ -25,7 +25,11 @@ public final class QuitListener implements Listener {
     @EventHandler
     public void onQuit(final PlayerQuitEvent event) {
         final Player player = event.getPlayer();
-        final String[] replacement = {player.getName()};
+
+        final String worldName = player.getWorld().getName();
+        final String worldDisplayName = this.configValues.getWorldDisplayName().getOrDefault(worldName, worldName);
+        final String[] replacement = { player.getName(), worldDisplayName };
+
         final List<AbstractAction> actions = this.configValues.getPlayerServerQuitActions();
         for (int i = 0; i < actions.size(); i++) {
             final AbstractAction action = actions.get(i);
