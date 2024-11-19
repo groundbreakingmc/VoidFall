@@ -1,6 +1,8 @@
 2.0->https://modrinth.com/plugin/voidfall
-Optimized all listeners
+Optimized all listeners and actions executing
 Added new placeholders for regions (%region%)
 Added new serializers for colorizer
 Fixed some config issues
 Listener don't register anymore unless there is a need
+Added new listener for player respawn
+Enchanted [TELEPORT] action
