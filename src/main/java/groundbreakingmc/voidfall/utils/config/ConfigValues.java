@@ -30,6 +30,7 @@ public final class ConfigValues {
     private boolean isPlayerServerJoinTriggerRandom;
     private boolean isPlayerServerQuitTriggerRandom;
     private boolean isPlayerDeathTriggerRandom;
+    private boolean isPlayerRespawnTriggerRandom;
 
     private final List<AbstractAction> playerServerJoinActions = new ArrayList<>();
     private final List<AbstractAction> playerServerQuitActions = new ArrayList<>();
@@ -315,8 +316,7 @@ public final class ConfigValues {
         final ConfigurationSection respawnSection = playerSection.getConfigurationSection("on-respawn");
         final RespawnListener respawnListener = this.plugin.getRespawnListener();
         if (respawnSection != null) {
-            this.isPlayerDeathTriggerRandom = respawnSection.getBoolean("random");
-            this.isInstantlyRespawnEnabled = respawnSection.getBoolean("instantly-respawn");
+            this.isPlayerRespawnTriggerRandom = respawnSection.getBoolean("random");
             final List<String> respawnCommands = respawnSection.getStringList("execute-commands");
             if (!respawnCommands.isEmpty()) {
                 for (int i = 0; i < respawnCommands.size(); i++) {

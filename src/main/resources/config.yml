@@ -168,8 +168,6 @@ player:
   on-respawn:
     # Should a random action from the list be executed?
     random: false
-    # If set to true, then the player will not be offered to respawn, and it will happen instantly automatically
-    instantly-respawn: false
     # Actions
     execute-commands:
       - '[TITLE] ;&cYou died :(;10;40;20'
