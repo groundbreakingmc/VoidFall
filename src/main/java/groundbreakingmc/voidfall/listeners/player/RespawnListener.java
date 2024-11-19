@@ -7,11 +7,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
 public final class RespawnListener implements Listener {
 
+    private final VoidFall plugin;
     private final ConfigValues configValues;
 
     private final String[] placeholders = {"%player%"};
@@ -19,6 +21,7 @@ public final class RespawnListener implements Listener {
     private boolean isRegistered;
 
     public RespawnListener(final VoidFall plugin) {
+        this.plugin = plugin;
         this.configValues = plugin.getConfigValues();
     }
 
@@ -27,10 +30,15 @@ public final class RespawnListener implements Listener {
         final Player player = event.getPlayer();
         final String[] replacement = {player.getName()};
         final List<AbstractAction> actions = this.configValues.getPlayerServerQuitActions();
-        for (int i = 0; i < actions.size(); i++) {
-            final AbstractAction action = actions.get(i);
-            action.run(player, placeholders, replacement);
-        }
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < actions.size(); i++) {
+                    final AbstractAction action = actions.get(i);
+                    action.run(player, placeholders, replacement);
+                }
+            }
+        }.runTaskLater(this.plugin, 5L);
     }
 
 }
