@@ -65,7 +65,7 @@ public final class TeleportPlayer extends AbstractAction {
                     case '=': return current;
                     default:  return arg;
                 }
-            } catch (NumberFormatException ex) {
+            } catch (final NumberFormatException ex) {
                 super.plugin.getMyLogger().warning("The value: " + param + " specified in \"" + specifiedIn + "\" for the [TELEPORT] action is invalid. Please check your config file.");
             }
         }
@@ -95,7 +95,7 @@ public final class TeleportPlayer extends AbstractAction {
                     case '=': return current;
                     default:  return arg;
                 }
-            } catch (NumberFormatException ex) {
+            } catch (final NumberFormatException ex) {
                 super.plugin.getMyLogger().warning("The value: " + param + " specified in \"" + specifiedIn + "\" for the [TELEPORT] action is invalid. Please check your config file.");
             }
         }
