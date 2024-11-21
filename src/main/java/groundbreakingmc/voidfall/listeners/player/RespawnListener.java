@@ -33,7 +33,7 @@ public final class RespawnListener implements Listener {
         final String worldDisplayName = this.configValues.getWorldDisplayName().getOrDefault(worldName, worldName);
         final String[] replacement = { player.getName(), worldDisplayName };
 
-        final List<AbstractAction> actions = this.configValues.getPlayerServerQuitActions();
+        final List<AbstractAction> actions = this.configValues.getPlayerRespawnActions();
         new BukkitRunnable() {
             @Override
             public void run() {
