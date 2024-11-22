@@ -19,7 +19,8 @@ public final class UpdatesChecker implements Listener {
 
     private final VoidFall plugin;
 
-    @Getter @Accessors(fluent = true)
+    @Getter
+    @Accessors(fluent = true)
     private static boolean hasUpdate = false;
     private static String downloadLink = null;
 
@@ -27,64 +28,54 @@ public final class UpdatesChecker implements Listener {
         this.plugin = plugin;
     }
 
-    public void check() {
-        final ConfigurationSection updates = this.plugin.getConfig().getConfigurationSection("settings.updates");
-        if (updates == null) {
-            this.plugin.getMyLogger().warning("Failed to load section \"settings.updates\" from file \"config.yml\". Please check your configuration file, or delete it and restart your server!");
-            this.plugin.getMyLogger().warning("If you think this is a plugin error, leave a issue on the https://github.com/grounbreakingmc/GigaChat/issues");
-            return;
-        }
-
-        if (!updates.getBoolean("check")) {
-            this.plugin.getMyLogger().warning("Updates checker was disabled, but it's not recommend by the author to do it!");
-            return;
-        }
-
+    public void check(final boolean downloadUpdate, final boolean commandCall) {
         final HttpClient httpClient = HttpClient.newHttpClient();
         final HttpRequest httpRequest = HttpRequest.newBuilder()
-                .uri(URI.create("https://raw.githubusercontent.com/groundbreakingmc/GigaChat/main/update.txt"))
+                .uri(URI.create("https://raw.githubusercontent.com/groundbreakingmc/VoidFall/main/version"))
                 .build();
 
         final CompletableFuture<HttpResponse<String>> responseFuture = httpClient.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString());
 
         responseFuture.thenAccept(response -> {
             if (response.statusCode() == 200) {
+
                 final String[] body = response.body().split("\n", 2);
                 final String[] versionInfo = body[0].split("->");
-                if (this.isHigher(versionInfo[0])) {
-                    hasUpdate = true;
-                    this.plugin.getMyLogger().info(body[1]);
-                    downloadLink = versionInfo[1];
-                    if (!updates.getBoolean("auto-download")) {
-                        this.downloadJar();
+
+                if (hasUpdate = this.isHigher(versionInfo[0])) {
+                    if (!commandCall) {
+                        this.logUpdate(body[1].split("\n"), versionInfo[0], downloadUpdate);
                     }
+
+                    if (downloadUpdate && (downloadLink = versionInfo[1]) != null) {
+                        this.downloadJar(false);
+                    }
+
                     return;
                 }
 
                 this.plugin.getMyLogger().info("\u001b[92mNo updates were found!\u001b[0m");
             } else {
                 this.plugin.getMyLogger().warning("\u001b[31mCheck was canceled with response code: \u001b[91m" + response.statusCode() + "\u001b[31m.\u001b[0m");
-                this.plugin.getMyLogger().warning("\u001b[31mPlease create an issue \u001b[94https://github.com/groundbreakingmc/GagiChat/issues \u001b[31mand report this error.\u001b[0m");
+                this.plugin.getMyLogger().warning("\u001b[31mPlease create an issue \u001b[94https://github.com/groundbreakingmc/VoidFall/issues \u001b[31mand report this error.\u001b[0m");
             }
         }).join();
     }
 
     private boolean isHigher(final String newVersion) {
         final String pluginVersion = this.plugin.getDescription().getVersion();
-        final int currentVersionNum = Integer.parseInt(pluginVersion.replace("-beta", "").replace(".", ""));
-        final int newVersionNum = Integer.parseInt(newVersion.replace("-beta", "").replace(".", ""));
-
+        final int currentVersionNum = Integer.parseInt(pluginVersion.replace(".", ""));
+        final int newVersionNum = Integer.parseInt(newVersion.replace(".", ""));
         return currentVersionNum < newVersionNum;
     }
 
-    public void downloadJar() {
+    public void downloadJar(final boolean commandCall) {
         if (downloadLink == null) {
-            this.plugin.getMyLogger().warning("No link to download update were found!");
-            this.check();
+            this.check(true, commandCall);
             return;
         } else if (downloadLink.isEmpty()) {
             this.plugin.getMyLogger().warning("\u001b[31mDownload link for new version of the plugin is empty!.\u001b[0m");
-            this.plugin.getMyLogger().warning("\u001b[31mPlease create an issue at \u001b[94https://github.com/groundbreakingmc/GagiChat/issues \u001b[31mand report this error.\u001b[0m");
+            this.plugin.getMyLogger().warning("\u001b[31mPlease create an issue at \u001b[94https://github.com/groundbreakingmc/VoidFall/issues \u001b[31mand report this error.\u001b[0m");
             return;
         }
 
@@ -128,10 +119,26 @@ public final class UpdatesChecker implements Listener {
                 }
             } else {
                 this.plugin.getMyLogger().warning("\u001b[31mJar downloading was canceled with response code: \u001b[91m" + response.statusCode() + "\u001b[31m.\u001b[0m");
-                this.plugin.getMyLogger().warning("\u001b[31mPlease create an issue at \u001b[94https://github.com/groundbreakingmc/GagiChat/issues \u001b[31mand report this error.\u001b[0m");
+                this.plugin.getMyLogger().warning("\u001b[31mPlease create an issue at \u001b[94https://github.com/groundbreakingmc/VoidFall/issues \u001b[31mand report this error.\u001b[0m");
             }
         } catch (final IOException | InterruptedException ex) {
             ex.printStackTrace();
         }
+    }
+
+    private void logUpdate(final String[] body, final String newVersion, final boolean isAutoUpdateEnabled) {
+        final StringBuilder stringBuilder = new StringBuilder("[UPDATE] ╓\n[UPDATE] ╠ New version found - v" + newVersion + "\n[UPDATE] ╚╗");
+
+        for (int i = 0; i < body.length; i++) {
+            stringBuilder.append(" ╏ ").append(body[i]).append('\n');
+        }
+
+        if (!isAutoUpdateEnabled) {
+            stringBuilder.append("[UPDATE] ╔╝\n[UPDATE] ╠ Use 'voidfall update' to download update\n[UPDATE] ╙");
+        } else {
+            stringBuilder.append("[UPDATE] ─╜");
+        }
+
+        this.plugin.getMyLogger().info(stringBuilder.toString());
     }
 }

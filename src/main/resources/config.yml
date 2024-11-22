@@ -26,7 +26,7 @@ settings:
   # LEGACY_ADVANCED - better legacy format with &## support (&##123 = &#112233) (Works only on: 1.16+)
   # MINIMESSAGE - цвет через <цвет></цвет> (Работает только на: 1.17+)
   # VANILLA - default messages formatting with &
-  messages-serializer: VANILLA
+  colorizer-serializer: VANILLA
 
 # Available actions:
 # [CONSOLE] - execute a command as the console

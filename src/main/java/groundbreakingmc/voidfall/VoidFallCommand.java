@@ -28,10 +28,8 @@ public final class VoidFallCommand implements CommandExecutor, TabCompleter {
                 this.processReload(sender);
                 break;
             case "update":
-                if (sender instanceof ConsoleCommandSender) {
-                    this.processUpdate();
-                    break;
-                }
+                this.processUpdate(sender);
+                break;
             default:
                 this.usageError(sender);
         }
@@ -54,8 +52,15 @@ public final class VoidFallCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(this.plugin.getConfigValues().getReloadMessage().replace("%time%", resultTime));
     }
 
-    private void processUpdate() {
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> new UpdatesChecker(this.plugin).downloadJar());
+    private void processUpdate(final CommandSender sender) {
+        if (!(sender instanceof ConsoleCommandSender)) {
+            sender.sendMessage("§4[NewbieGuard] §cThis command can only be executed only by the console!");
+            return;
+        }
+
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () ->
+                new UpdatesChecker(this.plugin).downloadJar(true)
+        );
     }
 
     private void usageError(final CommandSender sender) {
