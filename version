@@ -1,4 +1,4 @@
-2.0->https://modrinth.com/plugin/voidfall
+2.0->https://github.com/groundbreakingmc/VoidFall/releases/download/2.0/VoidFall-2.0.jar
 Optimized all listeners and actions executing
 Added new placeholders for regions (%region%)
 Added new serializers for colorizer

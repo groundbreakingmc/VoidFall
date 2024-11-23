@@ -1,14 +1,9 @@
 package groundbreakingmc.voidfall;
 
-import groundbreakingmc.voidfall.listeners.player.MoveListener;
-import groundbreakingmc.voidfall.listeners.player.DeathListener;
-import groundbreakingmc.voidfall.listeners.player.JoinListener;
-import groundbreakingmc.voidfall.listeners.player.QuitListener;
-import groundbreakingmc.voidfall.listeners.player.RespawnListener;
+import groundbreakingmc.voidfall.listeners.player.*;
 import groundbreakingmc.voidfall.listeners.wgevents.EntryRegion;
 import groundbreakingmc.voidfall.listeners.wgevents.LeaveRegion;
 import groundbreakingmc.voidfall.utils.PapiUtil;
-import groundbreakingmc.voidfall.utils.UpdatesChecker;
 import groundbreakingmc.voidfall.utils.colorizer.*;
 import groundbreakingmc.voidfall.utils.config.ConfigValues;
 import groundbreakingmc.voidfall.utils.logging.BukkitLogger;
@@ -47,7 +42,6 @@ public final class VoidFall extends JavaPlugin {
         this.registerListenerClasses();
 
         final int subVersion = this.getSubVersion();
-        this.colorizer = this.getColorizerByVersion();
         this.myLogger = this.getLoggerByVersion(subVersion);
 
         PapiUtil.setPapiStatus(this);
@@ -61,8 +55,6 @@ public final class VoidFall extends JavaPlugin {
             this.myLogger.info("Please download WorldGuardEvents to enable them.");
             this.myLogger.info("https://www.spigotmc.org/resources/worldguard-events.65176/");
         }
-
-        Bukkit.getScheduler().runTaskLaterAsynchronously(this, () -> new UpdatesChecker(this).check(), 60L);
     }
 
     private void registerCommand() {
@@ -81,18 +73,20 @@ public final class VoidFall extends JavaPlugin {
         this.moveListener = new MoveListener(this);
     }
 
-    public IColorizer getColorizerByVersion() {
-        final String colorizerMode = super.getConfig().getString("settings.messages-serializer").toUpperCase();
-
-        switch (colorizerMode) {
+    public void setupColorizer(final String colorizerMode) {
+        switch (colorizerMode.toUpperCase()) {
             case "MINIMESSAGE":
-                return new MiniMessageColorizer();
+                this.colorizer = new MiniMessageColorizer();
+                break;
             case "LEGACY":
-                return new LegacyColorizer();
+                this.colorizer = new LegacyColorizer();
+                break;
             case "LEGACY_ADVANCED":
-                return new LegacyAdvancedColorizer();
+                this.colorizer = new LegacyAdvancedColorizer();
+                break;
             default:
-                return new VanillaColorizer();
+                this.colorizer = new VanillaColorizer();
+                break;
         }
     }
 

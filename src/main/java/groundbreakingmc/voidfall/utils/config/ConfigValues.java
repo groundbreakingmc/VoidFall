@@ -5,15 +5,13 @@ import groundbreakingmc.voidfall.actions.AbstractAction;
 import groundbreakingmc.voidfall.constructors.RegionConstructor;
 import groundbreakingmc.voidfall.constructors.WorldsConstructor;
 import groundbreakingmc.voidfall.listeners.RegisterUtil;
-import groundbreakingmc.voidfall.listeners.player.MoveListener;
-import groundbreakingmc.voidfall.listeners.player.DeathListener;
-import groundbreakingmc.voidfall.listeners.player.JoinListener;
-import groundbreakingmc.voidfall.listeners.player.QuitListener;
-import groundbreakingmc.voidfall.listeners.player.RespawnListener;
+import groundbreakingmc.voidfall.listeners.player.*;
 import groundbreakingmc.voidfall.listeners.wgevents.EntryRegion;
 import groundbreakingmc.voidfall.listeners.wgevents.LeaveRegion;
+import groundbreakingmc.voidfall.utils.UpdatesChecker;
 import groundbreakingmc.voidfall.utils.colorizer.IColorizer;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -53,10 +51,35 @@ public final class ConfigValues {
     public void setupValues() {
         final FileConfiguration config = new ConfigLoader(this.plugin).loadAndGet("config", 1.6);
 
+        this.setupSettings(config);
         this.setupWorldActions(config);
         this.setupRegionActions(config);
         this.setupPlayerActions(config);
         this.setupMessages(config);
+    }
+
+    private void setupSettings(final FileConfiguration config) {
+        final ConfigurationSection settingsSection = config.getConfigurationSection("settings");
+        if (settingsSection != null) {
+
+            final ConfigurationSection updateSection = settingsSection.getConfigurationSection("updates");
+            if (updateSection != null) {
+
+                final boolean checkForUpdates = updateSection.getBoolean("check");
+
+                Bukkit.getScheduler().runTaskLaterAsynchronously(this.plugin, () -> {
+                    if (!checkForUpdates) {
+                        this.plugin.getMyLogger().warning("Updates checker was disabled, but it's not recommend by the author to do it!");
+                    } else {
+                        final boolean downloadUpdate = updateSection.getBoolean("auto-update");
+                        new UpdatesChecker(this.plugin).check(downloadUpdate, false);
+                    }
+                }, 200L);
+            }
+
+            final String colorizerMode = settingsSection.getString("colorizer-serializer");
+            this.plugin.setupColorizer(colorizerMode);
+        }
     }
 
     private void setupWorldActions(final FileConfiguration config) {
