@@ -4,9 +4,13 @@ import groundbreakingmc.voidfall.VoidFall;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 
-public class PapiUtil {
+public final class PapiUtil {
 
     private static boolean isPapiEnabled;
+
+    private PapiUtil() {
+
+    }
 
     public static String parse(final Player player, final String message) {
         return isPapiEnabled ? PlaceholderAPI.setPlaceholders(player, message) : message;
