@@ -4,14 +4,31 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>GroundbreakingMC</groupId>
-    <artifactId>VoidFall</artifactId>
+    <groupId>com.github.groundbreakingmc.voidfall</groupId>
+    <artifactId>voidfall</artifactId>
     <version>2.0</version>
     <packaging>jar</packaging>
 
     <name>VoidFall</name>
-
     <description>Execute an action for the player who triggered the event</description>
+    <url>https://github.com/groundbreakingmc/VoidFall</url>
+
+    <licenses>
+        <license>
+            <name>Free But Protected Space License</name>
+            <url>https://github.com/groundbreakingmc/VoidFall/blob/main/LICENCE.md</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>groundbreakingmc</id>
+            <name>GroundbreakingMC</name>
+            <url>https://github.com/groundbreakingmc</url>
+        </developer>
+    </developers>
+
     <properties>
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
