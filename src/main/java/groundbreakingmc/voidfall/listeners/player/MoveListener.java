@@ -45,7 +45,7 @@ public final class MoveListener implements Listener {
             }
 
             actions = world.floorActions;
-        } else if (world.roofModeEnabled && playerHeight <= world.roofExecuteHeight) {
+        } else if (world.roofModeEnabled && playerHeight >= world.roofExecuteHeight) {
             if (world.executingRoofContains(this.plugin, playerName)) {
                 return;
             }
