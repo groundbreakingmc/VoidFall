@@ -6,7 +6,7 @@ author: Groundbreakingmc
 
 softdepend: [ PlaceholderAPI, WorldGuardEvents ]
 
-main: groundbreakingmc.voidfall.VoidFall
+main: com.github.groundbreakingmc.voidfall.VoidFall
 
 commands:
   voidfall: {}
