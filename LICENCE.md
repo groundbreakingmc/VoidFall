@@ -2,7 +2,7 @@
 
 #### Free But Protected Space License
 
-Copyright (c) 2024 Viktor
+Copyright (c) 2024 GroundbreakingMC
 
 Permission is hereby granted, free of charge, to any person obtaining a copy 
 of this software and associated documentation files (the "Software"), to deal 
@@ -73,7 +73,7 @@ DEALINGS IN THE SOFTWARE.
 
 #### Лицензия «Свободное, но защищённое пространство»
 
-Авторские права (c) 2024 Виктор
+Авторские права (c) 2024 GroundbreakingMC
 
 Настоящим разрешается любому лицу, получившему копию данного программного обеспечения 
 и сопутствующей документации (далее "Программное обеспечение"), использовать 
