@@ -10,7 +10,7 @@ import groundbreakingmc.voidfall.utils.logging.BukkitLogger;
 import groundbreakingmc.voidfall.utils.logging.ILogger;
 import groundbreakingmc.voidfall.utils.logging.PaperLogger;
 import lombok.Getter;
-import me.clip.placeholderapi.metrics.bukkit.Metrics;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 

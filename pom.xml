@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>groundbreakingmc</groupId>
+    <groupId>GroundbreakingMC</groupId>
     <artifactId>VoidFall</artifactId>
     <version>2.0</version>
     <packaging>jar</packaging>
@@ -37,7 +37,7 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>groundbreakingmc.voidfall</shadedPattern>
+                            <shadedPattern>groundbreakingmc.voidfall.utils.metrics</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -48,6 +48,15 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/**</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                            <minimizeJar>true</minimizeJar>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                         </configuration>
                     </execution>
