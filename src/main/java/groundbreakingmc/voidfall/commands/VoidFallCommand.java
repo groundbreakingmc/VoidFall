@@ -1,5 +1,6 @@
-package groundbreakingmc.voidfall;
+package groundbreakingmc.voidfall.commands;
 
+import groundbreakingmc.voidfall.VoidFall;
 import groundbreakingmc.voidfall.utils.PapiUtil;
 import groundbreakingmc.voidfall.utils.UpdatesChecker;
 import org.bukkit.command.*;
@@ -78,10 +79,10 @@ public final class VoidFallCommand implements CommandExecutor, TabCompleter {
 
         if (args.length == 1) {
             final String input = args[0].toLowerCase();
-            if (sender instanceof ConsoleCommandSender && "update".startsWith(input)) {
+            if ("update".startsWith(input) && sender instanceof ConsoleCommandSender) {
                 list.add("update");
             }
-            if (sender.hasPermission("voidfall.reload") && "reload".startsWith(input)) {
+            if ("reload".startsWith(input) && sender.hasPermission("voidfall.reload")) {
                 list.add("reload");
             }
         }

@@ -1,8 +1,8 @@
 package groundbreakingmc.voidfall.listeners.player;
 
 import groundbreakingmc.voidfall.VoidFall;
-import groundbreakingmc.voidfall.utils.config.ConfigValues;
 import groundbreakingmc.voidfall.actions.AbstractAction;
+import groundbreakingmc.voidfall.utils.config.ConfigValues;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

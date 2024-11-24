@@ -1,17 +1,18 @@
 package groundbreakingmc.voidfall;
 
+import groundbreakingmc.voidfall.commands.VoidFallCommand;
 import groundbreakingmc.voidfall.listeners.player.*;
 import groundbreakingmc.voidfall.listeners.wgevents.EntryRegion;
 import groundbreakingmc.voidfall.listeners.wgevents.LeaveRegion;
 import groundbreakingmc.voidfall.utils.PapiUtil;
 import groundbreakingmc.voidfall.utils.colorizer.*;
 import groundbreakingmc.voidfall.utils.config.ConfigValues;
-import groundbreakingmc.voidfall.utils.logging.BukkitLogger;
 import groundbreakingmc.voidfall.utils.logging.ILogger;
-import groundbreakingmc.voidfall.utils.logging.PaperLogger;
+import groundbreakingmc.voidfall.utils.logging.SetupLogger;
 import lombok.Getter;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @Getter
@@ -21,7 +22,7 @@ public final class VoidFall extends JavaPlugin {
 
     private IColorizer colorizer;
 
-    private ILogger myLogger;
+    private final ILogger myLogger = new SetupLogger(this).getLogger();
 
     private JoinListener joinListener;
     private QuitListener quitListener;
@@ -41,9 +42,6 @@ public final class VoidFall extends JavaPlugin {
 
         this.registerListenerClasses();
 
-        final int subVersion = this.getSubVersion();
-        this.myLogger = this.getLoggerByVersion(subVersion);
-
         PapiUtil.setPapiStatus(this);
 
         this.configValues.setupValues();
@@ -58,9 +56,10 @@ public final class VoidFall extends JavaPlugin {
     }
 
     private void registerCommand() {
-        final VoidFallCommand command = new VoidFallCommand(this);
-        super.getCommand("voidfall").setExecutor(command);
-        super.getCommand("voidfall").setTabCompleter(command);
+        final PluginCommand command = super.getCommand("voidfall");
+        final VoidFallCommand handler = new VoidFallCommand(this);
+        command.setExecutor(handler);
+        command.setTabCompleter(handler);
     }
 
     private void registerListenerClasses() {
@@ -87,20 +86,6 @@ public final class VoidFall extends JavaPlugin {
             default:
                 this.colorizer = new VanillaColorizer();
                 break;
-        }
-    }
-
-    public ILogger getLoggerByVersion(final int subVersion) {
-        final boolean is19OrAbove = subVersion >= 19;
-        return is19OrAbove ? new PaperLogger(this) : new BukkitLogger(this);
-    }
-
-    public int getSubVersion() {
-        try {
-            return Integer.parseInt(super.getServer().getVersion().split("\\.")[1]);
-        } catch (final NumberFormatException ex) {
-            super.getLogger().warning("Failed to extract server version. Plugin may not work correctly!");
-            return 0;
         }
     }
 }

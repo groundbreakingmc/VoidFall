@@ -1,7 +1,7 @@
 package groundbreakingmc.voidfall.constructors;
 
-import lombok.Builder;
 import groundbreakingmc.voidfall.actions.AbstractAction;
+import lombok.Builder;
 
 import java.util.List;
 import java.util.Set;
