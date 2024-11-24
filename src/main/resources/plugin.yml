@@ -1,12 +1,13 @@
-name: VoidFall
-description: Execute an action for the player who triggered the event
+name: '${name}'
+description: '${description}'
 version: '${project.version}'
 
-author: Groundbreakingmc
+main: com.github.groundbreakingmc.voidfall.VoidFall
+
+author: '${author}'
+website: '${url}'
 
 softdepend: [ PlaceholderAPI, WorldGuardEvents ]
-
-main: com.github.groundbreakingmc.voidfall.VoidFall
 
 commands:
   voidfall: {}
